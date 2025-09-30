@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<?asciidoc-toc?>
+<?asciidoc-numbered?>
+
+<article lang="en">
+<articleinfo>
+    <date>2023-08-29</date>
+</articleinfo>
+<simpara>Now you can create a web controller for a simple web application.  Using the <emphasis role="strong">Editor</emphasis> tab to the right, create a new file <literal>springboot/src/main/java/com/example/springboot/HelloController.java</literal> containing the following code:</simpara>
+<informalexample>
+<programlisting language="java" linenumbering="unnumbered">package com.example.springboot;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+
+        @GetMapping("/")
+        public String index() {
+                return "Greetings from Spring Boot!";
+        }
+
+}</programlisting>
+</informalexample>
+<simpara>The class is flagged as a <literal>@RestController</literal>, meaning it is ready for use by Spring MVC to
+handle web requests. <literal>@GetMapping</literal> maps <literal>/</literal> to the <literal>index()</literal> method. When invoked from
+a browser or by using curl on the command line, the method returns pure text. That is
+because <literal>@RestController</literal> combines <literal>@Controller</literal> and <literal>@ResponseBody</literal>, two annotations that
+results in web requests returning data rather than a view.</simpara>
+<section id="_create_an_application_class">
+<title>Create an Application class</title>
+<simpara>The Spring Initializr creates a simple application class for you. However, in this case,
+it is too simple. You need to modify the application class to match the following listing.
+Update the <literal>springboot/src/main/java/com/example/springboot/SpringbootApplication.java</literal> file to contain the following content:</simpara>
+<informalexample>
+<programlisting language="java" linenumbering="unnumbered">package com.example.springboot;
+
+import java.util.Arrays;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
+public class SpringbootApplication {
+
+        public static void main(String[] args) {
+                SpringApplication.run(SpringbootApplication.class, args);
+        }
+
+        @Bean
+        public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
+                return args -&gt; {
+
+                        System.out.println("Let's inspect the beans provided by Spring Boot:");
+
+                        String[] beanNames = ctx.getBeanDefinitionNames();
+                        Arrays.sort(beanNames);
+                        for (String beanName : beanNames) {
+                                System.out.println(beanName);
+                        }
+
+                };
+        }
+
+}</programlisting>
+</informalexample>
+<simpara><literal>@SpringBootApplication</literal> is a convenience annotation that adds all of the following:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<literal>@Configuration</literal>: Tags the class as a source of bean definitions for the application
+context.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<literal>@EnableAutoConfiguration</literal>: Tells Spring Boot to start adding beans based on classpath
+settings, other beans, and various property settings. For example, if <literal>spring-webmvc</literal> is
+on the classpath, this annotation flags the application as a web application and activates
+key behaviors, such as setting up a <literal>DispatcherServlet</literal>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<literal>@ComponentScan</literal>: Tells Spring to look for other components, configurations, and
+services in the <literal>com/example</literal> package, letting it find the controllers.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>The <literal>main()</literal> method uses Spring Boot&#8217;s <literal>SpringApplication.run()</literal> method to launch an
+application. Did you notice that there was not a single line of XML? There is no <literal>web.xml</literal>
+file, either. This web application is 100% pure Java and you did not have to deal with
+configuring any plumbing or infrastructure.</simpara>
+<simpara>There is also a <literal>CommandLineRunner</literal> method marked as a <literal>@Bean</literal>, and this runs on start up.
+It retrieves all the beans that were created by your application or that were
+automatically added by Spring Boot. It sorts them and prints them out.</simpara>
+</section>
+</article>

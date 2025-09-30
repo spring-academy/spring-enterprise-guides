@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<?asciidoc-toc?>
+<?asciidoc-numbered?>
+
+<article lang="en">
+<articleinfo>
+    <date>2023-08-29</date>
+</articleinfo>
+<simpara>To manually initialize the project:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+Select the <emphasis role="strong">Spring Initializr</emphasis> tab to the right.
+This service pulls in all the dependencies you need for an application and does most of the setup for you. In order to setup for this guide, configure your application as follows:
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Choose <literal>Gradle-Groovy</literal> as your <emphasis role="strong">Project</emphasis> type.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Choose <literal>Java</literal> as the <emphasis role="strong">Language</emphasis> you want to use.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+In the <emphasis role="strong">Project Metadata</emphasis> section, set the value of the <emphasis role="strong">Artifact</emphasis> field to <literal>springboot</literal>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Click <emphasis role="strong">Add Dependencies</emphasis> in the upper right (or <emphasis role="strong">Add</emphasis> in the lower right) for smaller screen resolution) and select <literal>Spring Web</literal>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Click the <emphasis role="strong">Create</emphasis> button.
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>You will see that the resulting project is downloaded as a ZIP file: <literal>springboot.zip</literal>, and then unzipped in the <emphasis role="strong">Terminal</emphasis> tab, to the right, into the <literal>springboot</literal> directory. This directory contains a ready-to-run Spring Boot application. For the rest of the guide, you&#8217;ll be editing the application. Go ahead and explore it using the <emphasis role="strong">Editor</emphasis> tab to the right.</simpara>
+</article>

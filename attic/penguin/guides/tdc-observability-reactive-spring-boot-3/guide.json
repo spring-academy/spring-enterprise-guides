@@ -1,0 +1,20 @@
+{
+  "id": "spring-academy-guides-tdc-microservices-observability-reactive-spring-boot-3",
+  "slug": "microservices-observability-reactive-spring-boot-3",
+  "title": "Reactive Observability in Spring Boot 3 with Micrometer",
+  "type": "article",
+  "status": "unlisted",
+  "topics": [
+    "Observability",
+    "Metrics",
+    "Distributed-Tracing",
+    "Log-aggregation",
+    "Java",
+    "Reactive",
+    "Spring-Boot",
+    "Micrometer",
+    "Grafana",
+    "Prometheus",
+    "TDC"
+  ]
+}

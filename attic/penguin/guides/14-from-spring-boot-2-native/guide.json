@@ -1,0 +1,16 @@
+{
+  "id": "spring-academy-guides-spring-boot-2-native",
+  "slug": "spring-academy-guides-spring-boot-2-native",
+  "title": "From Spring 2.6 to Native",
+  "status": "unlisted",
+  "type": "lab",
+  "duration": 457,
+  "entitlements": ["auth"],
+  "instructors": [],
+  "level": "beginner",
+  "topics": ["java", "tooling", "workshop"],
+  "settings": {
+    "educates": "spring-academy-guides-spring-boot-2-native",
+    "manualCompletion": true
+  }
+}

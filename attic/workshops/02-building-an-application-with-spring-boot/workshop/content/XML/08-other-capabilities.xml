@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<?asciidoc-toc?>
+<?asciidoc-numbered?>
+
+<article lang="en">
+<articleinfo>
+    <date>2023-08-29</date>
+</articleinfo>
+<section id="_view_spring_boot_8217_s_starters">
+<title>View Spring Boot&#8217;s Starters</title>
+<simpara>You have seen some of
+<ulink url="http://docs.spring.io/spring-boot/docs/3.1.1/reference/htmlsingle/#using-boot-starter">Spring Boot&#8217;s "<literal>starters</literal>"</ulink>.
+You can see them all
+<ulink url="https://github.com/spring-projects/spring-boot/tree/main/spring-boot-project/spring-boot-starters">here in source code</ulink>.</simpara>
+</section>
+<section id="_jar_support">
+<title>JAR Support</title>
+<simpara>The last example showed how Spring Boot lets you wire beans that you may not be aware you
+need. It also showed how to turn on convenient management services.</simpara>
+<simpara>However, Spring Boot does more than that. It supports not only traditional WAR file
+deployments but also lets you put together executable JARs, thanks to Spring Boot&#8217;s loader
+module. The various guides demonstrate this dual support through the
+<literal>spring-boot-gradle-plugin</literal>.</simpara>
+</section>
+</article>

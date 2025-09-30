@@ -1,0 +1,16 @@
+{
+  "id": "spring-academy-guides-tdc-spring-webclient-gs",
+  "slug": "spring-webclient-gs",
+  "title": "Getting Started with Spring WebClient",
+  "type": "article",
+  "status": "unlisted",
+  "topics": [
+    "Spring-Boot",
+    "Spring-WebFlux",
+    "API",
+    "Getting-Started",
+    "Spring",
+    "Microservices",
+    "TDC"
+  ]
+}

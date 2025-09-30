@@ -1,0 +1,16 @@
+modules:
+  01-overview:
+    name: "Automating Upgrades"
+    exit_sign: Continue
+  02-shellsetup:
+    name: "Shell Setup"
+    exit_sign: Continue
+  03-openrewrite:
+    name: "Open Rewrite"
+    exit_sign: Continue
+  04-sbm:
+    name: "Spring Boot Migrator"
+    exit_sign: Continue
+  05-conclusion:
+    name: "Summary"
+    exit_sign: Finish

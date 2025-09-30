@@ -1,0 +1,4 @@
+modules:
+  01-overview:
+    name: "Closing the Gap: Upgrading your App from Spring Boot 2.x to 3.x"
+    exit_sign: Finish

@@ -1,0 +1,38 @@
+apiVersion: training.educates.dev/v1beta1
+kind: TrainingPortal
+metadata:
+  name: spring-guides
+spec:
+  portal:
+    registration:
+      type: anonymous
+    updates:
+      workshop: true
+    sessions:
+      maximum: 15
+  workshops:
+    - name: spring-academy-guides-upgrade-from-spring-boot-2x-to-3x
+      capacity: 1
+      expires: 180m
+      orphaned: 60m
+      reserved: 0
+    - name: spring-academy-guides-upgrading-boot-jdk-8-to-17
+      capacity: 1
+      expires: 180m
+      orphaned: 60m
+      reserved: 0
+    - name: spring-academy-guides-upgrade-boot-2x-to-3x-in-practice
+      capacity: 1
+      expires: 180m
+      orphaned: 60m
+      reserved: 0
+    - name: spring-academy-guides-workshop-automating-upgrades
+      capacity: 1
+      expires: 180m
+      orphaned: 60m
+      reserved: 0
+    - name: spr-guides-spring-modulith-deep-dive
+      capacity: 1
+      expires: 10h
+      orphaned: 60m
+      reserved: 0

@@ -1,0 +1,4 @@
+name: "Update a Spring Boot App Live in the Cloud"
+modules:
+  activate:
+    - 01-overview

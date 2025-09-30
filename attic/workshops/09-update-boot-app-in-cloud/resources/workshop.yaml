@@ -1,0 +1,285 @@
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: spring-guides-update-boot-app-in-cloud
+spec:
+  title: "Update a Spring Boot App Live in the Cloud"
+  description: "Update a Spring Boot App Live in the Cloud"
+  workshop:
+    image: jdk17-environment:*
+    files:
+      - image: # Note: format is {repository-name}-files
+          url: $(image_repository)/spring-guides-files:$(workshop_version)
+        includePaths:
+          - /workshops/09-update-boot-app-in-cloud/workshop/**
+        newRootPath: workshops/09-update-boot-app-in-cloud
+      - path: .local/share/code-server/extensions
+        image:
+          # This has both java and Tanzu VSCode extensions for TAP 1.6
+          url: ghcr.io/spring-academy/vscode-java-extensions-files:4.12.0-1.0.0
+    packages:
+      - name: tap
+        files:
+          - image:
+              url: ghcr.io/spring-academy/tap-sandbox/educates-extension/tap-cli:1.7.0-1.1.0-1
+  ## TAP-SANDBOX START
+  environment:
+    objects:
+      - apiVersion: sandbox.tanzu.vmware.com/v1alpha1
+        kind: Environment
+        metadata:
+          name: tap-sandbox
+          namespace: $(workshop_namespace)
+        spec:
+          shepherd:
+            namespace: tap-sandbox
+            pool:
+              name: prod-shared-tap-1.7
+              lockDuration: 604800 # 7 days, this is how long the max time the cluster will live
+      - apiVersion: v1
+        kind: Secret
+        metadata:
+          name: workshop-setup-scripts
+        stringData:
+          setup.sh: |
+            #!/bin/bash
+            set -x
+            set -eo pipefail
+            # install tilt
+            mkdir -p ${HOME}/.local/bin
+            export PATH=${PATH}:${HOME}/.local/bin
+            curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash
+            echo "export PATH=${PATH}:${HOME}/.local/bin" >> ${HOME}/.bash_profile
+            TAPGUIHOST=$(cat /opt/kubeconfig/tap_gui_url | sed 's%https://%%')
+            #!!! Educates needs to eliminate fact are two versions of config, is historical, but can now change
+            #!!! Target changing this in 2.6.0, in which case fix up on the .yaml version will go.
+            sed -ibak -e "s/TAP-GUI-PLACEHOLDER-HOSTNAME/${TAPGUIHOST}/" ${HOME}/.local/share/workshop/workshop-definition.json
+            rm /opt/kubeconfig/admin-config
+            export TAP_GUI_URL=$(cat /opt/kubeconfig/tap_gui_url)
+            echo "export TAP_GUI_URL=$(cat /opt/kubeconfig/tap_gui_url)" >> ${HOME}/.bash_profile
+            # set VSCode User settings - Settings that apply globally to any instance of VS Code you open.
+            sed -i "$ d" ${HOME}/.local/share/code-server/User/settings.json
+            cat >> ${HOME}/.local/share/code-server/User/settings.json << EOF
+              ,
+              "java.server.launchMode": "Standard",
+              "tanzu-app-accelerator.tanzuApplicationPlatformGuiUrl": "$TAP_GUI_URL"
+            }
+            EOF
+        ## TAP-SANDBOX END
+  session:
+    namespaces:
+      budget: medium
+      security:
+        token:
+          # This wasn't being done before but should be so that workshop user
+          # cannot access the Educates cluster session namespace, which they don't need.
+          # See note below though about volume mount for token.
+          enabled: false
+    resources:
+      memory: 2Gi
+    applications:
+      terminal:
+        enabled: true
+        layout: default
+      editor:
+        enabled: true
+    dashboards:
+      - name: Editor
+      - name: Terminal
+    ## TAP-SANDBOX START
+    volumes:
+      - name: workshop-setup-scripts
+        secret:
+          secretName: workshop-setup-scripts
+          defaultMode: 0755
+      - name: tap-sandbox-setup-scripts
+        secret:
+          secretName: $(session_namespace)-tap-sandbox-setup-scripts
+          defaultMode: 0755
+      # This will hold the kubeconfig created for the developer namespace.
+      - name: tap-sandbox-user-kubeconfig
+        emptyDir: {}
+      # This will be the TAP sandbox access details generated for TAP environment.
+      - name: tap-sandbox-admin-access-details
+        secret:
+          secretName: tap-sandbox
+      # If cluster access token not enabled, this needs to be added ourselves.
+      # Educates should be changed to at least add this volume even if not mounted
+      # so can be used in an init container like this without making it visible
+      # to the main workshop container. Aim to change for Educates 2.6.0.
+      - name: token
+        secret:
+          secretName: $(session_namespace)-token
+    volumeMounts:
+      - name: workshop-setup-scripts
+        mountPath: /opt/packages/workshop-setup-scripts/setup.d
+      - name: tap-sandbox-user-kubeconfig
+        mountPath: /opt/kubeconfig
+    patches:
+      initContainers:
+        - name: tap-sandbox-setup
+          # Educates needs a $(base_environment_image) variable can use.
+          # For now hard wire to educates-base-environment image. Aim to
+          # change for Educates 2.6.0
+          image: ghcr.io/vmware-tanzu-labs/educates-base-environment:2.6.15
+          # Execute setup script mounted from secret.
+          command: ["/opt/tap-sandbox-setup-scripts/setup.sh"]
+          volumeMounts:
+            # The /opt/kubeconfig directory is special location Educates will
+            # look for kubeconfig stored as /opt/kubeconfig/config, so don't need
+            # to set KUBECONFIG. Educates will copy kubeconfig here to ~/.kube/config
+            # and perform steps to work out kubectl version required.
+            - name: tap-sandbox-user-kubeconfig
+              mountPath: /opt/kubeconfig
+            - name: tap-sandbox-setup-scripts
+              mountPath: /opt/tap-sandbox-setup-scripts
+            # Mount in-cluster config ourselves from the token secret details created
+            # by Educates.
+            - name: token
+              mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              readOnly: true
+            # Mount admin access details for TAP sandbox. We only mount this in the init
+            # container and not main workshop container. Only the developer kubeconfig
+            # will be available to workshop container via /opt/kubeconfig mount.
+            - name: tap-sandbox-admin-access-details
+              mountPath: /opt/tap-sandbox
+    ingresses:
+      # This sets up proxy under tap-gui-$(session_namespace).$(ingress_domain) hostname
+      # to external name service in the session namespace created in TAP sandbox setup script.
+      - name: tap-gui
+        host: TAP-GUI-PLACEHOLDER-HOSTNAME
+        protocol: https
+    objects:
+      - apiVersion: v1
+        kind: Secret
+        metadata:
+          name: $(session_namespace)-tap-sandbox-setup-scripts
+          namespace: $(workshop_namespace)
+        stringData:
+          setup.sh: |
+            #!/bin/bash
+            set -x
+            #set -eo pipefail
+            # Use kubeconfig at path /opt/tap-sandbox/tenant_kubeconfig.yml with --kubeconfig
+            # argument to kubectl while using kubectl to configure TAP sandbox with developer
+            # namespace. Create the namespace, RBAC and service account with a name embedding
+            # $(session_namespace). This will be substituted by Educates in the secret created.
+            # The resulting kubeconfig for the developer, should be written to the path
+            # /opt/kubeconfig/config. Note that resources in the TAP cluster should have labels
+            # or annotations that would identity for the session, so that can later have a cron
+            # job that cleans them up after session has been deleted as not otherwise cleaned
+            # up automatically. Note will use latest kubectl version Educates has, so may se
+            # warnings about version mismatch, but that can be ignored.
+            # kubectl get nodes --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml
+            # kubectl get namespaces --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml
+            #!!! Only ignoring namespace exists because of failures during testing.
+            TENANT_NAME=$(session_namespace)
+            kubectl create namespace ${TENANT_NAME} --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml
+            kubectl label namespace/${TENANT_NAME} apps.tanzu.vmware.com/tap-ns="" --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml
+            kubectl create serviceaccount tap-user --namespace ${TENANT_NAME} --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml
+            #kubectl create secret generic tap-user-token --type "kubernetes.io/service-account-token" --namespace ${TENANT_NAME} --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml
+            #kubectl annotate secret/tap-user-token kubernetes.io/service-account.name=tap-user --namespace ${TENANT_NAME} --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml
+            kubectl apply --namespace ${TENANT_NAME} --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml -f - <<EOF
+            apiVersion: v1
+            kind: Secret
+            metadata:
+              name: tap-user-token
+              annotations:
+                kubernetes.io/service-account.name: tap-user
+            type: kubernetes.io/service-account-token
+            EOF
+            kubectl create rolebinding tap-user-app-operator-access --clusterrole=app-operator --namespace ${TENANT_NAME} --serviceaccount=${TENANT_NAME}:tap-user --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml
+            kubectl create clusterrolebinding ${TENANT_NAME}-app-editor-cluster-access --clusterrole=app-editor-cluster-access --serviceaccount=${TENANT_NAME}:tap-user --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml
+            kubectl create rolebinding tap-user-app-editor-access --clusterrole=app-editor --namespace ${TENANT_NAME} --serviceaccount=${TENANT_NAME}:tap-user --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml
+            kubectl create rolebinding tap-user-app-viewer-access-accelerator --clusterrole=app-viewer --namespace=accelerator-system --group=system:authenticated --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml || true
+            cp /opt/tap-sandbox/tenant_kubeconfig.yml /opt/kubeconfig/admin-config
+            # Also copy TAP GUI URL location even though doesn't really belong in kubeconfig directory.
+            cp /opt/tap-sandbox/tap_gui_url /opt/kubeconfig/tap_gui_url
+            TOKEN=$(kubectl get secret tap-user-token -o jsonpath='{.data.token}' --namespace ${TENANT_NAME} --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml | base64 -d)
+            CERT=$(kubectl get secret tap-user-token -o jsonpath='{.data.ca\.crt}' --namespace ${TENANT_NAME} --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml)
+            APISERVER=$(kubectl config view --raw --minify -o jsonpath={@.clusters[0].cluster.server} --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml)
+            cat > /opt/kubeconfig/config << EOF
+            ---
+            apiVersion: v1
+            clusters:
+            - cluster:
+                certificate-authority-data: "$CERT"
+                server: $APISERVER
+              name: tap-sandbox
+            contexts:
+            - context:
+                cluster: tap-sandbox
+                user: tap-sandbox
+                namespace: $TENANT_NAME
+              name: tap-sandbox
+            current-context: tap-sandbox
+            kind: Config
+            preferences: {}
+            users:
+            - name: tap-sandbox
+              user:
+                token: $TOKEN
+            EOF
+            # The YAML below cleans up the session namespaces 5 minutes after the maximum amount of time they would have been running
+            kubectl apply --kubeconfig /opt/tap-sandbox/tenant_kubeconfig.yml -f - <<EOF
+            apiVersion: v1
+            kind: Namespace
+            metadata:
+              name: educates-tools
+            ---
+            apiVersion: v1
+            kind: ServiceAccount
+            metadata:
+              name: cleanup-lab-session-namespaces
+              namespace: educates-tools
+            ---
+            apiVersion: rbac.authorization.k8s.io/v1
+            kind: ClusterRole
+            metadata:
+              name: namespace-read-delete
+            rules:
+            - apiGroups: [""]
+              resources: ["namespaces"]
+              verbs: ["delete", "get", "list"]
+            ---
+            apiVersion: rbac.authorization.k8s.io/v1
+            kind: ClusterRoleBinding
+            metadata:
+              name: cleanup-lab-session-namespaces
+            subjects:
+            - kind: ServiceAccount
+              name: cleanup-lab-session-namespaces
+              namespace: educates-tools
+            roleRef:
+              kind: ClusterRole
+              name: namespace-read-delete
+              apiGroup: rbac.authorization.k8s.io
+            ---
+            apiVersion: batch/v1
+            kind: CronJob
+            metadata:
+              name: cleanup-lab-session-namespaces
+              namespace: educates-tools
+            spec:
+              schedule: "* * * * *"
+              jobTemplate:
+                spec:
+                  template:
+                    spec:
+                      serviceAccountName: cleanup-lab-session-namespaces
+                      containers:
+                      - name: kubectl
+                        image: bitnami/kubectl:latest
+                        command:
+                          - /bin/sh
+                          - -c
+                          - |
+                            kubectl get ns -o go-template --template '{{range .items}}{{.metadata.name}} {{.metadata.creationTimestamp}}{{"\n"}}{{end}}' | \
+                            grep "spring-guides-update-boot-app-in-cloud" | \
+                            grep -v "Terminating" | \
+                            awk '$2 <= "'$(date -d'now-1 hour' -Ins --utc | sed 's/+0000/Z/')'" { print $1 }' | \
+                            xargs --no-run-if-empty kubectl delete ns --wait=false
+                      restartPolicy: Never
+                  backoffLimit: 4
+            EOF
+    ## TAP-SANDBOX END

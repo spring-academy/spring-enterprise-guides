@@ -1,0 +1,4 @@
+modules:
+  01-overview:
+    name: "Upgrading the JDK of a Spring Boot Application from JDK 8 to JDK 17"
+    exit_sign: Finish

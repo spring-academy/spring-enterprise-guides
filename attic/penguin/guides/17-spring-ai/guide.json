@@ -1,0 +1,16 @@
+{
+  "id": "spring-academy-guides-spring-ai",
+  "slug": "spring-ai",
+  "title": "Spring AI",
+  "status": "unlisted",
+  "type": "lab",
+  "duration": 3600,
+  "entitlements": ["auth"],
+  "instructors": ["spring-bob-mcnees"],
+  "level": "beginner",
+  "topics": ["java", "spring-boot", "tutorial"],
+  "settings": {
+    "educates": "spring-guides-spring-ai",
+    "manualCompletion": true
+  }
+}

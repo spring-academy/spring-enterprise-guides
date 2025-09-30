@@ -1,0 +1,16 @@
+{
+  "id": "spring-academy-spring-modulith-deep-dive",
+  "slug": "spring-modulith-deep-dive",
+  "title": "Spring Modulith Deep Dive",
+  "status": "unlisted",
+  "type": "lab",
+  "duration": 5400,
+  "entitlements": ["auth"],
+  "instructors": [],
+  "level": "beginner",
+  "topics": ["java", "workshop"],
+  "settings": {
+    "educates": "spr-guides-spring-modulith-deep-dive",
+    "manualCompletion": true
+  }
+}

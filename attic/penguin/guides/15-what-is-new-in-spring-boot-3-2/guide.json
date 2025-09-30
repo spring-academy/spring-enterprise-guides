@@ -1,0 +1,16 @@
+{
+  "id": "spring-academy-guides-what-is-new-in-spring-boot-3-2",
+  "slug": "what-is-new-in-spring-boot-3-2",
+  "title": "What is New in Spring Boot 3.2",
+  "status": "live",
+  "type": "lab",
+  "duration": 3600,
+  "entitlements": ["auth"],
+  "instructors": ["spring-dan-vega", "spring-bob-mcnees"],
+  "level": "beginner",
+  "topics": ["java", "spring-boot", "tutorial"],
+  "settings": {
+    "educates": "spring-guides-what-is-new-spring-boot-3-2",
+    "manualCompletion": true
+  }
+}
