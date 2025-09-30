@@ -1,1 +1,0 @@
-In this lab, you will use OpenAI to demonstrate the capabilities of Spring AI.

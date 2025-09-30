@@ -1,1 +1,0 @@
-This lab demonstrates the new functionality included in the Spring Boot 3.1 release. This lab is based on [Josh Long's video 'Spring Tips: go fast with Spring Boot 3.1'](https://www.youtube.com/watch?v=ykEK2xuJrN8). Josh provides a lot of the teaching and the content description in his video. Use this lab to follow along and try it out for yourself!
