@@ -2,9 +2,9 @@ REGISTRY = localhost:5001
 # NOTE: the github actions currently rely on the portal name
 # matching the respository name. Change at your own risk!
 # See https://github.com/vmware-tanzu-labs/educates-github-actions/blob/v4/publish-workshop/scripts/process-workshops.sh#L75
-PORTAL_NAME = spring-guides
-COURSE_NAME = spring-guides
-REPOSITORY_NAME = spring-guides
+PORTAL_NAME = spring-enterprise-guides
+COURSE_NAME = spring-enterprise-guides
+REPOSITORY_NAME = spring-enterprise-guides
 
 # Use the default "all" target the first time you want to deploy the workshop.
 

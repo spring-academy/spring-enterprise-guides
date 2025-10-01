@@ -1,1 +1,0 @@
-This guide is designed with to walk you through [Josh Long's Spring Tips: go fast with Spring Boot 3.1](https://youtu.be/ykEK2xuJrN8) video in a way that will require no changes to your local machine -- just code along with Josh in our hands-on lab environment!

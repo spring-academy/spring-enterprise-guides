@@ -1,8 +1,0 @@
-name: "Automating Upgrades"
-modules:
-  activate:
-    - 01-overview
-    - 02-shellsetup
-    - 03-openrewrite
-    - 04-sbm
-    - 05-conclusion
