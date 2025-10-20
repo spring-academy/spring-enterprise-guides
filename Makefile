@@ -9,20 +9,20 @@ build: build-date add-files-to-archive docker-lab-html
 add-files-to-archive:
 	cp -r labs/* build
 	for d in build/*; do \
-	  WORKSHOP_ID=$(<d/WORKSHOP_ID); \
-	  tar -czvf ${WORKSHOP_ID}.tar.gz d/*; \
+	  tar -czvf $$d.tar.gz $$d/*; \
 	done
 
-	mkdir p build/educates-resources
+	mkdir -p build/educates-resources
 	cp -r resources/* build/educates-resources
 	for f in build/educates-resources/apply/*; do \
-	  envsubst '${version}' < $f > build/educates-resources/apply/$f; \
+	  VERSION=${version} envsubst '$${VERSION}' < $$f > $$f.resolved; \
+	  mv $$f.resolved $$f; \
 	done
 
 build-date:
+	rm -rf build
 	# This ensures there is always a build directory with an asset to upload
 	mkdir -p build
-	date > build/build-date
 
 docker-lab-html:
 
