@@ -1,5 +1,4 @@
 #!make
-SHELL := bash
 include Makefile.env
 
 
@@ -9,15 +8,15 @@ build: build-date add-files-to-archive docker-lab-html
 
 add-files-to-archive:
 	cp -r labs/* build
-	for d in build/*; do
-	  WORKSHOP_ID=$(<d/WORKSHOP_ID);
-	  tar -czvf ${WORKSHOP_ID}.tar.gz d/*;
+	for d in build/*; do \
+	  WORKSHOP_ID=$(<d/WORKSHOP_ID); \
+	  tar -czvf ${WORKSHOP_ID}.tar.gz d/*; \
 	done
 
 	mkdir p build/educates-resources
 	cp -r resources/* build/educates-resources
-	for f in build/educates-resources/apply/*; do
-	  envsubst '${version}' < $f > build/educates-resources/apply/$f;
+	for f in build/educates-resources/apply/*; do \
+	  envsubst '${version}' < $f > build/educates-resources/apply/$f; \
 	done
 
 build-date:
