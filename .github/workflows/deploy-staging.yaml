@@ -3,9 +3,9 @@ run-name: Deploy Content and Metadata from ${{ github.ref_name }} to Staging
 concurrency: deploy-staging
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
