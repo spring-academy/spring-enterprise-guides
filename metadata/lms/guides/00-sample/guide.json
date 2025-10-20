@@ -1,7 +1,7 @@
 {
-  "id": "spring-academy-enterprise",
-  "slug": "spring-enterprise-app-advisor-intro-lab",
-  "title": "Spring Application Advisor Introduction Lab",
+  "id": "spring-academy-enterprise-sample",
+  "slug": "enterprise-guide-sample",
+  "title": "Enterprise Guide Sample",
   "status": "unlisted",
   "type": "lab",
   "duration": 3600,
@@ -10,7 +10,7 @@
   "level": "beginner",
   "topics": ["workshop", "enterprise"],
   "settings": {
-    "educates": "spring-enterprise-app-advisor-intro-lab",
+    "educates": "spring-enterprise-guides-sample",
     "manualCompletion": true
   }
 }

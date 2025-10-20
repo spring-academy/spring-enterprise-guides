@@ -1,0 +1,109 @@
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: tanzu-gunter-tap-freeform
+spec:
+  title: Tanzu Application Platform Developer Freeform Lab
+  description: TAP for Developers Lab
+  difficulty: beginner
+  duration: 4h
+  vendor: Broadcom
+  workshop:
+    image: jdk17-environment:*
+    files:
+      - http:
+          url: "$(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain)"/enterprise-guides.tar.gz
+        #includePaths:
+        #- /workshop/**
+        #- /exercises/**
+        #- /README.md
+  session:
+    namespaces:
+      security:
+        token:
+          # This wasn't being done before but should be so that workshop user
+          # cannot access the Educates cluster session namespace, which they don't need.
+          # See note below though about volume mount for token.
+          enabled: false
+    env:
+    - name: LAB_NUMBER
+      value: "1"
+    - name: WEBSERVER
+      value: "$(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain)"
+    - name: BOOTSTRAP_COMMAND
+      value: ":"
+    applications:
+      terminal:
+        enabled: true
+      editor:
+        enabled: true
+      git:
+        enabled: true
+  environment:
+    objects:
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: workshop-setup-scripts
+      stringData:
+        setup.sh: |
+          #!/bin/bash
+          set -x
+          set -eo pipefail
+          # install tilt
+          echo "this is startup script"
+    - apiVersion: v1
+      kind: Service
+      metadata:
+        name: $(workshop_namespace)-files
+        namespace: $(workshop_namespace)
+      spec:
+        type: ClusterIP
+        ports:
+        - port: 80
+          protocol: TCP
+          targetPort: 8080
+        selector:
+          deployment: files
+    - apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: $(workshop_namespace)-files
+        namespace: $(workshop_namespace)
+      spec:
+        tls:
+        - hosts:
+            - $(workshop_namespace)-files.$(ingress_domain)
+          secretName: $(ingress_secret)
+        rules:
+        - host: $(workshop_namespace)-files.$(ingress_domain)
+          http:
+            paths:
+            - backend:
+                service:
+                  name: $(workshop_namespace)-files
+                  port:
+                    number: 80
+              pathType: Prefix
+              path: /
+    - apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: $(workshop_namespace)-files
+        namespace: $(workshop_namespace)
+      spec:
+        serviceAccountName: $(service_account)
+        replicas: 1
+        selector:
+          matchLabels:
+            deployment: files
+        strategy:
+          type: Recreate
+        template:
+          metadata:
+            labels:
+              deployment: files
+          spec:
+            containers:
+            - name: files
+              image: ghcr.io/spring-academy/spring-enterprise-guides:${VERSION}

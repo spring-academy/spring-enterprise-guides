@@ -1,5 +1,6 @@
 name: "Deploy to Staging"
 run-name: Deploy Content and Metadata from ${{ github.ref_name }} to Staging
+concurrency: deploy-staging
 
 on:
   # push:
@@ -8,14 +9,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deployment:
     name: Deploy to Staging
+    environment: staging
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Login to GitHub Package Registry
+        uses: docker/login-action@v3
         with:
-          fetch-depth: 0
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Make Image for Environment
+        run: |
+          make deploy-lab version=${{ github.ref_name }} environment=staging
       - name: Deploy content
         env:
           PENGUINCTL_APIURL: ${{ secrets.PENGUINCTL_APIURL_STAGING }}
