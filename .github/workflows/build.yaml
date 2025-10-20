@@ -33,11 +33,12 @@ jobs:
           VERSION: ${{ github.sha }}
         run: |
           make release version=$VERSION
-      - name: deploy to staging
-        uses: ./.github/workflows/reusable-deploy.yaml
-        with:
-          version: ${{ github.sha }}
-          environment: staging
-        secrets:
-          penguictl_apiurl: ${{ secrets.PENGUINCTL_APIURL_STAGING }}
-          penguictl_apitoken: ${{ secrets.PENGUINCTL_APITOKEN_STAGING }}
+  deploy:
+    needs: build
+    uses: ./.github/workflows/reusable-deploy.yaml
+    with:
+      version: ${{ github.sha }}
+      environment: staging
+    secrets:
+      penguictl_apiurl: ${{ secrets.PENGUINCTL_APIURL_STAGING }}
+      penguictl_apitoken: ${{ secrets.PENGUINCTL_APITOKEN_STAGING }}
