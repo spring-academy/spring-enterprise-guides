@@ -1,0 +1,11 @@
+pathways:
+  default: workshop
+
+  paths:
+    workshop:
+      title: "Workshop Path Title"
+
+      steps:
+      - 00-intro
+      - 01-part1
+      - 99-summary
