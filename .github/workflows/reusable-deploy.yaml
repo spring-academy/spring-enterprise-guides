@@ -11,6 +11,7 @@ on:
       environment:
         required: true
         type: string
+    secrets:
       penguictl_apiurl:
         required: true
         type: string

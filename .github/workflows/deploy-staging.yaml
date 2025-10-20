@@ -11,5 +11,6 @@ jobs:
     with:
       version: ${{ github.ref_name }}
       environment: staging
+    secrets:
       penguictl_apiurl: ${{ secrets.PENGUINCTL_APIURL_STAGING }}
       penguictl_apitoken: ${{ secrets.PENGUINCTL_APITOKEN_STAGING }}
