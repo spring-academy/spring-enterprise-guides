@@ -1,6 +1,5 @@
 name: deploy
 run-name: Deploy ${{ inputs.version }} to ${{ inputs.environment }}
-concurrency: deploy-${{ inputs.environment }}
 
 on:
   workflow_call:
