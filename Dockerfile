@@ -9,5 +9,8 @@ USER 1000
 # Copy the result of the build into the root of the webserver
 COPY build /usr/share/nginx/html
 
+# Copy the educates resources into their own space
+COPY build/educates-resources /educates-resources
+
 # Set the workdir to be educates-resources so the workshop puller will work
 WORKDIR /educates-resources
