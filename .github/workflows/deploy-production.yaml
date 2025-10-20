@@ -30,4 +30,4 @@ jobs:
           PENGUINCTL_APIURL: ${{ secrets.PENGUINCTL_APIURL_PROD }}
           PENGUINCTL_APITOKEN: ${{ secrets.PENGUINCTL_APITOKEN_PROD }}
         run: |
-          make deploy
+          make deploy-lms

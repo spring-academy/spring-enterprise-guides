@@ -25,9 +25,9 @@ jobs:
       - name: Make Image for Environment
         run: |
           make deploy-lab version=${{ github.ref_name }} environment=staging
-      - name: Deploy content
+      - name: Deploy to EMMIT
         env:
           PENGUINCTL_APIURL: ${{ secrets.PENGUINCTL_APIURL_STAGING }}
           PENGUINCTL_APITOKEN: ${{ secrets.PENGUINCTL_APITOKEN_STAGING }}
         run: |
-          make deploy
+          make deploy-lms
