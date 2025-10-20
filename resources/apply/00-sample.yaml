@@ -1,7 +1,7 @@
 apiVersion: training.educates.dev/v1beta1
 kind: Workshop
 metadata:
-  name: spring-guides-enterprise-sample
+  name: spring-enterprise-guides-sample
 spec:
   title: Spring Academy - Enterprise Guides - Sample
   description: Sample workhshop for integration testing and reference
@@ -13,7 +13,7 @@ spec:
     files:
       - http:
           # the name of the tar.gz here should make the workshop name
-          url: "$(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain)/spring-enterprise-guides.tar.gz"
+          url: "$(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain)/spring-enterprise-guides-sample.tar.gz"
         #includePaths:
         #- /workshop/**
         #- /exercises/**

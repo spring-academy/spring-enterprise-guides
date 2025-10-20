@@ -30,7 +30,7 @@ spec:
     amplitude:
       trackingId: "${ANALYTICS_AMPLITUDE_ID}"
   workshops:
-    - name: spring-guides-enterprise-sample
+    - name: spring-enterprise-guides-sample
       expires: 30m      # set the default time allocated for the user's session
       orphaned: 10m     # if there is no activity after certain amount of time, delete the session
       deadline: 60m     # the maximum amount of time the learner could extend the session to
