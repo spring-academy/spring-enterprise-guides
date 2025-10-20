@@ -36,7 +36,7 @@ jobs:
           make deploy-lab version=${{ inputs.version }} environment=${{ inputs.environment }}
       - name: Deploy to EMMIT
         env:
-          PENGUINCTL_APIURL: ${{ inputs.penguictl_apiurl }}
-          PENGUINCTL_APITOKEN: ${{ inputs.penguictl_apitoken }}
+          PENGUINCTL_APIURL: ${{ secrets.penguictl_apiurl }}
+          PENGUINCTL_APITOKEN: ${{ secrets.penguictl_apitoken }}
         run: |
           make deploy-lms
