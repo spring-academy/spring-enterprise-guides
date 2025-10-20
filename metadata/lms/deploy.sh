@@ -34,7 +34,7 @@ penguinctlcmd() {
 
 deploy-all() {
     echo "=== Applying guides"
-    for guide in "${DIR}"/*/guide.json; do
+    for guide in "${DIR}"/guides/*/guide.json; do
         echo "=== penguinctl apply guide -f $(pwd)/${guide}"
         penguinctlcmd apply guide -f "$(pwd)/${guide}"
     done
