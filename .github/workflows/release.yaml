@@ -32,8 +32,3 @@ jobs:
           VERSION: ${{ steps.extract_tag.outputs.tag }}
         run: |
           make release version=$VERSION
-      - name: Upload Release Assets
-        uses: AButler/upload-release-assets@v2.0
-        with:
-          files: './workshop-resources/*/*'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
