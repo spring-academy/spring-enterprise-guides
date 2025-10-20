@@ -9,7 +9,7 @@ build: build-date add-files-to-archive docker-lab-html
 add-files-to-archive:
 	cp -r labs/* build
 	for d in build/*; do \
-	  tar -czvf build/`cat $$d/WORKSHOP_ID`.tar.gz $$d/*; \
+	  tar -czvf build/`cat $$d/WORKSHOP_ID`.tar.gz -C $$d .; \
 	done
 
 	mkdir -p build/educates-resources
