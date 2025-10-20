@@ -10,10 +10,7 @@ on:
         type: string
       environment:
         required: true
-        type: choice
-        options:
-          - prod
-          - staging
+        type: string
       penguictl_apiurl:
         required: true
         type: string
