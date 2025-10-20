@@ -16,8 +16,8 @@ spec:
         - https://*.spring.academy
         - https://*.vmware.com
         - https://*.broadcom.com
+        - https://spring-staging.academy
         - https://spring-academy.broadcom.com
-        - https://spring-staging.broadcom.com
         - https://spring-academy-verify.broadcom.com
         - https://spring-academy-qa.broadcom.net
         - https://spring-academy-dev.broadcom.net
@@ -27,8 +27,6 @@ spec:
       trackingId: "${ANALYTICS_GOOGLE_ID}"
     clarity:
       trackingId: "${ANALYTICS_CLARITY_ID}"
-    amplitude:
-      trackingId: "${ANALYTICS_AMPLITUDE_ID}"
   workshops:
     - name: spring-enterprise-guides-sample
       expires: 30m      # set the default time allocated for the user's session
