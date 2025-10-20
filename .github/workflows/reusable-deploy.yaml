@@ -14,10 +14,8 @@ on:
     secrets:
       penguictl_apiurl:
         required: true
-        type: string
       penguictl_apitoken:
         required: true
-        type: string
         
 
 jobs:
