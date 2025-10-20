@@ -1,4 +1,5 @@
 #!make
+SHELL := bash
 include Makefile.env
 
 
