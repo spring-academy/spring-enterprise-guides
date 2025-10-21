@@ -1,0 +1,31 @@
+pathways:
+  default: workshop
+
+  paths:
+    workshop:
+      title: "Spring Application Advisor Workshop"
+
+      steps:
+      - 00-workshop-overview
+      - part-1-installing-the-cli
+      - part-2-using-spring-application-advisor
+      - part-3-advanced-usage
+      - part-4-enabling-continuous-upgrades
+      - part-5-troubleshooting
+      - 99-next-steps
+
+modules:
+- name: 00-workshop-overview
+  title: Workshop Overview
+- name: part-1-installing-the-cli
+  title: Part 1 - Installing the CLI
+- name: part-2-using-spring-application-advisor
+  title: Part 2 - Using Spring Application Advisor
+- name: part-3-advanced-usage
+  title: Part 3 - Advanced Usage
+- name: part-4-enabling-continuous-upgrades
+  title: Part 4 - Enabling Continuous Upgrades
+- name: part-5-troubleshooting
+  title: Troubleshooting
+- name: 99-next-steps
+  title: Next Steps
