@@ -13,7 +13,7 @@ This workshop runs in a **Linux-based environment**. All interactive commands an
 
 Before you begin, make sure you have:
 
-- A Broadcom Artifactory token (stored in `ARTIFACTORY_TOKEN` environment variable)
+- A Broadcom Artifactory token (stored in `ARTIFACTORY_TOKEN` environment variable), follow steps to retrieve the [Artifactory Token](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/guide-artifact-repository-administrators.html#access-enterprise-subscription).
 - Java version 23 or lower installed
 - Maven or Gradle configured on your system
 - Access to the Spring Maven Enterprise repository
