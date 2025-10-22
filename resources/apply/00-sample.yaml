@@ -14,10 +14,10 @@ spec:
       - http:
           # the name of the tar.gz here should make the workshop name
           url: "$(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain)/spring-enterprise-guides-sample.tar.gz"
-        #includePaths:
-        #- /workshop/**
-        #- /exercises/**
-        #- /README.md
+        includePaths:
+        - /workshop/**
+        - /exercises/**
+        - /README.md
   request:
     parameters:
     - name: USER_DOMAIN
