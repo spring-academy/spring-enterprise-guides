@@ -48,7 +48,43 @@ spec:
         enabled: true
       git:
         enabled: true
+    volumeMounts:
+    - name: binaries
+      mountPath: /opt/tanzu/bin
+    initContainers:
+    - name: download-app-advisor-cli
+      image: google/cloud-sdk:latest
+      imagePullPolicy: $(workshop_image_pull_policy)
+      command: ["/bin/bash"]
+      args:
+        - "-c"
+        - |
+          cd /opt/tanzu/bin
+          gcloud auth activate-service-account --key-file=/creds/bucket-reader
+          gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "${DESTINATION_FILE_NAME}.tar"
+          tar -xvf ${DESTINATION_FILE_NAME}.tar
+          mv cli-binary/advisor ${DESTINATION_FILE_NAME}
+          chmod 111 ${DESTINATION_FILE_NAME}
+          rm -rf ${DESTINATION_FILE_NAME}.tar cli-binary 
+      env:
+        - name: GCP_BUCKET_NAME
+          value: "academy-artifacts"
+        - name: SOURCE_FILE_NAME
+          value: "spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.5.0.tar"
+        - name: DESTINATION_FILE_NAME
+          value: "advisor"
+      volumeMounts:
+        - name: binaries
+          mountPath: /opt/tanzu/bin/
+        - name: gcp-key
+          readOnly: true
+          mountPath: /creds
     volumes:
+    - name: binaries
+      emptyDir: {}
+    - name: gcp-key
+      secret:
+        secretName: gcp
     - name: workshop-init-container-scripts
       secret:
         secretName: workshop-init-container-scripts
@@ -67,6 +103,21 @@ spec:
           mountPath: /opt/init-setup-scripts
   environment:
     objects:
+    - apiVersion: secrets.educates.dev/v1beta1
+      kind: SecretCopier
+      metadata:
+        name: $(workshop_namespace)-spring-enterprise-guides-gcp
+      spec:
+        rules:
+        - sourceSecret: 
+            name: gcp
+            namespace: spring-academy
+          targetSecret:
+            name: gcp
+          targetNamespaces:
+            nameSelector:
+              matchNames:
+              - spring-enterprise-guides-*
     - apiVersion: v1
       kind: Secret
       metadata:
