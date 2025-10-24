@@ -1,0 +1,16 @@
+{
+  "id": "spring-enterprise-guides-app-advisor-intro",
+  "slug": "app-advisor-intro",
+  "title": "Spring Application Advisor Introduction",
+  "status": "live",
+  "type": "lab",
+  "duration": 1800,
+  "entitlements": ["auth"],
+  "instructors": [],
+  "level": "beginner",
+  "topics": ["workshop", "enterprise", "app-advisor"],
+  "settings": {
+    "educates": "spring-enterprise-guides-app-advisor-intro",
+    "manualCompletion": true
+  }
+}

@@ -1,0 +1,1 @@
+A workshop that demonstrates how Spring Application Advisor can help you to continuously and incrementally upgrade Spring application dependencies, source code and configuration
