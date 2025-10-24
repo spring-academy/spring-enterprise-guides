@@ -50,7 +50,8 @@ spec:
         enabled: true
     volumeMounts:
     - name: binaries
-      mountPath: /opt/tanzu/bin
+      mountPath: /usr/local/bin/advisor
+      subPath: advisor
     initContainers:
     - name: download-app-advisor-cli
       image: google/cloud-sdk:latest
