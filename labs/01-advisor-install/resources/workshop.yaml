@@ -8,44 +8,35 @@ spec:
   difficulty: beginner
   duration: 30m
   vendor: Broadcom
+  publish:
+    image: "$(image_repository)/lab-new-workshop-files:$(workshop_version)"
   workshop:
-    image: jdk17-environment:*
+    image: "jdk17-environment:*"
     files:
-      - http:
-          # the name of the tar.gz here should make the workshop name
-          url: "$(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain)/spring-enterprise-guides-advisor-install.tar.gz"
-        #includePaths:
-        #- /workshop/**
-        #- /exercises/**
-        #- /README.md
-  request:
-    parameters:
-    - name: USER_DOMAIN
-      value: "unknown.domain"
-    - name: USER_EMAIL
-      value: "somebody@unknown.domain"
+    - image:
+        url: "$(image_repository)/lab-new-workshop-files:$(workshop_version)"
+      includePaths:
+      - /workshop/**
+      - /exercises/**
+      - /README.md
+
   session:
     namespaces:
-      security:
-        token:
-          # This wasn't being done before but should be so that workshop user
-          # cannot access the Educates cluster session namespace, which they don't need.
-          # See note below though about volume mount for token.
-          enabled: false
-    env:
-    - name: LAB_NUMBER
-      value: "2"
-    - name: WEBSERVER
-      value: "$(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain)"
-    - name: BOOTSTRAP_COMMAND
-      value: ":"
+      budget: medium
     applications:
       terminal:
         enabled: true
+        layout: split
       editor:
         enabled: true
-      git:
-        enabled: true
+      console:
+        enabled: false
+      docker:
+        enabled: false
+      registry:
+        enabled: false
+      vcluster:
+        enabled: false
     volumes:
     - name: workshop-init-container-scripts
       secret:
@@ -170,9 +161,9 @@ spec:
             containers:
             - name: files
               image: ghcr.io/spring-academy/spring-enterprise-guides:${VERSION}
-          volumes:
-          - name: binaries
-            emptyDir: {}
-          - name: gcp-key
-            secret:
-              secretName: gcp
+            volumes:
+            - name: binaries
+              emptyDir: {}
+            - name: gcp-key
+              secret:
+                secretName: gcp
