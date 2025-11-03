@@ -116,6 +116,16 @@ spec:
                     number: 80
               pathType: Prefix
               path: /
+        - host: packages.broadcom.com
+          http:
+            paths:
+            - backend:
+                service:
+                  name: $(workshop_namespace)-files
+                  port:
+                    number: 80
+              pathType: Prefix
+              path: /
     - apiVersion: apps/v1
       kind: Deployment
       metadata:
