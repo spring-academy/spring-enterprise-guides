@@ -11,7 +11,7 @@ This workshop runs in a **Linux-based environment**. All interactive commands an
 
 ## Prerequisites
 
-Before you begin, make sure you have:
+In this workshop, we have already set up the environment to contain all the pre-requisites you need to install and run Application Advisor.  If you are trying to replicate this lab in your own environment, you will need to make sure you have:
 
 - A Broadcom Artifactory token (stored in `ARTIFACTORY_TOKEN` environment variable), follow steps to retrieve the [Artifactory Token](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/guide-artifact-repository-administrators.html#access-enterprise-subscription).
 - Java version 23 or lower installed
@@ -38,6 +38,5 @@ This workshop is organized into the following sections:
 1. **Installing the CLI** - Get started with installing the Spring Application Advisor CLI
 2. **Using Spring Application Advisor** - Learn the core functionality and commands
 3. **Advanced Usage** - Explore advanced features and configuration options
-4. **Enabling Continuous Upgrades** - Set up automated upgrade workflows
-5. **Troubleshooting** - Common issues and their solutions
-6. **Next Steps** - Resources for continued learning
+4. **Troubleshooting** - Common issues and their solutions
+5. **Next Steps** - Resources for continued learning

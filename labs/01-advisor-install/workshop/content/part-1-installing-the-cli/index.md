@@ -1,13 +1,13 @@
 # Part 1: Installing the CLI
 
-In this section, you'll download and install the Spring Application Advisor CLI.
+In this section, you'll install the Spring Application Advisor CLI.  We'll be simulating the experience of downloading the CLI directly from the Spring Enterprise Repository.  In many environments organizations will mirror the Spring Enterprise Repository to your own internal Maven repository.  Access to the internal repository will depend on your organization's setup.  Contact your IT staff to determine your mirrored repository location and access credentials.
 
 ## Step 1: Set Your Artifactory Token
 
-First, ensure your Artifactory token is set as an environment variable:
+First, ensure your Artifactory token is set as an environment variable.  The token here is a sample and **WILL NOT** work with the Broadcom Spring Enterprise repository:
 
 ```copy-and-edit
-export ARTIFACTORY_TOKEN=your-token-here
+export ARTIFACTORY_TOKEN=eyJ2ZXIiOiIyIiw_EXAMPLE_TOKEN_nzQOKQc6A
 ```
 
 **For reference, on other platforms:**
@@ -27,7 +27,7 @@ set ARTIFACTORY_TOKEN=your-token-here
 Download the Spring Application Advisor CLI for Linux:
 
 ```execute
-curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.4.1/application-advisor-cli-linux-1.4.1.tar
+curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.0/application-advisor-cli-linux-1.5.0.tar
 ```
 
 Extract the CLI:
@@ -40,19 +40,19 @@ tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
 
 Windows:
 ```bash
-curl -L -H "Authorization: Bearer $env:ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-windows/1.4.1/application-advisor-cli-windows-1.4.1.tar
+curl -L -H "Authorization: Bearer $env:ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-windows/1.5.0/application-advisor-cli-windows-1.5.0.tar
 tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
 ```
 
 MacOS (Intel):
 ```bash
-curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos/1.4.1/application-advisor-cli-macos-1.4.1.tar
+curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos/1.5.0/application-advisor-cli-macos-1.5.0.tar
 tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
 ```
 
 MacOS (ARM64/Apple Silicon):
 ```bash
-curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos-arm64/1.4.1/application-advisor-cli-macos-arm64-1.4.1.tar
+curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos-arm64/1.5.0/application-advisor-cli-macos-arm64-1.5.0.tar
 tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
 ```
 
@@ -75,4 +75,4 @@ Commands:
 
 ## Step 4: Configure Maven Settings
 
-To enable Spring Application Advisor to download commercial recipes, you need to configure your Maven repositories correctly. Refer to the [official documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/spring-application-advisor/1-4/spring-app-advisor/recipes.html) for detailed configuration steps.
+To enable Spring Application Advisor to download commercial recipes, you need to configure your Maven repositories correctly. Refer to the [official documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/spring-application-advisor/1-5/spring-app-advisor/recipes.html) for detailed configuration steps.

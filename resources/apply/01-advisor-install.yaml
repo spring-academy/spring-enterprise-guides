@@ -74,7 +74,13 @@ spec:
           #!/bin/bash
           set -x
           set -eo pipefail
-          echo "Put commands here that need to be done in init container prior to workshop session"
+          MOCK_SERVER_IP=`getent hosts $(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain) | head -n 1 | cut -d' ' -f1`
+          if [ ! -z "$MOCK_SERVER_IP" ]; then
+            echo "# Workshop DNS override" | sudo tee -a /etc/hosts
+            echo "$MOCK_SERVER_IP packages.broadcom.com" | sudo tee -a /etc/hosts
+            echo "✅ DNS configured: packages.broadcom.com -> $MOCK_SERVER_IP"
+          else
+            echo "⚠️  Could not resolve mock server, using direct service name"
     - apiVersion: v1
       kind: Service
       metadata:
@@ -97,6 +103,7 @@ spec:
         tls:
         - hosts:
             - $(workshop_namespace)-files.$(ingress_domain)
+            - packages.broadcom.com
           secretName: $(ingress_secret)
         rules:
         - host: $(workshop_namespace)-files.$(ingress_domain)
@@ -127,6 +134,35 @@ spec:
             labels:
               deployment: files
           spec:
+            initContainers:
+            - name: download-app-advisor-tar
+              image: google/cloud-sdk:latest
+              imagePullPolicy: $(workshop_image_pull_policy)
+              command: ["/bin/bash"]
+              args:
+                - "-c"
+                - |
+                  mkdir -p /usr/share/nginx/html/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.0/
+                  cd /usr/share/nginx/html/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.0/
+                  gcloud auth activate-service-account --key-file=/creds/bucket-reader
+                  gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "application-advisor-cli-linux-1.5.0.tar"
+              env:
+                - name: GCP_BUCKET_NAME
+                  value: "academy-artifacts"
+                - name: SOURCE_FILE_NAME
+                  value: "spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.5.0.tar"
+              volumeMounts:
+                - name: binaries
+                  mountPath: /usr/share/nginx/html/artifactory
+                - name: gcp-key
+                  readOnly: true
+                  mountPath: /creds
             containers:
             - name: files
               image: ghcr.io/spring-academy/spring-enterprise-guides:${VERSION}
+          volumes:
+          - name: binaries
+            emptyDir: {}
+          - name: gcp-key
+            secret:
+              secretName: gcp

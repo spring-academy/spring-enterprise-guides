@@ -10,8 +10,7 @@ pathways:
       - part-1-installing-the-cli
       - part-2-using-spring-application-advisor
       - part-3-advanced-usage
-      - part-4-enabling-continuous-upgrades
-      - part-5-troubleshooting
+      - part-4-troubleshooting
       - 99-next-steps
 
 modules:
@@ -23,9 +22,7 @@ modules:
   title: Part 2 - Using Spring Application Advisor
 - name: part-3-advanced-usage
   title: Part 3 - Advanced Usage
-- name: part-4-enabling-continuous-upgrades
-  title: Part 4 - Enabling Continuous Upgrades
-- name: part-5-troubleshooting
+- name: part-4-troubleshooting
   title: Troubleshooting
 - name: 99-next-steps
   title: Next Steps

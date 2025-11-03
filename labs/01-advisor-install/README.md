@@ -19,9 +19,9 @@ The CLI supports two main commands:
 - [x] Setup initial project structure
 - [x] Test deployment to Spring Academy staging environment
 - [ ] Provide a known good sample project for use with advisor that won't require GitHub cloning (Maybe https://github.com/dashaun/spring-petclinic)?
-- [ ] Setup something like Dashaun's memory/CPU test scripts after each migration stage to show improvements from each leap forward.
-- [ ] Add in some kind of CVE reporting at each migration step
-- [ ] Separate CI/CD instructions into dedicated workshop
+- [ ] ~~Setup something like Dashaun's memory/CPU test scripts after each migration stage to show improvements from each leap forward.~~
+- [ ] ~~Add in some kind of CVE reporting at each migration step~~
+- [ ] ~~Separate CI/CD instructions into dedicated workshop~~
 - [ ] Modify lab to describe normal CLI download process with token
 - [ ] Add CLI binary to lab environment for token-free access
 - [ ] Final walkthrough/testing with team
