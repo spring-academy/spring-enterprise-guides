@@ -170,9 +170,9 @@ spec:
             containers:
             - name: files
               image: ghcr.io/spring-academy/spring-enterprise-guides:${VERSION}
-          volumes:
-          - name: binaries
-            emptyDir: {}
-          - name: gcp-key
-            secret:
-              secretName: gcp
+            volumes:
+            - name: binaries
+              emptyDir: {}
+            - name: gcp-key
+              secret:
+                secretName: gcp
