@@ -20,3 +20,6 @@ spec:
             - env:
               #@overlay/match by=overlay.subset({"name":"GCP_BUCKET_NAME"})
               - value: "academy-artifacts"
+            containers:
+            #@overlay/match by=overlay.subset({"name":"files"})
+            - image: ghcr.io/spring-academy/spring-enterprise-guides:${VERSION}

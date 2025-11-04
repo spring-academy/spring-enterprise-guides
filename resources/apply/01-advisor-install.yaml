@@ -148,7 +148,7 @@ spec:
                 mountPath: /creds
             containers:
             - name: files
-              image: ghcr.io/spring-academy/spring-enterprise-guides:v0.1.1-beta11
+              image: ghcr.io/spring-academy/spring-enterprise-guides:${VERSION}
               volumeMounts:
               - name: binaries
                 mountPath: /usr/share/nginx/html/artifactory
