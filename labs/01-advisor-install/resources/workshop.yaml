@@ -9,51 +9,52 @@ spec:
   duration: 30m
   vendor: Broadcom
   publish:
-    image: "$(image_repository)/lab-new-workshop-files:$(workshop_version)"
+    image: "$(image_repository)/spring-enterprise-guides-advisor-install:$(workshop_version)"
   workshop:
-    image: "jdk17-environment:*"
+    image: jdk17-environment:*
     files:
+      # - http:
+      #     # the name of the tar.gz here should make the workshop name
+      #     url: "$(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain)/spring-enterprise-guides-advisor-install.tar.gz"
     - image:
-        url: "$(image_repository)/lab-new-workshop-files:$(workshop_version)"
+        url: "$(image_repository)/spring-enterprise-guides-advisor-install:$(workshop_version)"
       includePaths:
       - /workshop/**
       - /exercises/**
       - /README.md
-
+  request:
+    parameters:
+    - name: USER_DOMAIN
+      value: "unknown.domain"
+    - name: USER_EMAIL
+      value: "somebody@unknown.domain"
   session:
     namespaces:
-      budget: medium
+      security:
+        token:
+          # This wasn't being done before but should be so that workshop user
+          # cannot access the Educates cluster session namespace, which they don't need.
+          # See note below though about volume mount for token.
+          enabled: false
+    env:
+    - name: LAB_NUMBER
+      value: "2"
+    - name: WEBSERVER
+      value: "$(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain)"
+    - name: BOOTSTRAP_COMMAND
+      value: ":"
     applications:
       terminal:
         enabled: true
-        layout: split
       editor:
         enabled: true
-      console:
-        enabled: false
-      docker:
-        enabled: false
-      registry:
-        enabled: false
-      vcluster:
-        enabled: false
+      git:
+        enabled: true
     volumes:
     - name: workshop-init-container-scripts
       secret:
         secretName: workshop-init-container-scripts
         defaultMode: 0755
-    patches:
-      initContainers:
-      - name: dns-setup
-        # Educates needs a $(base_environment_image) variable can use.
-        # For now hard wire to educates-base-environment image. Aim to
-        # change for Educates 2.6.0.
-        image: ghcr.io/vmware-tanzu-labs/educates-base-environment:2.5.2
-        # Execute setup script mounted from secret.
-        command: ["/opt/init-setup-scripts/setup.sh"]
-        volumeMounts:
-        - name: workshop-init-container-scripts
-          mountPath: /opt/init-setup-scripts
   environment:
     objects:
     - apiVersion: secrets.educates.dev/v1beta1
@@ -80,13 +81,7 @@ spec:
           #!/bin/bash
           set -x
           set -eo pipefail
-          MOCK_SERVER_IP=`getent hosts $(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain) | head -n 1 | cut -d' ' -f1`
-          if [ ! -z "$MOCK_SERVER_IP" ]; then
-            echo "# Workshop DNS override" | sudo tee -a /etc/hosts
-            echo "$MOCK_SERVER_IP packages.broadcom.com" | sudo tee -a /etc/hosts
-            echo "✅ DNS configured: packages.broadcom.com -> $MOCK_SERVER_IP"
-          else
-            echo "⚠️  Could not resolve mock server, using direct service name"
+          echo "Put commands here that need to be done in init container prior to workshop session"
     - apiVersion: v1
       kind: Service
       metadata:
@@ -109,20 +104,9 @@ spec:
         tls:
         - hosts:
             - $(workshop_namespace)-files.$(ingress_domain)
-            - packages.broadcom.com
           secretName: $(ingress_secret)
         rules:
         - host: $(workshop_namespace)-files.$(ingress_domain)
-          http:
-            paths:
-            - backend:
-                service:
-                  name: $(workshop_namespace)-files
-                  port:
-                    number: 80
-              pathType: Prefix
-              path: /
-        - host: packages.broadcom.com
           http:
             paths:
             - backend:
@@ -164,7 +148,7 @@ spec:
                   gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "application-advisor-cli-linux-1.5.0.tar"
               env:
                 - name: GCP_BUCKET_NAME
-                  value: "academy-artifacts"
+                  value: "advisor-dev"
                 - name: SOURCE_FILE_NAME
                   value: "spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.5.0.tar"
               volumeMounts:
@@ -175,7 +159,10 @@ spec:
                   mountPath: /creds
             containers:
             - name: files
-              image: ghcr.io/spring-academy/spring-enterprise-guides:${VERSION}
+              image: ghcr.io/spring-academy/spring-enterprise-guides:v0.1.1-beta11
+              volumeMounts:
+                - name: binaries
+                  mountPath: /usr/share/nginx/html/artifactory
             volumes:
             - name: binaries
               emptyDir: {}

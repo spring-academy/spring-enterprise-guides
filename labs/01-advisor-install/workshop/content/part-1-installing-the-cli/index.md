@@ -6,12 +6,13 @@ In this section, you'll install the Spring Application Advisor CLI.  We'll be si
 
 First, ensure your Artifactory token is set as an environment variable.  The token here is a sample and **WILL NOT** work with the Broadcom Spring Enterprise repository:
 
-```copy-and-edit
+```execute
 export ARTIFACTORY_TOKEN=eyJ2ZXIiOiIyIiw_EXAMPLE_TOKEN_nzQOKQc6A
 ```
 
-**For reference, on other platforms:**
-
+```section:begin
+title: Other Platform Examples
+```
 Windows (PowerShell):
 ```bash
 $env:ARTIFACTORY_TOKEN="your-token-here"
@@ -22,12 +23,15 @@ Windows (Command Prompt):
 set ARTIFACTORY_TOKEN=your-token-here
 ```
 
+```section:end
+```
+
 ## Step 2: Download and Install the CLI
 
-Download the Spring Application Advisor CLI for Linux:
+Download the Spring Application Advisor CLI for Linux.  In this example, the hostname we're using is internal to this workshop.  Normally you would use `https://packages.broadcom.com` as the hostname instead of `{{< param ingress_protocol >}}://{{< param workshop_namespace >}}-files.{{< param ingress_domain >}}`:
 
 ```execute
-curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.0/application-advisor-cli-linux-1.5.0.tar
+curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET {{< param ingress_protocol >}}://{{< param workshop_namespace >}}-files.{{< param ingress_domain >}}/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.0/application-advisor-cli-linux-1.5.0.tar
 ```
 
 Extract the CLI:
@@ -36,7 +40,9 @@ Extract the CLI:
 tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
 ```
 
-**For reference, on other platforms:**
+```section:begin
+title: Other Platform Examples
+```
 
 Windows:
 ```bash
@@ -56,6 +62,9 @@ curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET 
 tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
 ```
 
+```section:end
+```
+
 ## Step 3: Verify Installation
 
 Test that the CLI is working:
@@ -66,11 +75,15 @@ Test that the CLI is working:
 
 You should see the available commands listed:
 ```
-Usage: advisor [COMMAND]
+Usage: advisor [-v] [?] [COMMAND]
 Spring Application Advisor CLI
+  ?, -h, --help       Prints the help to understand the command options
+  -v, --version       Prints version of Spring Application Advisor CLI
 Commands:
-  build-config  Project build dependencies and tools
-  upgrade-plan  Retrieves or applies upgrade plan(s) to project
+  build-config  Generates or publishes build dependencies and tools
+  upgrade-plan  Generates or applies upgrade plan(s) to upgrade the repository code base with the latest versions of Spring components.
+  mapping       Generates the Maven artifacts that belong to a Git repository, which usually represents a project (e.g spring-boot).
+  advice        Generates or applies best practices to deploy Tanzu Spring applications.
 ```
 
 ## Step 4: Configure Maven Settings
