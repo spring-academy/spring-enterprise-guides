@@ -56,6 +56,21 @@ spec:
           mountPath: /opt/init-setup-scripts
   environment:
     objects:
+    - apiVersion: secrets.educates.dev/v1beta1
+      kind: SecretCopier
+      metadata:
+        name: $(workshop_namespace)-spring-enterprise-guides-gcp
+      spec:
+        rules:
+        - sourceSecret: 
+            name: gcp
+            namespace: spring-academy
+          targetSecret:
+            name: gcp
+          targetNamespaces:
+            nameSelector:
+              matchNames:
+              - spring-enterprise-guides-*
     - apiVersion: v1
       kind: Secret
       metadata:
