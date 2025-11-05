@@ -122,30 +122,30 @@ spec:
             labels:
               deployment: files
           spec:
-            # initContainers:
-            # - name: download-app-advisor-tar
-            #   image: google/cloud-sdk:latest
-            #   imagePullPolicy: $(workshop_image_pull_policy)
-            #   command:
-            #   - /bin/bash
-            #   args:
-            #   - -c
-            #   - |
-            #     mkdir -p /usr/share/nginx/html/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.0/
-            #     cd /usr/share/nginx/html/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.0/
-            #     gcloud auth activate-service-account --key-file=/creds/bucket-reader
-            #     gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "application-advisor-cli-linux-1.5.0.tar"
-            #   env:
-            #   - name: GCP_BUCKET_NAME
-            #     value: academy-artifacts
-            #   - name: SOURCE_FILE_NAME
-            #     value: spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.5.0.tar
-            #   volumeMounts:
-            #   - name: binaries
-            #     mountPath: /usr/share/nginx/html/artifactory
-            #   - name: gcp-key
-            #     readOnly: true
-            #     mountPath: /creds
+            initContainers:
+            - name: download-app-advisor-tar
+              image: google/cloud-sdk:latest
+              imagePullPolicy: $(workshop_image_pull_policy)
+              command:
+              - /bin/bash
+              args:
+              - -c
+              - |
+                mkdir -p /usr/share/nginx/html/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.0/
+                cd /usr/share/nginx/html/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.0/
+                gcloud auth activate-service-account --key-file=/creds/bucket-reader
+                gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "application-advisor-cli-linux-1.5.0.tar"
+              env:
+              - name: GCP_BUCKET_NAME
+                value: academy-artifacts
+              - name: SOURCE_FILE_NAME
+                value: spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.5.0.tar
+              volumeMounts:
+              - name: binaries
+                mountPath: /usr/share/nginx/html/artifactory
+              - name: gcp-key
+                readOnly: true
+                mountPath: /creds
             containers:
             - name: files
               image: ghcr.io/spring-academy/spring-enterprise-guides:${VERSION}
