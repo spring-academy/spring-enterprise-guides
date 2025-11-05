@@ -149,9 +149,9 @@ spec:
             containers:
             - name: files
               image: ghcr.io/spring-academy/spring-enterprise-guides:${VERSION}
-              # volumeMounts:
-              # - name: binaries
-              #   mountPath: /usr/share/nginx/html/artifactory
+              volumeMounts:
+              - name: binaries
+                mountPath: /usr/share/nginx/html/artifactory
             volumes:
             - name: binaries
               emptyDir: {}
