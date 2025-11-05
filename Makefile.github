@@ -1,7 +1,7 @@
 DIR_LAB               = lab
 NAME                  = spring-enterprise-guides
 IMAGE_SOURCE          = https://github.com/spring-academy/spring-enterprise-guides
-CONTAINER_REGISTRY    = ghcr.io/spring-academy
+CONTAINER_REGISTRY    = ghcr.io/spring-academy/
 CONTAINER_REPOSITORY  = spring-enterprise-guides
 version               = latest
 
