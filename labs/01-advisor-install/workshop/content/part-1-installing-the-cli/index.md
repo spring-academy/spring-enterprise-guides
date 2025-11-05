@@ -1,6 +1,8 @@
 # Part 1: Installing the CLI
 
-In this section, you'll install the Spring Application Advisor CLI.  We'll be simulating the experience of downloading the CLI directly from the Spring Enterprise Repository.  In many environments organizations will mirror the Spring Enterprise Repository to your own internal Maven repository.  Access to the internal repository will depend on your organization's setup.  Contact your IT staff to determine your mirrored repository location and access credentials.
+In this section, you'll install the Spring Application Advisor CLI.  We'll be simulating the experience of downloading the CLI directly from the Spring Enterprise Repository.  The commands you run below won't work against the real Broadcom Packages repository, but the same steps would apply once you get a real access token, and use the real `packages.broadcom.com` site.  
+
+Additionally, organizations might mirror the Spring Enterprise Repository to their own internal Maven repository.  Access to those internal repositories will depend on your organization's setup.  Contact your IT staff to determine if your organization mirrors the Broadcom Packages repository, your mirrored repository location, and access credentials.
 
 ## Step 1: Set Your Artifactory Token
 
@@ -34,32 +36,47 @@ Download the Spring Application Advisor CLI for Linux.  In this example, the hos
 curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET {{< param ingress_protocol >}}://{{< param workshop_namespace >}}-files.{{< param ingress_domain >}}/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.0/application-advisor-cli-linux-1.5.0.tar
 ```
 
-Extract the CLI:
+Next, let's put the advisor binary on the path so we can call it from anywhere.  In our environment, the user home directory `bin` folder is already added to the path.  You can see this by printing out the `$PATH` variable to the terminal:
 
 ```execute
-tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
+echo $PATH | grep /home/eduk8s/bin
+```
+
+Let's extract the downloaded archive to that `bin` directory so it's on our path:
+```execute
+tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C bin
 ```
 
 ```section:begin
 title: Other Platform Examples
 ```
 
-Windows:
+Windows (Powershell):
 ```bash
+echo $env:PATH
 curl -L -H "Authorization: Bearer $env:ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-windows/1.5.0/application-advisor-cli-windows-1.5.0.tar
-tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
+tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C <somewhere-on-your-path>
+```
+
+Windows (Command Prompt):
+```bash
+echo %PATH%
+curl -L -H "Authorization: Bearer $env:ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-windows/1.5.0/application-advisor-cli-windows-1.5.0.tar
+tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C <somewhere-on-your-path>
 ```
 
 MacOS (Intel):
 ```bash
+echo $PATH
 curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos/1.5.0/application-advisor-cli-macos-1.5.0.tar
-tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
+tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C <somewhere-on-your-path>
 ```
 
 MacOS (ARM64/Apple Silicon):
 ```bash
+echo $PATH
 curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos-arm64/1.5.0/application-advisor-cli-macos-arm64-1.5.0.tar
-tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
+tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C <somewhere-on-your-path>
 ```
 
 ```section:end
@@ -67,10 +84,10 @@ tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
 
 ## Step 3: Verify Installation
 
-Test that the CLI is working:
+Now we should be able to all the CLI to test that it is working:
 
 ```execute
-./advisor --help
+advisor --help
 ```
 
 You should see the available commands listed:
@@ -86,6 +103,4 @@ Commands:
   advice        Generates or applies best practices to deploy Tanzu Spring applications.
 ```
 
-## Step 4: Configure Maven Settings
-
-To enable Spring Application Advisor to download commercial recipes, you need to configure your Maven repositories correctly. Refer to the [official documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/spring-application-advisor/1-5/spring-app-advisor/recipes.html) for detailed configuration steps.
+Great!  You should now have the CLI installed.  Let's explore running Application Advisor against a sample application in the next section.
