@@ -1,4 +1,7 @@
-# Part 3: Advanced Usage
+---
+title: Advanced Usage
+---
+# Advanced Usage
 
 Learn how to customize Spring Application Advisor for your specific needs.
 

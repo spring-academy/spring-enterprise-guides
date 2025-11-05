@@ -1,4 +1,7 @@
-# Part 2: Using Spring Application Advisor
+---
+title: Using Spring Application Advisor
+---
+# Using Spring Application Advisor
 
 Now let's use the CLI to analyze and upgrade a Spring Boot project!
 

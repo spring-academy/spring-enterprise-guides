@@ -1,3 +1,6 @@
+---
+title: Troubleshooting
+---
 # Troubleshooting
 
 Common issues and their solutions when using Spring Application Advisor.

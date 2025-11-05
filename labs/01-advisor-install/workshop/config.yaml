@@ -17,11 +17,11 @@ modules:
 - name: 00-workshop-overview
   title: Workshop Overview
 - name: part-1-installing-the-cli
-  title: Part 1 - Installing the CLI
+  title: Installing the CLI
 - name: part-2-using-spring-application-advisor
-  title: Part 2 - Using Spring Application Advisor
+  title: Using Spring Application Advisor
 - name: part-3-advanced-usage
-  title: Part 3 - Advanced Usage
+  title: Advanced Usage
 - name: part-4-troubleshooting
   title: Troubleshooting
 - name: 99-next-steps

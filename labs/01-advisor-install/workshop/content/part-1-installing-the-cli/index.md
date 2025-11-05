@@ -1,4 +1,7 @@
-# Part 1: Installing the CLI
+---
+title: Installing the CLI
+---
+# Installing the CLI
 
 In this section, you'll install the Spring Application Advisor CLI.  We'll be simulating the experience of downloading the CLI directly from the Spring Enterprise Repository.  The commands you run below won't work against the real Broadcom Packages repository, but the same steps would apply once you get a real access token, and use the real `packages.broadcom.com` site.  
 
