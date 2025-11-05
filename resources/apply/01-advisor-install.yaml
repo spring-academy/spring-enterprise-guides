@@ -152,9 +152,9 @@ spec:
               # volumeMounts:
               # - name: binaries
               #   mountPath: /usr/share/nginx/html/artifactory
-            # volumes:
-            # - name: binaries
-            #   emptyDir: {}
-            # - name: gcp-key
-            #   secret:
-            #     secretName: gcp
+            volumes:
+            - name: binaries
+              emptyDir: {}
+            - name: gcp-key
+              secret:
+                secretName: gcp
