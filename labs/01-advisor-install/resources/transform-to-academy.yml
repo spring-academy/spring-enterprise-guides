@@ -8,7 +8,7 @@ spec:
     #@overlay/replace
     files:
     - http:
-        url: "$(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain)/spring-enterprise-guides-advisor-install.tar.gz"
+        url: "http://$(workshop_namespace)-files/spring-enterprise-guides-advisor-install.tar.gz"
   environment:
     objects:
     #@overlay/match by=overlay.subset({"kind":"Deployment","metadata":{"name":"$(workshop_namespace)-files"}})

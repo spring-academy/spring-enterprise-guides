@@ -15,7 +15,7 @@ spec:
     files:
       # - http:
       #     # the name of the tar.gz here should make the workshop name
-      #     url: "$(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain)/spring-enterprise-guides-advisor-install.tar.gz"
+      #     url: "http://$(workshop_namespace)-files/spring-enterprise-guides-advisor-install.tar.gz"
     - image:
         url: "$(image_repository)/spring-enterprise-guides-advisor-install:$(workshop_version)"
       includePaths:
@@ -40,7 +40,7 @@ spec:
     - name: LAB_NUMBER
       value: "2"
     - name: WEBSERVER
-      value: "$(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain)"
+      value: "http://$(workshop_namespace)-files"
     - name: BOOTSTRAP_COMMAND
       value: ":"
     applications:
@@ -95,27 +95,27 @@ spec:
           targetPort: 8080
         selector:
           deployment: files
-    - apiVersion: networking.k8s.io/v1
-      kind: Ingress
-      metadata:
-        name: $(workshop_namespace)-files
-        namespace: $(workshop_namespace)
-      spec:
-        tls:
-        - hosts:
-            - $(workshop_namespace)-files.$(ingress_domain)
-          secretName: $(ingress_secret)
-        rules:
-        - host: $(workshop_namespace)-files.$(ingress_domain)
-          http:
-            paths:
-            - backend:
-                service:
-                  name: $(workshop_namespace)-files
-                  port:
-                    number: 80
-              pathType: Prefix
-              path: /
+    # - apiVersion: networking.k8s.io/v1
+    #   kind: Ingress
+    #   metadata:
+    #     name: $(workshop_namespace)-files
+    #     namespace: $(workshop_namespace)
+    #   spec:
+    #     tls:
+    #     - hosts:
+    #         - $(workshop_namespace)-files.$(ingress_domain)
+    #       secretName: $(ingress_secret)
+    #     rules:
+    #     - host: $(workshop_namespace)-files.$(ingress_domain)
+    #       http:
+    #         paths:
+    #         - backend:
+    #             service:
+    #               name: $(workshop_namespace)-files
+    #               port:
+    #                 number: 80
+    #           pathType: Prefix
+    #           path: /
     - apiVersion: apps/v1
       kind: Deployment
       metadata:
@@ -146,11 +146,16 @@ spec:
                   cd /usr/share/nginx/html/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.0/
                   gcloud auth activate-service-account --key-file=/creds/bucket-reader
                   gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "application-advisor-cli-linux-1.5.0.tar"
+                  cd /usr/share/nginx/html
+                  gcloud storage cp "gs://${GCP_BUCKET_NAME}/${RECIPES_SOURCE_FILE_NAME}" "recipes.tgz"
+                  tar xzvf recipes.tgz -C /usr/share/nginx/html
               env:
                 - name: GCP_BUCKET_NAME
                   value: "advisor-dev"
                 - name: SOURCE_FILE_NAME
                   value: "spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.5.0.tar"
+                - name: RECIPES_SOURCE_FILE_NAME
+                  value: "spring/recipes/recipes.tgz"
               volumeMounts:
                 - name: binaries
                   mountPath: /usr/share/nginx/html/artifactory
@@ -169,3 +174,22 @@ spec:
             - name: gcp-key
               secret:
                 secretName: gcp
+    # - apiVersion: networking.k8s.io/v1
+    #   kind: NetworkPolicy
+    #   metadata:
+    #     name: default-deny-egress
+    #   spec:
+    #     podSelector:
+    #       matchLabels:
+    #         training.educates.dev/component: session
+    #         training.educates.dev/workshop.name: spring-enterprise-guides-advisor-install
+    #     policyTypes:
+    #     - Egress
+    #     egress:
+    #     - to:
+    #       - ipBlock:
+    #           cidr: 10.0.0.0/8 # Example: Your internal network CIDR
+    #       - ipBlock:
+    #           cidr: 172.16.0.0/12 # Example: Another internal network CIDR
+    #       - ipBlock:
+    #           cidr: 192.168.0.0/16 # Example: Yet another internal network CIDR
