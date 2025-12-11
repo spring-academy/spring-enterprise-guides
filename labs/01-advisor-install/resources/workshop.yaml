@@ -174,22 +174,87 @@ spec:
             - name: gcp-key
               secret:
                 secretName: gcp
-    # - apiVersion: networking.k8s.io/v1
-    #   kind: NetworkPolicy
-    #   metadata:
-    #     name: default-deny-egress
-    #   spec:
-    #     podSelector:
-    #       matchLabels:
-    #         training.educates.dev/component: session
-    #         training.educates.dev/workshop.name: spring-enterprise-guides-advisor-install
-    #     policyTypes:
-    #     - Egress
-    #     egress:
-    #     - to:
-    #       - ipBlock:
-    #           cidr: 10.0.0.0/8 # Example: Your internal network CIDR
-    #       - ipBlock:
-    #           cidr: 172.16.0.0/12 # Example: Another internal network CIDR
-    #       - ipBlock:
-    #           cidr: 192.168.0.0/16 # Example: Yet another internal network CIDR
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: Role
+      metadata:
+        name: network-policy-creator
+      rules:
+      - apiGroups: ["networking.k8s.io"]
+        resources: ["networkpolicies"]
+        verbs: ["create", "get", "update", "delete", "patch"]
+    - apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: network-policy-manager
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: network-policy-creator-binding
+      subjects:
+      - kind: ServiceAccount
+        name: network-policy-manager
+      roleRef:
+        kind: Role
+        name: network-policy-creator
+        apiGroup: rbac.authorization.k8s.io
+    - apiVersion: batch/v1
+      kind: Job
+      metadata:
+        name: replace-default-network-policy
+      spec:
+        ttlSecondsAfterFinished: 1000
+        template:
+          spec:
+            serviceAccountName: network-policy-manager
+            restartPolicy: Never
+            containers:
+            - name: deny-all-policy-updater
+              image: ghcr.io/vmware-tanzu-labs/educates-base-environment:latest
+              command: ["/bin/bash", "-c"]
+              args:
+              - |
+                kubectl -s https://kubernetes.default:443 --certificate-authority=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
+                  --token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token) \
+                  -n $(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace) \
+                  patch networkpolicy educates-network-policy --type=strategic \
+                  --patch '{"spec": {"egress": [], "policyTypes": ["Egress"]}}'
+              volumeMounts:
+              - name: sa-token-volume
+                mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+                readOnly: true
+            volumes:
+            - name: sa-token-volume
+              projected:
+                sources:
+                - serviceAccountToken:
+                    path: token
+                    expirationSeconds: 3600
+                - configMap:
+                    name: kube-root-ca.crt
+                    items:
+                    - key: ca.crt
+                      path: ca.crt
+                - downwardAPI:
+                    items:
+                    - path: namespace
+                      fieldRef:
+                        fieldPath: metadata.namespace
+    - apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      metadata:
+        name: educates-network-policy-egress-allow-private
+      spec:
+        podSelector:
+          matchLabels:
+            training.educates.dev/component: session
+            training.educates.dev/workshop.name: spring-enterprise-guides-advisor-install
+        policyTypes:
+        - Egress
+        egress:
+        - to:
+          - ipBlock:
+              cidr: 10.0.0.0/8 
+          - ipBlock:
+              cidr: 172.16.0.0/12
+          - ipBlock:
+              cidr: 192.168.0.0/16
