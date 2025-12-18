@@ -258,3 +258,17 @@ spec:
               cidr: 172.16.0.0/12
           - ipBlock:
               cidr: 192.168.0.0/16
+    - apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      metadata:
+        name: educates-network-policy-egress-allow-all
+      spec:
+        podSelector:
+          matchLabels:
+            deployment: files
+        policyTypes:
+        - Egress
+        egress:
+        - to:
+          - ipBlock:
+              cidr: 0.0.0.0/0
