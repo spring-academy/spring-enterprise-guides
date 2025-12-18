@@ -1,0 +1,25 @@
+#@ load("@ytt:overlay", "overlay")
+#@overlay/match by=overlay.all
+---
+spec:
+  #@overlay/remove
+  publish: 
+  workshop:
+    #@overlay/replace
+    files:
+    - http:
+        url: "http://$(workshop_namespace)-files/spring-enterprise-guides-advisor-install.tar.gz"
+  environment:
+    objects:
+    #@overlay/match by=overlay.subset({"kind":"Deployment","metadata":{"name":"$(workshop_namespace)-files"}})
+    - spec:
+        template:
+          spec:
+            initContainers:
+            #@overlay/match by=overlay.subset({"name":"download-app-advisor-tar"})
+            - env:
+              #@overlay/match by=overlay.subset({"name":"GCP_BUCKET_NAME"})
+              - value: "academy-artifacts"
+            containers:
+            #@overlay/match by=overlay.subset({"name":"files"})
+            - image: ghcr.io/spring-academy/spring-enterprise-guides:${VERSION}

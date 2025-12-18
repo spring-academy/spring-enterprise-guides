@@ -1,3 +1,6 @@
+---
+title: Next Steps
+---
 # Next Steps
 
 Congratulations on completing the Spring Application Advisor workshop! Here are some recommendations for continuing your journey.

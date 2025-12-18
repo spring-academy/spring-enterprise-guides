@@ -1,23 +1,31 @@
-# Part 2: Using Spring Application Advisor
+---
+title: Using Spring Application Advisor
+---
+# Using Spring Application Advisor
 
 Now let's use the CLI to analyze and upgrade a Spring Boot project!
 
-## Step 1: Navigate to Your Project
 
-Change to your Spring Boot project directory:
+## Step 1: Get a local copy of your Project source
 
-```copy-and-edit
-cd /path/to/your/spring-boot-project
+In our example, we're using Git to manage source for our project.  Git is not a strict requirement for advisor, it simply operates on whatever source code you give it.  Please check with your IT staff to learn how source code is managed in your organization.
+
+Let's clone our application (Spring Pet Clinic), and switch to a detached branch that still uses Spring Boot 2.7:
+```execute
+git clone https://github.com/spring-projects/spring-petclinic
+cd spring-petclinic
+git branch advisor-demo 9ecdc1111e3da388a750ace41a125287d9620534
+git checkout -f advisor-demo
 ```
 
-Make sure you're in the root directory of your project where your `pom.xml` (Maven) or `build.gradle` (Gradle) file is located.
+When you ran the above commands, the second command changed to the root directory of our sample project.  This directory is where your build configuration files (`pom.xml` for Maven or `build.gradle` for Gradle) are located.  This is important, because these files are used by Application Advisor to collect relevant information about your project.
 
 ## Step 2: Generate a Build Configuration
 
 The build configuration contains your dependency tree, Java version, and build tool versions:
 
 ```execute
-./advisor build-config get
+advisor build-config get
 ```
 
 You'll see output like:
@@ -41,34 +49,62 @@ The build configuration process examines:
 - **Build Tool Versions**: Your Maven or Gradle version and configuration
 
 ### Handling Errors
-
-If you see error messages, check the `.advisor/errors/` directory for detailed logs:
-
-```
-💔 Errors
-- $repo failed with the following message:
-  The maven command failed. You can find the error in .advisor/errors/${error-id}.log
-```
+You shouldn't see any errors in this lab.  However, running Application Advisor in your own environment will likely be vastly different from running in this controlled lab environment.  If you see error messages when you run advisor, you can always check the `.advisor/errors/` directory for detailed logs.
 
 ## Step 3: Generate an Upgrade Plan
 
 Create a step-by-step upgrade plan:
 
 ```execute
-./advisor upgrade-plan get
+advisor upgrade-plan get
 ```
 
 You'll see an upgrade plan similar to:
 
 ```
-Fetching details for upgrade plan:
-- Step 1:
-  * Upgrade Spring Boot from v2.6.1 to v2.7.x
-  * Upgrade Spring Framework from v3.5.1 to v4.0.x
-- Step 2:
-  * Upgrade Java from 8 to 11
-- Step 3:
-  * Upgrade Spring Boot from v2.7.1 to v3.0.x
+🏃 Fetching and processing upgrade plan details [00m 01s] ok
+ - Step 1:
+    * Upgrade java from 8 to 11
+ - Step 2:
+    * Upgrade java from 11 to 17
+ - Step 3:
+    * Upgrade hibernate-orm from 5.6.x to 6.1.x
+    * Upgrade spring-data-commons from 2.7.x to 3.0.x
+    * Upgrade spring-boot from 2.7.x to 3.0.x
+    * Upgrade spring-framework from 5.3.x to 6.0.x
+    * Upgrade spring-data-jpa from 2.7.x to 3.0.x
+    * Upgrade micrometer from 1.9.x to 1.10.x
+ - Step 4:
+    * Upgrade hibernate-orm from 6.1.x to 6.2.x
+    * Upgrade spring-data-commons from 3.0.x to 3.1.x
+    * Upgrade spring-boot from 3.0.x to 3.1.x
+    * Upgrade spring-data-jpa from 3.0.x to 3.1.x
+    * Upgrade micrometer from 1.10.x to 1.11.x
+ - Step 5:
+    * Upgrade hibernate-orm from 6.2.x to 6.4.x
+    * Upgrade spring-data-commons from 3.1.x to 3.2.x
+    * Upgrade spring-boot from 3.1.x to 3.2.x
+    * Upgrade spring-framework from 6.0.x to 6.1.x
+    * Upgrade spring-data-jpa from 3.1.x to 3.2.x
+    * Upgrade micrometer from 1.11.x to 1.12.x
+ - Step 6:
+    * Upgrade hibernate-orm from 6.4.x to 6.5.x
+    * Upgrade spring-data-commons from 3.2.x to 3.3.x
+    * Upgrade spring-boot from 3.2.x to 3.3.x
+    * Upgrade spring-data-jpa from 3.2.x to 3.3.x
+    * Upgrade micrometer from 1.12.x to 1.13.x
+ - Step 7:
+    * Upgrade hibernate-orm from 6.5.x to 6.6.x
+    * Upgrade spring-data-commons from 3.3.x to 3.4.x
+    * Upgrade spring-boot from 3.3.x to 3.4.x
+    * Upgrade spring-framework from 6.1.x to 6.2.x
+    * Upgrade spring-data-jpa from 3.3.x to 3.4.x
+    * Upgrade micrometer from 1.13.x to 1.14.x
+ - Step 8:
+    * Upgrade spring-data-commons from 3.4.x to 3.5.x
+    * Upgrade spring-boot from 3.4.x to 3.5.x
+    * Upgrade spring-data-jpa from 3.4.x to 3.5.x
+    * Upgrade micrometer from 1.14.x to 1.15.x
 ```
 
 ### Understanding the Upgrade Plan
@@ -84,10 +120,10 @@ The upgrade plan shows:
 Apply the upgrade plan locally:
 
 ```execute
-./advisor upgrade-plan apply
+advisor upgrade-plan apply
 ```
 
-This command will:
+This command will perform the step at the top of the list:
 
 1. Modify your source files with the necessary changes
 2. Update your build configuration files (`pom.xml` or `build.gradle`)
