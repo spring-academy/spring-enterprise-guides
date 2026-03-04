@@ -52,6 +52,9 @@ spec:
     - name: binaries
       mountPath: /usr/local/bin/advisor
       subPath: advisor
+    - name: recipes
+      mountPath: /home/eduk8s/.m2/repository/com/vmware
+      subPath: com/vmware
     initContainers:
     - name: download-app-advisor-cli
       image: google/cloud-sdk:latest
@@ -71,7 +74,7 @@ spec:
         - name: GCP_BUCKET_NAME
           value: "academy-artifacts"
         - name: SOURCE_FILE_NAME
-          value: "spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.5.0.tar"
+          value: "spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.5.3.tar"
         - name: DESTINATION_FILE_NAME
           value: "advisor"
       volumeMounts:
@@ -80,8 +83,37 @@ spec:
         - name: gcp-key
           readOnly: true
           mountPath: /creds
+    - name: download-app-advisor-recipes
+      image: google/cloud-sdk:latest
+      imagePullPolicy: $(workshop_image_pull_policy)
+      command: ["/bin/bash"]
+      args:
+        - "-c"
+        - |
+          cd /opt/tanzu/recipes/
+          gcloud auth activate-service-account --key-file=/creds/bucket-reader
+          gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "${DESTINATION_FILE_NAME}.tar"
+          tar -xvf ${DESTINATION_FILE_NAME}.tar
+          rm -rf ${DESTINATION_FILE_NAME}.tar
+      env:
+        - name: GCP_BUCKET_NAME
+          value: "academy-artifacts"
+        - name: SOURCE_FILE_NAME
+          value: "spring/artifacts/application-advisor-recipes-1.5.3.tar"
+        - name: DESTINATION_FILE_NAME
+          value: "application-advisor-recipes"
+      volumeMounts:
+        - name: binaries
+          mountPath: /opt/tanzu/bin/
+        - name: recipes
+          mountPath: /opt/tanzu/recipes/
+        - name: gcp-key
+          readOnly: true
+          mountPath: /creds
     volumes:
     - name: binaries
+      emptyDir: {}
+    - name: recipes
       emptyDir: {}
     - name: gcp-key
       secret:
