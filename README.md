@@ -7,5 +7,5 @@ This repository contains the [Spring Enterprise](spring.academy/guides) guides c
 ```
 export ARTIFACTORY_USER="my-email@company.com"
 export ARTIFACTORY_PASS="my-api-token"
-./package_artifacts.sh
+./package-saa-recipes.sh
 ```
