@@ -99,7 +99,7 @@ spec:
         - name: GCP_BUCKET_NAME
           value: "academy-artifacts"
         - name: SOURCE_FILE_NAME
-          value: "spring/artifacts/application-advisor-recipes-1.5.5.tar"
+          value: "spring/maven/application-advisor-recipes.tar"
         - name: DESTINATION_FILE_NAME
           value: "application-advisor-recipes"
       volumeMounts:
