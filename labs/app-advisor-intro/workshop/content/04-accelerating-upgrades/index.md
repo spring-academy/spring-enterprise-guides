@@ -32,40 +32,20 @@ First, let's check what the current upgrade plan looks like.
 advisor build-config get && advisor upgrade-plan get
 ```
 
-You should see multiple remaining steps (3.1 to 3.2, 3.2 to 3.3, etc.). Instead of executing them one by one, let's **squash 2 steps** into one, which will combine the 3.1->3.2 and 3.2->3.3 upgrades.
+You should see multiple remaining steps (3.1 to 3.2, 3.2 to 3.3, etc.). Instead of executing them one by one, let's **squash 3 steps** into one, which will combine the 3.1->3.2, 3.2->3.3, and 3.3->3.4 upgrades.
 ```execute
-advisor upgrade-plan apply --squash=2 --after-upgrade-cmd=spring-javaformat:apply
+advisor upgrade-plan apply --squash=3 --after-upgrade-cmd=spring-javaformat:apply
 ```
 
-Notice how *Application Advisor* combined two upgrade steps and applied all the necessary recipe changes at once. Let's verify the changes and commit them.
+Notice how *Application Advisor* combined three upgrade steps and applied all the necessary recipe changes at once. Let's verify the changes and commit them.
 ```execute
 git --no-pager diff --stat
 ```
 
 ```terminal:execute
 description: Commit and push the squashed upgrade
-command: git add . && git commit -m "Upgrading Spring Boot 3.1 to 3.3 (squashed)" && git push
+command: git add . && git commit -m "Upgrading Spring Boot 3.1 to 3.4 (squashed)" && git push
 session: 1
-```
-
-#### Completing the remaining upgrades
-
-Let's continue with the remaining upgrade steps to get to Spring Boot 3.5.
-
-##### Upgrade Spring Boot from 3.3 to 3.4
-```execute
-advisor build-config get && advisor upgrade-plan get && advisor upgrade-plan apply --after-upgrade-cmd=spring-javaformat:apply
-```
-
-```terminal:execute
-description: Commit and push changes
-command: git add . && git commit -m "Upgrading Spring Boot 3.3 to 3.4" && git push
-session: 1
-```
-
-##### Upgrade Spring Boot from 3.4 to 3.5
-```execute
-advisor build-config get && advisor upgrade-plan get && advisor upgrade-plan apply --after-upgrade-cmd=spring-javaformat:apply
 ```
 
 Let's verify the application still runs correctly after all the upgrades.
@@ -79,13 +59,6 @@ url: {{< param  ingress_protocol >}}://petclinic-{{< param  session_name >}}.{{<
 
 ```terminal:interrupt
 session: 2
-```
-
-Commit and push the changes.
-```terminal:execute
-description: Commit and push changes
-command: git add . && git commit -m "Upgrading Spring Boot 3.4 to 3.5" && git push
-session: 1
 ```
 
 #### Handling dependency conflicts with `--accept-no-alignment`
