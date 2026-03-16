@@ -8,7 +8,7 @@
   "entitlements": ["auth"],
   "instructors": [],
   "level": "beginner",
-  "topics": ["workshop", "enterprise", "spring", "spring-ai"],
+  "topics": ["workshop", "spring-enterprise", "spring-product-app-advisor", "ai"],
   "settings": {
     "educates": "spring-enterprise-guides-spring-ai-intro",
     "manualCompletion": true
