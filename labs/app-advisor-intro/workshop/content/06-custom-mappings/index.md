@@ -10,21 +10,24 @@ By default, *Application Advisor* prevents upgrading applications when it encoun
 
 Let's add the [htmx-spring-boot](https://github.com/wimdeblauwe/htmx-spring-boot) library to our project. This is an open-source library that integrates htmx with Spring Boot.
 
-Add the following dependency to the `pom.xml`:
-```editor:open-file
-file: ~/spring-petclinic/pom.xml
-description: Open POM to add htmx-spring-boot dependency
-line: 1
-```
-
 ```editor:select-matching-text
 file: ~/spring-petclinic/pom.xml
 text: "</dependencies>"
+description: Add htmx-spring-boot dependency to POM
+before: 0
+after: 0
+cascade: true
 ```
-
-Add the dependency just before the closing `</dependencies>` tag:
-```execute
-cd ~/spring-petclinic && sed -i 's|</dependencies>|    <dependency>\n      <groupId>io.github.wimdeblauwe</groupId>\n      <artifactId>htmx-spring-boot</artifactId>\n      <version>4.0.0</version>\n    </dependency>\n  </dependencies>|' pom.xml
+```editor:replace-text-selection
+file: ~/spring-petclinic/pom.xml
+hidden: true
+text: |2
+          <dependency>
+              <groupId>io.github.wimdeblauwe</groupId>
+              <artifactId>htmx-spring-boot</artifactId>
+              <version>4.0.0</version>
+          </dependency>
+      </dependencies>
 ```
 
 Now let's see what happens when we try to get the upgrade plan.
@@ -36,7 +39,10 @@ advisor build-config get && advisor upgrade-plan get
 
 #### Forcing an upgrade with `--force`
 
-The `--force` flag forces execution of the upgrade plan including intermediate dependencies, even when some libraries block the upgrade. Let's try it.
+The `--force` flag forces execution of the upgrade plan including intermediate dependencies, even when some libraries block the upgrade. Let's commit our changes and try it.
+```execute
+git add pom.xml && git commit -m "Add htmx-spring-boot dependency to POM"
+```
 ```execute
 advisor upgrade-plan apply --force --after-upgrade-cmd=spring-javaformat:apply
 ```

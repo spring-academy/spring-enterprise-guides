@@ -17,15 +17,13 @@ Let's explore the available recipes for upgrading Spring. You can run any of the
 
 For example, to upgrade to a specific Spring Boot version, you would run:
 ```execute
-./mvnw -U org.openrewrite.maven:rewrite-maven-plugin:run \
-  -Drewrite.recipeArtifactCoordinates=com.vmware.tanzu.spring:rewrite-recipe-bom:1.5.4 \
-  -Drewrite.activeRecipes=com.vmware.tanzu.spring.recipes.boot5.SpringBootProperties_3_5
+./mvnw -B org.openrewrite.maven:rewrite-maven-plugin:run -Drewrite.recipeArtifactCoordinates=com.vmware.tanzu.spring.recipes:spring-boot-3-upgrade-recipes:1.5.5 -Drewrite.activeRecipes=com.vmware.tanzu.spring.recipes.boot35.UpgradeSpringBoot_3_5
 ```
 
 This command:
 1. Uses the OpenRewrite Maven plugin directly (no Application Advisor CLI needed)
 2. Resolves the recipe artifact from your configured Maven repositories
-3. Runs the specific `SpringBootProperties_3_5` recipe that updates deprecated properties
+3. Runs the specific `UpgradeSpringBoot_3_5` recipe for the main upgrade to Spring Boot 3.5.x 
 
 Let's check if any changes were applied.
 ```execute
@@ -39,10 +37,9 @@ git checkout .
 
 #### Design principles of Spring commercial recipes
 
-The Spring commercial recipes follow important design principles:
-- **No duplication of steps**: Recipes do not repeat steps that were already performed by previous upgrade recipes
-- **No upgrading downstream projects**: The recipe to upgrade to Spring Boot 3.1 does not include the recipe to upgrade to 3.0 -- it assumes 3.0 is already applied
-- **Focused scope**: Each recipe targets a specific version upgrade or best practice
+Commercial Spring Recipes follow a couple of design principles that are different from the OSS Spring recipes:
+- Recipes do not perform steps to upgrade previous steps. For instance, the recipe to upgrade to Spring Boot 3.1.x does not invoke the recipe to upgrade to Spring Boot 3.0.x. 
+- Recipes do not upgrade downstream projects. The Spring Framework recipes do not upgrade Spring Security.
 
 This is why *Application Advisor* is the recommended approach for most use cases -- it correctly sequences and orchestrates the recipes for you.
 
