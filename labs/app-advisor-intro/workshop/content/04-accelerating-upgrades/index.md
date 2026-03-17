@@ -23,7 +23,7 @@ session: 1
 
 #### Squashing multiple upgrade steps with `--squash`
 
-So far, we have been running one upgrade step at a time. For minor version upgrades, this can be tedious when you are several versions behind. The `--squash` flag allows you to **combine multiple upgrade steps into a single step**.
+So far, we have been running one upgrade step at a time. This is **by design and recommended** — upgrading incrementally lets you follow the changes introduced by each specific version and reduces the cognitive load of reviewing and understanding what changed. However, if you are several minor versions behind and want to move faster, the `--squash` flag allows you to **combine multiple upgrade steps into a single step**.
 
 The `--squash=<N>` option takes a number that specifies how many steps of the original upgrade plan should be squashed together as the first step. Let's see this in action.
 
