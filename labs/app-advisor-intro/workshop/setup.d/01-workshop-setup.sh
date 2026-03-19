@@ -20,5 +20,15 @@ export sdkman_auto_answer=true
 sdk install java 17.0.18-librca || true
 sdk install java 11.0.30-librca || tru
 
+# 5. Make sample code repository available on local git server
 mkdir -p /opt/git/repositories
 (cd /opt/git/repositories && git clone --bare https://github.com/timosalm/spring-petclinic-2.7 spring-petclinic && echo ".advisor" >> .gitignore)
+
+# 6. Add sample corporate starters to local maven cache
+git clone https://github.com/timosalm/saa-corporate-starter-sample
+cd saa-corporate-starter-sample
+git checkout 1.0.0 &&./mvnw install
+git checkout 2.0.0 && ./mvnw install
+git checkout 3.0.0 &&./mvnw install
+cd ..
+rm rf saa-corporate-starter-sample

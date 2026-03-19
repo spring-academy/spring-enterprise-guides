@@ -58,7 +58,7 @@ Throughout this workshop, we performed the following upgrades:
 4. **Spring Boot 3.0 to 3.1** -- Step-by-step minor upgrade with `--debug`
 5. **Spring Boot 3.1 to 3.3** -- Using `--squash=2` to combine two steps
 6. **Spring Boot 3.3 to 3.5** -- Completing the remaining minor upgrades
-7. **Added htmx-spring-boot** -- Learned custom mappings and `--force` for handling unmapped libraries
+7. **Added corporate-starter** -- Learned custom mappings and `--force` for handling unmapped libraries
 8. **Spring Boot 3.5 to 4.0** -- The final major upgrade
 
 Each step was handled automatically by *Spring Application Advisor*, from simple dependency version bumps to complex API migrations and namespace changes.

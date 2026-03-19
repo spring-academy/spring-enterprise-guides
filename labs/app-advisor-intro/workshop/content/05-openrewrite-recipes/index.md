@@ -27,7 +27,7 @@ This command:
 
 Let's check if any changes were applied.
 ```execute
-git --no-pager diff --stat
+git --no-pager diff
 ```
 
 If changes were made, you can review and revert them since this was just a demonstration.
