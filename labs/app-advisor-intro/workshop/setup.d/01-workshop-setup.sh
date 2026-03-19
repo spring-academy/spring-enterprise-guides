@@ -31,4 +31,4 @@ git checkout 1.0.0 &&./mvnw install
 git checkout 2.0.0 && ./mvnw install
 git checkout 3.0.0 &&./mvnw install
 cd ..
-rm rf saa-corporate-starter-sample
+rm -rf saa-corporate-starter-sample
