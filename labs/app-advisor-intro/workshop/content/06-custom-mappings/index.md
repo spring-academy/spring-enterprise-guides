@@ -47,7 +47,7 @@ git add pom.xml && git commit -m "Add corporate-starter dependency to POM"
 advisor upgrade-plan apply --force --after-upgrade-cmd=spring-javaformat:apply
 ```
 
-The upgrade succeeds for the core Spring projects, but notice the warning: *Application Advisor* might produce a **partial upgrade**. If we check the `pom.xml`, we'll see that `corporate-starter` is still at version **4.0.0** -- it was not upgraded because there are no mappings telling *Application Advisor* which version is compatible with the new Spring Boot version.
+The upgrade succeeds for the core Spring projects, but notice the warning: *Application Advisor* might produce a **partial upgrade**. If we check the `pom.xml`, we'll see that `corporate-starter` is still at version **1.0.0** -- it was not upgraded because there are no mappings telling *Application Advisor* which version is compatible with the new Spring Boot version.
 
 ```execute
 grep -A 3 "corporate-starter" pom.xml
