@@ -18,7 +18,7 @@ advisor upgrade-plan apply --after-upgrade-cmd=spring-javaformat:apply
 
 Let's review the changes that *Application Advisor* has made for this major version upgrade.
 ```execute
-git --no-pager diff --stat
+git --no-pager diff
 ```
 
 ```editor:execute-command

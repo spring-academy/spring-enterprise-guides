@@ -8,10 +8,15 @@ Now that we have completed the major Spring Boot 2.7 to 3.0 upgrade, the remaini
 
 By adding the `--debug` option to `advisor build-config get` and `advisor upgrade-plan apply`, we can get a better understanding of what's happening underneath -- for example, which OpenRewrite recipes are being applied.
 ```terminal:execute
-command: |
-  advisor build-config get --debug
-  advisor upgrade-plan get
-  advisor upgrade-plan apply --after-upgrade-cmd=spring-javaformat:apply --debug
+command: advisor build-config get --debug 
+cascade: true
+```
+```terminal:execute
+command: advisor upgrade-plan get
+cascade: true
+```
+```terminal:execute
+command: advisor upgrade-plan apply --after-upgrade-cmd=spring-javaformat:apply --debug
 ```
 
 After reviewing the changes, **commit and push them**.
@@ -39,7 +44,7 @@ advisor upgrade-plan apply --squash=3 --after-upgrade-cmd=spring-javaformat:appl
 
 Notice how *Application Advisor* combined three upgrade steps and applied all the necessary recipe changes at once. Let's verify the changes and commit them.
 ```execute
-git --no-pager diff --stat
+git --no-pager diff
 ```
 
 ```terminal:execute
