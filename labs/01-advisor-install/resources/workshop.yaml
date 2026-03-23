@@ -148,6 +148,7 @@ spec:
                   gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "application-advisor-cli-linux-1.5.0.tar"
                   cd /usr/share/nginx/html
                   gcloud storage cp "gs://${GCP_BUCKET_NAME}/${RECIPES_SOURCE_FILE_NAME}" "recipes.tgz"
+                  mkdir -p /usr/share/nginx/html/artifactory/tanzu-maven/com/vmware
                   tar -xvf recipes.tgz -C /usr/share/nginx/html/artifactory/tanzu-maven/com/vmware
               env:
                 - name: GCP_BUCKET_NAME
