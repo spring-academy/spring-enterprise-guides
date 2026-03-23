@@ -110,18 +110,18 @@ spec:
               args:
               - -c
               - |
-                mkdir -p /usr/share/nginx/html/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.5/
-                cd /usr/share/nginx/html/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.5/
+                mkdir -p /usr/share/nginx/html/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.6/
+                cd /usr/share/nginx/html/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.6/
                 gcloud auth activate-service-account --key-file=/creds/bucket-reader
-                gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "application-advisor-cli-linux-1.5.5.tar"
+                gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "application-advisor-cli-linux-1.5.6.tar"
                 cd /usr/share/nginx/html
                 gcloud storage cp "gs://${GCP_BUCKET_NAME}/${RECIPES_SOURCE_FILE_NAME}" "recipes.tar"
-                tar xvf recipes.tar -C /usr/share/nginx/html/artifactory/tanzu-maven/com/vmware
+                tar -xvf recipes.tar -C /usr/share/nginx/html/artifactory/tanzu-maven/com/vmware
               env:
               - name: GCP_BUCKET_NAME
                 value: academy-artifacts
               - name: SOURCE_FILE_NAME
-                value: spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.5.5.tar
+                value: spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.5.6.tar
               - name: RECIPES_SOURCE_FILE_NAME
                 value: spring/maven/application-advisor-recipes.tar
               volumeMounts:

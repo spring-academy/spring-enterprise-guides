@@ -5,5 +5,5 @@ mkdir -p $HOME/bin
 
 # Extract test application for verification step
 echo "Extracting test application"
-tar xzf /home/eduk8s/workshop/content/hello-spring-boot-1-5.tgz -C $HOME/
+tar -xzf /home/eduk8s/workshop/content/hello-spring-boot-1-5.tgz -C $HOME/
 rm /home/eduk8s/workshop/content/hello-spring-boot-1-5.tgz
