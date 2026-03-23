@@ -117,7 +117,7 @@ spec:
                 mkdir -p /usr/share/nginx/html/artifactory/tanzu-maven/com/vmware
                 cd /usr/share/nginx/html/artifactory/tanzu-maven/com/vmware
                 gcloud storage cp "gs://${GCP_BUCKET_NAME}/${RECIPES_SOURCE_FILE_NAME}" "recipes.tar"
-                tar -xvf recipes.tar
+                #tar -xvf recipes.tar
               env:
               - name: GCP_BUCKET_NAME
                 value: academy-artifacts
