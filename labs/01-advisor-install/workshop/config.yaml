@@ -3,26 +3,23 @@ pathways:
 
   paths:
     workshop:
-      title: "Spring Application Advisor Workshop"
+      title: "Spring Application Advisor Installation Workshop"
 
       steps:
       - 00-workshop-overview
       - part-1-installing-the-cli
-      - part-2-using-spring-application-advisor
-      - part-3-advanced-usage
+      - part-2-configure-maven
+      - part-3-next-steps
       - part-4-troubleshooting
-      - 99-next-steps
 
 modules:
 - name: 00-workshop-overview
   title: Workshop Overview
 - name: part-1-installing-the-cli
   title: Installing the CLI
-- name: part-2-using-spring-application-advisor
-  title: Using Spring Application Advisor
-- name: part-3-advanced-usage
-  title: Advanced Usage
+- name: part-2-configure-maven
+  title: Configure Maven for Enterprise Recipes
+- name: part-3-next-steps
+  title: Next Steps
 - name: part-4-troubleshooting
   title: Troubleshooting
-- name: 99-next-steps
-  title: Next Steps
