@@ -114,10 +114,10 @@ spec:
                 cd /usr/share/nginx/html/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.5/
                 gcloud auth activate-service-account --key-file=/creds/bucket-reader
                 gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "application-advisor-cli-linux-1.5.5.tar"
-                cd /usr/share/nginx/html
-                gcloud storage cp "gs://${GCP_BUCKET_NAME}/${RECIPES_SOURCE_FILE_NAME}" "recipes.tar"
                 mkdir -p /usr/share/nginx/html/artifactory/tanzu-maven/com/vmware
-                #tar -xvf recipes.tar -C /usr/share/nginx/html/artifactory/tanzu-maven/com/vmware
+                cd /usr/share/nginx/html/artifactory/tanzu-maven/com/vmware
+                gcloud storage cp "gs://${GCP_BUCKET_NAME}/${RECIPES_SOURCE_FILE_NAME}" "recipes.tar"
+                tar -xvf recipes.tar
               env:
               - name: GCP_BUCKET_NAME
                 value: academy-artifacts
