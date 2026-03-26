@@ -26,13 +26,86 @@ cat > ~/.m2/settings.xml << 'EOF'
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                               http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <mirrors>
+    <mirror>
+      <id>mirror-central</id>
+      <mirrorOf>central</mirrorOf>
+      <url>http://{{< param workshop_namespace >}}-reposilite/central</url>
+      <blocked>false</blocked>
+    </mirror>
+    <mirror>
+      <id>mirror-spring-enterprise</id>
+      <mirrorOf>spring-enterprise-subscription</mirrorOf>
+      <url>http://{{< param workshop_namespace >}}-reposilite/spring-enterprise</url>
+      <blocked>false</blocked>
+    </mirror>
+  </mirrors>
+
+  <activeProfiles>
+    <activeProfile>org-profile</activeProfile>
+  </activeProfiles>
+
+  <profiles>
+    <profile>
+        <id>org-profile</id>
+        <repositories>
+          <repository>
+            <id>spring-enterprise-subscription</id>
+            <url>https://packages.broadcom.com/artifactory/spring-enterprise</url>
+          </repository>
+          <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2/</url>
+            <releases>
+              <enabled>true</enabled>
+            </releases>
+            <snapshots>
+              <enabled>true</enabled>
+            </snapshots>
+          </repository>
+        </repositories>
+    </profile>
+  </profiles>
+  <servers>
+    <!--
+    <server>
+      <id>mirror-spring-enterprise</id>
+      <username>USERNAME</username>
+      <password>PWD</password>
+    </server>
+    <server>
+      <id>mirror-central</id>
+      <username>USERNAME</username>
+      <password>PWD</password>
+    </server>
+    -->
+    <server>
+      <id>spring-enterprise-subscription</id>
+      <username>broadcom-support-user</username>
+      <password>broadcom-registry-token</password>
+    </server>
+  </servers>
+</settings>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                              http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <mirrors>
+    <mirror>
+      <id>tanzu-maven-mirror</id>
+      <mirrorOf>tanzu-maven</id>
+      <url>http://{{< param workshop_namespace >}}-reposilite/artifactory/tanzu-maven</url>
+      <!-- This setting is needed due to the mirror being http and not https-->
+      <blocked>false</blocked>
+    </mirror>
+  </mirrors>
   <profiles>
     <profile>
       <id>tanzu-spring</id>
       <repositories>
         <repository>
           <id>tanzu-maven</id>
-          <url>http://{{< param workshop_namespace >}}-files/artifactory/tanzu-maven</url>
+          <url>https://packages.broadcom.com/artifactory/spring-enterprise</url>
         </repository>
       </repositories>
     </profile>
@@ -40,6 +113,19 @@ cat > ~/.m2/settings.xml << 'EOF'
   <activeProfiles>
     <activeProfile>tanzu-spring</activeProfile>
   </activeProfiles>
+  <!-- This section is needed for any authentication info you might need to pass -->
+  <servers>
+    <server>
+      <id>tanzu-maven-mirror</id>
+      <username>internal-mirror-username</username>
+      <password>internal-mirror-password</password>
+    </server>
+    <server>
+      <id>tanzu-maven</id>
+      <username>your.broadcom.support.portal@email.com</username>
+      <password>YOUR_BROADCOM_SUPPORT_PORTAL_REGISTRY_TOKEN</password>
+    </server>
+  </servers>
 </settings>
 EOF
 ```

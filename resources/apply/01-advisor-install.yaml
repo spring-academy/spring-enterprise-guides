@@ -73,6 +73,119 @@ spec:
     - apiVersion: v1
       kind: Service
       metadata:
+        name: $(workshop_namespace)-reposilite
+        namespace: $(workshop_namespace)
+      spec:
+        type: ClusterIP
+        ports:
+        - port: 80
+          protocol: TCP
+          targetPort: 8080
+        selector:
+          deployment: reposilite
+    - apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: reposilite-config
+        namespace: $(workshop_namespace)
+      data:
+        shared.configuration.json: |
+          {
+            "maven": {
+              "repositories": [
+                {
+                  "id": "spring-enterprise",
+                  "visibility": "PUBLIC",
+                  "redeployment": false,
+                  "preserveSnapshots": false
+                },
+                {
+                  "id": "central",
+                  "visibility": "PUBLIC",
+                  "proxied": [
+                    {
+                      "reference": "https://repo.maven.apache.org/maven2/",
+                      "store": true
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+    - apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: $(workshop_namespace)-reposilite
+        namespace: $(workshop_namespace)
+      spec:
+        serviceAccountName: $(service_account)
+        replicas: 1
+        selector:
+          matchLabels:
+            deployment: reposilite
+        strategy:
+          type: Recreate
+        template:
+          metadata:
+            labels:
+              deployment: reposilite
+          spec:
+            initContainers:
+            - name: download-repo-tars
+              image: google/cloud-sdk:latest
+              imagePullPolicy: $(workshop_image_pull_policy)
+              command:
+              - /bin/bash
+              args:
+              - -c
+              - |
+                mkdir -p ${SPRING_ENTERPRISE_REPO_PATH}${ADVISOR_PATH_IN_REPO}
+                cd ${SPRING_ENTERPRISE_REPO_PATH}${ADVISOR_PATH_IN_REPO}
+                gcloud auth activate-service-account --key-file=/creds/bucket-reader
+                gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "application-advisor-cli-linux-1.5.5.tar"
+                cd ${SPRING_ENTERPRISE_REPO_PATH}
+                gcloud storage cp "gs://${GCP_BUCKET_NAME}/${RECIPES_SOURCE_FILE_NAME}" "recipes.tar"
+                tar -xvf recipes.tar
+              env:
+              - name: GCP_BUCKET_NAME
+                value: academy-artifacts
+              - name: SOURCE_FILE_NAME
+                value: spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.5.5.tar
+              - name: RECIPES_SOURCE_FILE_NAME
+                value: spring/maven/application-advisor-recipes.tar
+              - name: SPRING_ENTERPRISE_REPO_PATH
+                value: /app/data/repositories/spring-enterprise
+              - name: ADVISOR_PATH_IN_REPO
+                value: /com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.5
+              volumeMounts:
+              - name: data
+                mountPath: /app/data
+              - name: gcp-key
+                readOnly: true
+                mountPath: /creds
+            containers:
+            - name: reposilite
+              image: dzikoysk/reposilite:3.5
+              env:
+              - name: REPOSILITE_OPTS
+                value: --shared-configuration=/app/shared.configuration.json
+              volumeMounts:
+              - name: data
+                mountPath: /app/data
+              - name: config
+                mountPath: /app
+            volumes:
+            - name: data
+              emptyDir: {}
+            - name: gcp-key
+              secret:
+                secretName: gcp
+            - name: config
+              configMap:
+                name: reposilite-config
+    - apiVersion: v1
+      kind: Service
+      metadata:
         name: $(workshop_namespace)-files
         namespace: $(workshop_namespace)
       spec:
@@ -100,49 +213,9 @@ spec:
           metadata:
             labels:
               deployment: files
-          spec:
-            initContainers:
-            - name: download-app-advisor-tar
-              image: google/cloud-sdk:latest
-              imagePullPolicy: $(workshop_image_pull_policy)
-              command:
-              - /bin/bash
-              args:
-              - -c
-              - |
-                mkdir -p /usr/share/nginx/html/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.5/
-                cd /usr/share/nginx/html/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.5/
-                gcloud auth activate-service-account --key-file=/creds/bucket-reader
-                gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "application-advisor-cli-linux-1.5.5.tar"
-                mkdir -p /usr/share/nginx/html/artifactory/tanzu-maven
-                cd /usr/share/nginx/html/artifactory/tanzu-maven
-                gcloud storage cp "gs://${GCP_BUCKET_NAME}/${RECIPES_SOURCE_FILE_NAME}" "recipes.tar"
-                tar -xvf recipes.tar
-              env:
-              - name: GCP_BUCKET_NAME
-                value: academy-artifacts
-              - name: SOURCE_FILE_NAME
-                value: spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.5.5.tar
-              - name: RECIPES_SOURCE_FILE_NAME
-                value: spring/maven/application-advisor-recipes.tar
-              volumeMounts:
-              - name: binaries
-                mountPath: /usr/share/nginx/html/artifactory
-              - name: gcp-key
-                readOnly: true
-                mountPath: /creds
             containers:
             - name: files
               image: ghcr.io/spring-academy/spring-enterprise-guides:${VERSION}
-              volumeMounts:
-              - name: binaries
-                mountPath: /usr/share/nginx/html/artifactory
-            volumes:
-            - name: binaries
-              emptyDir: {}
-            - name: gcp-key
-              secret:
-                secretName: gcp
     - apiVersion: rbac.authorization.k8s.io/v1
       kind: Role
       metadata:
@@ -242,8 +315,8 @@ spec:
         name: educates-network-policy-egress-allow-all
       spec:
         podSelector:
-          matchLabels:
-            deployment: files
+          matchExpressions:
+            - {key: deployment, operator: In, values: [files,reposilite]}
         policyTypes:
         - Egress
         egress:
