@@ -20,3 +20,5 @@
 .envrc*
 .vscode
 build
+spring-repo-mirror
+spring-recipes-offline.tar

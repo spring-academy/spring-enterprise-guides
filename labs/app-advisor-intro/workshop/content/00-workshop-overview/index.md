@@ -2,7 +2,7 @@
 title: Introducing Spring Application Advisor
 ---
 
-**Spring Application Advisor** [(Docs)](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/spring-application-advisor/1-2/spring-app-advisor/what-is-app-advisor.html) is a *VMware Tanzu Spring* capability for continuously and incrementally upgrading Spring dependencies in all your Git repositories.
+**Spring Application Advisor** [(Docs)](https://techdocs.broadcom.com/tnz-spring-app-advisor) is a *VMware Tanzu Spring* capability for continuously and incrementally upgrading Spring dependencies in all your Git repositories.
 
 Spring Application Advisor detects if there is a new version available for upgrading your Spring dependencies, and automatically applies necessary changes in your build configuration and Java files with the help of **OpenRewrite**.
 
@@ -16,7 +16,7 @@ To make those changes available for review, *Spring Application Advisor* is able
 
 [OpenRewrite](https://openrewrite.org/) is an automated refactoring ecosystem for source code, enabling developers to effectively eliminate technical debt within their repositories at scale.
 
-It consists of an auto-refactoring engine that runs prepackaged, refactoring recipes for common framework migrations, security fixes, and stylistic consistency tasks – reducing your coding effort from hours or days to minutes. Build tool plugins like the OpenRewrite Gradle plugin and the OpenRewrite Maven plugin help you run these recipes on one repository at a time.
+It consists of an auto-refactoring engine that runs prepackaged, refactoring recipes for common framework migrations, security fixes, and stylistic consistency tasks -- reducing your coding effort from hours or days to minutes. Build tool plugins like the OpenRewrite Gradle plugin and the OpenRewrite Maven plugin help you run these recipes on one repository at a time.
 
 In addition to the recipes available as open-source, *Spring Application Advisor* also has access to our commercial recipes built with the expertise of the Spring team.
 
@@ -29,4 +29,13 @@ The native CLI is responsible for:
 - Running the refactors that apply the corresponding dependency version changes and Java API upgrades, if needed, using the *OpenRewrite* recipes
 - (Optional) Creating pull requests with the refactors
 
-It is assumed that the **CLI is integrated into the CI/CD pipeline**, so that the Git repositories are continuously analyzed and upgraded to the next version, if necessary. 
+It is assumed that the **CLI is integrated into the CI/CD pipeline**, so that the Git repositories are continuously analyzed and upgraded to the next version, if necessary.
+
+#### What you will learn in this workshop
+
+In this workshop, you will:
+- Upgrade a Spring Boot 2.7 application all the way to **Spring Boot 4** step by step
+- Use **advanced flags** like `--squash` and `--force` to accelerate upgrades
+- Run **commercial OpenRewrite recipes directly** using the Maven plugin
+- Set up **custom upgrade mappings** for shared internal libraries
+- Learn how to integrate *Spring Application Advisor* into your **CI/CD pipelines**

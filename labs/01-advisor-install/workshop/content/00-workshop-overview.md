@@ -1,9 +1,9 @@
 ---
 title: Workshop Overview
 ---
-# Spring Application Advisor Workshop
+# Spring Application Advisor Installation Workshop
 
-Welcome! In this workshop, you'll learn how to install and use the Spring Application Advisor CLI to upgrade your Spring Boot applications.
+Welcome! In this workshop, you'll learn how to install the Spring Application Advisor CLI and configure your environment to access the commercial upgrade recipes.
 
 ## Workshop Environment
 
@@ -11,12 +11,11 @@ This workshop runs in a **Linux-based environment**. All interactive commands an
 
 ## Prerequisites
 
-Before you begin, make sure you have:
+In this workshop, we have already set up the environment to contain all the pre-requisites you need to install and run Application Advisor. If you are trying to replicate this lab in your own environment, you will need to make sure you have:
 
-- A Broadcom Artifactory token (stored in `ARTIFACTORY_TOKEN` environment variable)
+- A Broadcom Artifactory token (stored in `ARTIFACTORY_TOKEN` environment variable), follow steps to retrieve the [Artifactory Token](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/guide-artifact-repository-administrators.html#access-enterprise-subscription)
 - Java version 23 or lower installed
-- Maven or Gradle configured on your system
-- Access to the Spring Maven Enterprise repository
+- Maven configured on your system
 
 ## What is Spring Application Advisor?
 
@@ -26,18 +25,15 @@ Spring Application Advisor is a native CLI tool that helps you upgrade Spring ap
 - Creating step-by-step upgrade plans
 - Applying upgrades automatically while preserving your code style
 
-The CLI supports two main commands:
-
-- `build-config` - Analyzes project build dependencies and tools
-- `upgrade-plan` - Retrieves or applies upgrade plans to your project
+The CLI uses commercial OpenRewrite recipes to perform the actual code transformations. These recipes are built and maintained by the Spring team at Broadcom.
 
 ## Workshop Structure
 
 This workshop is organized into the following sections:
 
-1. **Installing the CLI** - Get started with installing the Spring Application Advisor CLI
-2. **Using Spring Application Advisor** - Learn the core functionality and commands
-3. **Advanced Usage** - Explore advanced features and configuration options
-4. **Enabling Continuous Upgrades** - Set up automated upgrade workflows
-5. **Troubleshooting** - Common issues and their solutions
-6. **Next Steps** - Resources for continued learning
+1. **Installing the CLI** - Download and install the Spring Application Advisor CLI
+2. **Configure Maven for Enterprise Recipes** - Set up access to the commercial recipe repository and verify the installation
+3. **Next Steps** - Resources for continued learning
+4. **Troubleshooting** - Common installation issues and their solutions
+
+After completing this workshop, you'll have a fully functional Spring Application Advisor installation ready to upgrade your Spring applications. For hands-on experience with actual application upgrades, continue with the **Spring Application Advisor Introduction** workshop.

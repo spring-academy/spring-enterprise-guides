@@ -1,0 +1,16 @@
+{
+  "id": "spring-enterprise-guides-spring-ai-intro",
+  "slug": "spring-ai-intro",
+  "title": "Spring AI Introduction",
+  "status": "unlisted",
+  "type": "lab",
+  "duration": 1800,
+  "entitlements": ["auth"],
+  "instructors": [],
+  "level": "beginner",
+  "topics": ["workshop", "spring-enterprise", "spring-product-app-advisor", "ai"],
+  "settings": {
+    "educates": "spring-enterprise-guides-spring-ai-intro",
+    "manualCompletion": true
+  }
+}
