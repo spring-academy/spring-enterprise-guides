@@ -22,21 +22,23 @@ In this section, we'll configure Maven to use the Spring Enterprise directly fro
 
 Let's create a shell for our Maven settings file:
 
-```editor:create-file
+```editor:append-lines-to-file
 file: ~/.m2/settings.xml
 text: |
     <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                               http://maven.apache.org/xsd/settings-1.0.0.xsd">
-    <!-- Blank Maven settings.xml file-->
+    
     </settings>
 ```
 
 Next, we'll create a new "profile" that allows us to define some respositories we can apply to tools that use Maven like Application Advisor.  We're going to define one for the Spring Enterprise repo hosted at Broadcom, and one for the standard Maven Central repository that maven normally uses.
-```editor:replace-matching-text
+
+```editor:append-lines-after-match
 file: ~/.m2/settings.xml
-match: "<!-- Blank Maven settings.xml file-->"
+match: |
+    http://maven.apache.org/xsd/settings-1.0.0.xsd">
 text: |
 
       <profiles>
@@ -60,13 +62,13 @@ text: |
           </repositories>
         </profile>
       </profiles>
-      <!-- Servers Section for Credentials -->
 ```
 
 Great!  At this point, we have the pointer to the Spring Enterprise repository, but we need a way to pass in our credentials to access this protected respository.  For that, we'll add a new "servers" section below our profile.  Notice the "id" that the server entry uses exactly matches the "id" for the repository in our profile.  This is how Maven knows to use these credentials for access.
-```editor:replace-matching-text
+
+```editor:append-lines-after-match
 file: ~/.m2/settings.xml
-match: "<!-- Servers Section for Credentials -->"
+match: "</profiles>"
 text: |
 
       <servers>
@@ -79,6 +81,7 @@ text: |
 ```
 
 We've added a profile and credentials, but we need to tell Maven to actually use these settings.  Maven has some very sophisticated ways to enable profiles based on rules and conditions.  But in our case, we're going to take the simple approach and just tell Maven to make our profile always active.
+
 ```editor:append-lines-after-match
 file: ~/.m2/settings.xml
 match: |
@@ -91,9 +94,11 @@ text: |
 ```
 
 Now, if the machine you are running Advisor on is able to reach the internet, you would be able to test things out.  However, like many enterprises, in our lab environment we are required to use a governed mirror of Maven repositories.  So how do we deal with that?  Thankfully, Maven supports configuring **Mirror** respositories.  Let's add a mirror configuration to our settings.  We need one for Maven Central, and one for our Mirror of the Spring Enterprise repositories.
-```editor:replace-matching-text
+
+```editor:append-lines-after-match
 file: ~/.m2/settings.xml
-match: "<!-- Servers Section for Credentials -->"
+match: |
+    http://maven.apache.org/xsd/settings-1.0.0.xsd">
 text: |
       <mirrors>
         <mirror>
