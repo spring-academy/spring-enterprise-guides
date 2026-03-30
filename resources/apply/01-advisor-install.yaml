@@ -166,6 +166,9 @@ spec:
             containers:
             - name: reposilite
               image: dzikoysk/reposilite:3.5
+              ports:
+              - name: http
+                containerPort: 8080
               env:
               - name: REPOSILITE_OPTS
                 value: --shared-configuration=/config/shared.configuration.json
