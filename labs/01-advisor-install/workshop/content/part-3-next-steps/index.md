@@ -56,3 +56,5 @@ In this workshop, you learned how to:
 3. **Verify the installation** - Run a test upgrade to confirm everything works
 
 You're now ready to start upgrading your Spring applications!
+
+The next session is optional and covers some common troubleshooting topics.

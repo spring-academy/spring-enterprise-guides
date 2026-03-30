@@ -33,10 +33,10 @@ set ARTIFACTORY_TOKEN=your-token-here
 
 ## Step 2: Download and Install the CLI
 
-Download the Spring Application Advisor CLI for Linux.  In this example, the hostname we're using is internal to this workshop.  Normally you would use `https://packages.broadcom.com` as the hostname instead of `{{< param ingress_protocol >}}://{{< param workshop_namespace >}}-files.{{< param ingress_domain >}}`:
+Download the Spring Application Advisor CLI for Linux.  In this example, the hostname we're using is internal to this workshop.  If you were downloading the Advisor CLI yourself you would use `https://packages.broadcom.com` as the hostname instead of `http://{{< param workshop_namespace >}}-reposilite`:
 
 ```execute
-curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET http://{{< param workshop_namespace >}}-files/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.5/application-advisor-cli-linux-1.5.5.tar
+curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET http://{{< param workshop_namespace >}}-reposilite/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.5/application-advisor-cli-linux-1.5.5.tar
 ```
 
 Next, let's put the advisor binary on the path so we can call it from anywhere.  In our environment, the user home directory `bin` folder is already added to the path.  You can see this by printing out the `$PATH` variable to the terminal:
