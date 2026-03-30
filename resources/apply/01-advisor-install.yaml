@@ -214,6 +214,7 @@ spec:
           metadata:
             labels:
               deployment: files
+          spec:
             containers:
             - name: files
               image: ghcr.io/spring-academy/spring-enterprise-guides:${VERSION}
