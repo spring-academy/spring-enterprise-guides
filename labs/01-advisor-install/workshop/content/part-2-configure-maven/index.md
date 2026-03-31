@@ -33,7 +33,7 @@ text: |
     </settings>
 ```
 
-Next, we'll create a new "profile" that allows us to define some respositories we can apply to tools that use Maven like Application Advisor.  We're going to define one for the Spring Enterprise repo hosted at Broadcom, and one for the standard Maven Central repository that maven normally uses.
+Next, we'll create a new "profile" that allows us to define a respository we can apply to tools that use Maven like Application Advisor.  We're going to define one for the Spring Enterprise repo hosted at Broadcom.
 
 ```editor:append-lines-after-match
 file: ~/.m2/settings.xml
@@ -48,16 +48,6 @@ text: |
             <repository>
               <id>spring-enterprise-subscription</id>
               <url>https://packages.broadcom.com/artifactory/spring-enterprise</url>
-            </repository>
-            <repository>
-              <id>central</id>
-              <url>https://repo.maven.apache.org/maven2/</url>
-              <releases>
-                <enabled>true</enabled>
-              </releases>
-              <snapshots>
-                <enabled>true</enabled>
-              </snapshots>
             </repository>
           </repositories>
         </profile>
@@ -93,25 +83,47 @@ text: |
       </activeProfiles>
 ```
 
-Now, if the machine you are running Advisor on is able to reach the internet, you would be able to test things out.  However, like many enterprises, in our lab environment we are required to use a governed mirror of Maven repositories.  So how do we deal with that?  Thankfully, Maven supports configuring **Mirror** respositories.  Let's add a mirror configuration to our settings.  We need one for Maven Central, and one for our Mirror of the Spring Enterprise repositories.
+Now, if the machine you are running Advisor on is able to reach the internet, you would be able to test things out.  However, like many enterprises, in our lab environment we are required to use a governed mirror of various Maven repositories.  So how do we deal with that?  Thankfully, Maven supports configuring **Mirror** respositories.  Let's add a mirror configuration to our settings.  We need one for Maven Central, one for our Mirror of the Spring Enterprise repositories, and a few more for various respositories that the Advisor CLI needs to pull from.
 
 ```editor:append-lines-after-match
 file: ~/.m2/settings.xml
 match: |
     http://maven.apache.org/xsd/settings-1.0.0.xsd">
 text: |
+
       <mirrors>
         <mirror>
           <id>mirror-central</id>
           <mirrorOf>central</mirrorOf>
-          <url>http://{{< param workshop_namespace >}}-reposilite/central</url>
+          <url>http://spring-enterprise-guides-w29-reposilite/central</url>
           <!-- Need the following if your mirror is using HTTP instead of HTTP/S-->
           <blocked>false</blocked>
         </mirror>
         <mirror>
           <id>mirror-spring-enterprise</id>
           <mirrorOf>spring-enterprise-subscription</mirrorOf>
-          <url>http://{{< param workshop_namespace >}}-reposilite/spring-enterprise</url>
+          <url>http://spring-enterprise-guides-w29-reposilite/spring-enterprise</url>
+          <!-- Need the following if your mirror is using HTTP instead of HTTP/S-->
+          <blocked>false</blocked>
+        </mirror>
+        <mirror>
+          <id>mirror-spring-snapshot</id>
+          <mirrorOf>spring-snapshot</mirrorOf>
+          <url>http://spring-enterprise-guides-w26-reposilite/spring-snapshot</url>
+          <!-- Need the following if your mirror is using HTTP instead of HTTP/S-->
+          <blocked>false</blocked>
+        </mirror>
+        <mirror>
+          <id>mirror-gradle</id>
+          <mirrorOf>gradle</mirrorOf>
+          <url>http://spring-enterprise-guides-w26-reposilite/gradle</url>
+          <!-- Need the following if your mirror is using HTTP instead of HTTP/S-->
+          <blocked>false</blocked>
+        </mirror>
+        <mirror>
+          <id>mirror-rewrite-build-plugins</id>
+          <mirrorOf>rewrite-build-plugins</mirrorOf>
+          <url>http://spring-enterprise-guides-w26-reposilite/rewrite-build-plugins</url>
           <!-- Need the following if your mirror is using HTTP instead of HTTP/S-->
           <blocked>false</blocked>
         </mirror>
