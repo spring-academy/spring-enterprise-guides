@@ -135,7 +135,7 @@ This is a simple Spring Boot 1.5 application - perfect for testing that everythi
 First, let's see what version of Spring Boot it's currently using:
 
 ```execute
-grep -A1 '<parent>' pom.xml | head -5
+grep -A5 '<parent>' pom.xml
 ```
 
 Now, generate the build configuration:
