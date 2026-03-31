@@ -95,35 +95,35 @@ text: |
         <mirror>
           <id>mirror-central</id>
           <mirrorOf>central</mirrorOf>
-          <url>http://spring-enterprise-guides-w29-reposilite/central</url>
+          <url>http://{{< param workshop_namespace >}}-reposilite/central</url>
           <!-- Need the following if your mirror is using HTTP instead of HTTP/S-->
           <blocked>false</blocked>
         </mirror>
         <mirror>
           <id>mirror-spring-enterprise</id>
           <mirrorOf>spring-enterprise-subscription</mirrorOf>
-          <url>http://spring-enterprise-guides-w29-reposilite/spring-enterprise</url>
+          <url>http://{{< param workshop_namespace >}}-reposilite/spring-enterprise</url>
           <!-- Need the following if your mirror is using HTTP instead of HTTP/S-->
           <blocked>false</blocked>
         </mirror>
         <mirror>
           <id>mirror-spring-snapshot</id>
           <mirrorOf>spring-snapshot</mirrorOf>
-          <url>http://spring-enterprise-guides-w26-reposilite/spring-snapshot</url>
+          <url>http://{{< param workshop_namespace >}}-reposilite/spring-snapshot</url>
           <!-- Need the following if your mirror is using HTTP instead of HTTP/S-->
           <blocked>false</blocked>
         </mirror>
         <mirror>
           <id>mirror-gradle</id>
           <mirrorOf>gradle</mirrorOf>
-          <url>http://spring-enterprise-guides-w26-reposilite/gradle</url>
+          <url>http://{{< param workshop_namespace >}}-reposilite/gradle</url>
           <!-- Need the following if your mirror is using HTTP instead of HTTP/S-->
           <blocked>false</blocked>
         </mirror>
         <mirror>
           <id>mirror-rewrite-build-plugins</id>
           <mirrorOf>rewrite-build-plugins</mirrorOf>
-          <url>http://spring-enterprise-guides-w26-reposilite/rewrite-build-plugins</url>
+          <url>http://{{< param workshop_namespace >}}-reposilite/rewrite-build-plugins</url>
           <!-- Need the following if your mirror is using HTTP instead of HTTP/S-->
           <blocked>false</blocked>
         </mirror>
@@ -180,7 +180,7 @@ If this command completes successfully, it means:
 Let's verify the upgrade was applied:
 
 ```execute
-grep -A1 '<parent>' pom.xml | head -5
+grep -A5 '<parent>' pom.xml
 ```
 
 You should see the Spring Boot version has been upgraded.
