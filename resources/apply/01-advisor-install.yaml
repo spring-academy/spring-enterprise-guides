@@ -121,6 +121,26 @@ spec:
                       "store": true
                     }
                   ]
+                },
+                {
+                  "id": "gradle",
+                  "visibility": "PUBLIC",
+                  "proxied": [
+                    {
+                      "reference": "https://repo.gradle.org/gradle/libs-releases",
+                      "store": true
+                    }
+                  ]
+                },
+                {
+                  "id": "spring-snapshot",
+                  "visibility": "PUBLIC",
+                  "proxied": [
+                    {
+                      "reference": "https://central.sonatype.com/repository/maven-snapshots",
+                      "store": true
+                    }
+                  ]
                 }
               ]
             }
