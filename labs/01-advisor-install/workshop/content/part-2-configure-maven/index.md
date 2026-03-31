@@ -127,6 +127,12 @@ text: |
           <!-- Need the following if your mirror is using HTTP instead of HTTP/S-->
           <blocked>false</blocked>
         </mirror>
+        <mirror>
+          <id>mirror-sonatype-nexus-snapshots</id>
+          <mirrorOf>sonatype-nexus-snapshots</mirrorOf>
+          <url>http://{{< param workshop_namespace >}}-reposilite/sonatype-nexus-snapshots</url>
+          <blocked>false</blocked>
+        </mirror>
       </mirrors>
 ```
 
