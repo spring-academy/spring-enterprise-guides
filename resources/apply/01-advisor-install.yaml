@@ -111,6 +111,16 @@ spec:
                       "store": true
                     }
                   ]
+                },
+                {
+                  "id": "spring-snapshot",
+                  "visibility": "PUBLIC",
+                  "proxied": [
+                    {
+                      "reference": "https://repo.spring.io/snapshot",
+                      "store": true
+                    }
+                  ]
                 }
               ]
             }
