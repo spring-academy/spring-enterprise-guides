@@ -133,7 +133,7 @@ spec:
                   ]
                 },
                 {
-                  "id": "spring-snapshot",
+                  "id": "rewrite-build-plugins",
                   "visibility": "PUBLIC",
                   "proxied": [
                     {
