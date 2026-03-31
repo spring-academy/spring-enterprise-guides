@@ -36,10 +36,11 @@ spec:
     applications:
       terminal:
         enabled: true
+        layout: split
       editor:
         enabled: true
       git:
-        enabled: true
+        enabled: false
     volumes:
     - name: workshop-init-container-scripts
       secret:
