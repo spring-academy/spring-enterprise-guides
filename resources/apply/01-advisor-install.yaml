@@ -24,6 +24,8 @@ spec:
       security:
         token:
           enabled: false
+    resources:
+      memory: 4Gi
     env:
     - name: LAB_NUMBER
       value: "2"
