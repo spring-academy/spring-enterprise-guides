@@ -33,7 +33,7 @@ Here are the key commands you've learned:
 # Download and install the CLI
 curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" \
   -o advisor-cli.tar \
-  https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.5/application-advisor-cli-linux-1.5.5.tar
+  https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.6/application-advisor-cli-linux-1.5.6.tar
 
 # Extract to a directory on your PATH
 tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C ~/bin
