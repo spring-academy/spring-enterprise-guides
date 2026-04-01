@@ -24,6 +24,18 @@ spec:
       security:
         token:
           enabled: false
+    patches:
+      hostAliases:
+      - ip: "0.0.0.0"
+        hostnames:
+        - "repo.maven.apache.org"
+        - "packages.broadcom.com"
+        - "oss.sonatype.org"
+        - "repository.ow2.org"
+        - "repository.apache.org"
+        - "repo.spring.io"
+        - "repo.gradle.org"
+        - "central.sonatype.com"
     resources:
       memory: 4Gi
     env:
@@ -73,16 +85,6 @@ spec:
           set -x
           set -eo pipefail
           echo "Put commands here that need to be done in init container prior to workshop session"
-          cat >> /etc/hosts << 'EOF'
-          0.0.0.0 repo.maven.apache.org
-          0.0.0.0 packages.broadcom.com
-          0.0.0.0 oss.sonatype.org
-          0.0.0.0 repository.ow2.org
-          0.0.0.0 repository.apache.org
-          0.0.0.0 repo.spring.io
-          0.0.0.0 repo.gradle.org
-          0.0.0.0 central.sonatype.com
-          EOF
     - apiVersion: v1
       kind: Service
       metadata:
