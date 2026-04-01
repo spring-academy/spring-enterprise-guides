@@ -24,18 +24,6 @@ spec:
       security:
         token:
           enabled: false
-    patches:
-      hostAliases:
-      - ip: "0.0.0.0"
-        hostnames:
-        - "repo.maven.apache.org"
-        - "packages.broadcom.com"
-        - "oss.sonatype.org"
-        - "repository.ow2.org"
-        - "repository.apache.org"
-        - "repo.spring.io"
-        - "repo.gradle.org"
-        - "central.sonatype.com"
     resources:
       memory: 4Gi
     env:
