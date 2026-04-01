@@ -1,0 +1,9 @@
+DIR_LAB               = lab
+NAME                  = spring-enterprise-guides
+IMAGE_SOURCE          = https://github.com/spring-academy/spring-enterprise-guides
+CONTAINER_REGISTRY    = 
+CONTAINER_REPOSITORY  = spring-enterprise-guides
+version               = latest
+
+env                   = local
+ARTIFACT_NAME         = spring-enterprise-guides-${version}
