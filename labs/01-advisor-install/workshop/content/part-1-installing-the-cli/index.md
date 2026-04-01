@@ -36,7 +36,7 @@ set ARTIFACTORY_TOKEN=your-token-here
 Download the Spring Application Advisor CLI for Linux.  In this example, the hostname we're using is internal to this workshop.  If you were downloading the Advisor CLI yourself you would use `https://packages.broadcom.com` as the hostname instead of `http://{{< param workshop_namespace >}}-reposilite`:
 
 ```execute
-curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET http://{{< param workshop_namespace >}}-reposilite/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.6/application-advisor-cli-linux-1.5.6.tar
+curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET http://{{< param workshop_namespace >}}-reposilite/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.5/application-advisor-cli-linux-1.5.5.tar
 ```
 
 Next, let's put the advisor binary on the path so we can call it from anywhere.  In our environment, the user home directory `bin` folder is already added to the path.  You can see this by printing out the `$PATH` variable to the terminal:
@@ -57,28 +57,28 @@ title: Other Platform Examples
 Windows (Powershell):
 ```bash
 echo $env:PATH
-curl -L -H "Authorization: Bearer $env:ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-windows/1.5.6/application-advisor-cli-windows-1.5.6.tar
+curl -L -H "Authorization: Bearer $env:ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-windows/1.5.5/application-advisor-cli-windows-1.5.5.tar
 tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C <somewhere-on-your-path>
 ```
 
 Windows (Command Prompt):
 ```bash
 echo %PATH%
-curl -L -H "Authorization: Bearer $env:ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-windows/1.5.6/application-advisor-cli-windows-1.5.6.tar
+curl -L -H "Authorization: Bearer $env:ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-windows/1.5.5/application-advisor-cli-windows-1.5.5.tar
 tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C <somewhere-on-your-path>
 ```
 
 MacOS (Intel):
 ```bash
 echo $PATH
-curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos/1.5.6/application-advisor-cli-macos-1.5.6.tar
+curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos/1.5.5/application-advisor-cli-macos-1.5.5.tar
 tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C <somewhere-on-your-path>
 ```
 
 MacOS (ARM64/Apple Silicon):
 ```bash
 echo $PATH
-curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos-arm64/1.5.6/application-advisor-cli-macos-arm64-1.5.6.tar
+curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos-arm64/1.5.5/application-advisor-cli-macos-arm64-1.5.5.tar
 tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C <somewhere-on-your-path>
 ```
 

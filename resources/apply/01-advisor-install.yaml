@@ -175,7 +175,7 @@ spec:
                 mkdir -p ${SPRING_ENTERPRISE_REPO_PATH}${ADVISOR_PATH_IN_REPO}
                 cd ${SPRING_ENTERPRISE_REPO_PATH}${ADVISOR_PATH_IN_REPO}
                 gcloud auth activate-service-account --key-file=/creds/bucket-reader
-                gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "application-advisor-cli-linux-1.5.6.tar"
+                gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "application-advisor-cli-linux-1.5.5.tar"
                 cd ${SPRING_ENTERPRISE_REPO_PATH}
                 gcloud storage cp "gs://${GCP_BUCKET_NAME}/${RECIPES_SOURCE_FILE_NAME}" "recipes.tar"
                 tar -xvf recipes.tar
@@ -183,13 +183,13 @@ spec:
               - name: GCP_BUCKET_NAME
                 value: academy-artifacts
               - name: SOURCE_FILE_NAME
-                value: spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.5.6.tar
+                value: spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.5.5.tar
               - name: RECIPES_SOURCE_FILE_NAME
                 value: spring/maven/application-advisor-recipes.tar
               - name: SPRING_ENTERPRISE_REPO_PATH
                 value: /app/data/repositories/spring-enterprise
               - name: ADVISOR_PATH_IN_REPO
-                value: /com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.6
+                value: /com/vmware/tanzu/spring/application-advisor-cli-linux/1.5.5
               volumeMounts:
               - name: data
                 mountPath: /app/data
