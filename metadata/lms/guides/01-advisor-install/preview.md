@@ -1,1 +1,0 @@
-This is the preview and shows up next to the "Start Lab" button.
