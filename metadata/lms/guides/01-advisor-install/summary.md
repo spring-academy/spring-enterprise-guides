@@ -1,1 +1,1 @@
-This is the summary and shows up on the detail page.
+This lab guides you through installing the Spring Application Advisor CLI and configuring your development environment for Spring application upgrades. You will download and install the CLI tool, set up Maven with the necessary repository credentials to access commercial OpenRewrite recipes, and verify your configuration by testing on a sample Spring Boot application. Upon completion, your environment will be ready for performing automated Spring application upgrades.

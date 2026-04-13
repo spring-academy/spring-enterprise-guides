@@ -1,1 +1,1 @@
-This is the preview and shows up next to the "Start Lab" button.
+Learn how to install the Spring Application Advisor CLI and configure Maven to access commercial upgrade recipes.
