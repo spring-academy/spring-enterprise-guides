@@ -20,9 +20,12 @@ command: advisor upgrade-plan apply --after-upgrade-cmd=spring-javaformat:apply 
 ```
 
 After reviewing the changes, **commit and push them**.
+```execute
+git --no-pager diff
+```
 ```terminal:execute
-description: Show, commit and push changes in terminal
-command: git --no-pager diff && git add . && git commit -m "Upgrading Spring Boot 3.0 to 3.1" && git push
+description: Commit and push changes in terminal
+command: git add . && git commit -m "Upgrading Spring Boot 3.0 to 3.1" && git push
 session: 1
 ```
 
@@ -49,7 +52,7 @@ git --no-pager diff
 
 ```terminal:execute
 description: Commit and push the squashed upgrade
-command: git add . && git commit -m "Upgrading Spring Boot 3.1 to 3.4 (squashed)" && git push
+command: git --no-pager diff && git commit -m "Upgrading Spring Boot 3.1 to 3.4 (squashed)" && git push
 session: 1
 ```
 

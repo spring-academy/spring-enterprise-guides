@@ -64,13 +64,13 @@ Instead of writing mapping files manually, *Application Advisor* provides the `a
 
 Let's generate the mapping for `corporate-starter` directly from its GitHub repository.
 ```execute
-advisor mapping build -r https://github.com/timosalm/saa-corporate-starter-sample --offline -c='com.example:corporate-starter'
+advisor mapping create --coordinate 'com.example:corporate-starter'
 ```
 
 This command analyzes all released versions of the library and produces a mapping file in the `.advisor/mappings/` directory. Let's look at the generated mapping.
 ```execute
 ls .advisor/mappings/
-cat .advisor/mappings/saa-corporate-starter-sample.json
+cat .advisor/mappings/corporate-starter.json
 ```
 
 The mapping file describes each version of `corporate-starter` and its Spring compatibility -- which Java version it requires, which Spring Boot generation it supports, and what the next version to upgrade to is.
@@ -79,7 +79,7 @@ The mapping file describes each version of `corporate-starter` and its Spring co
 
 Now let's configure *Application Advisor* to use this mapping. The simplest approach is to set the `SPRING_ADVISOR_MAPPING_CUSTOM_0_FILEPATH` environment variable to point to the generated mapping file.
 ```execute
-export SPRING_ADVISOR_MAPPING_CUSTOM_0_FILEPATH=$(pwd)/.advisor/mappings/saa-corporate-starter-sample.json
+export SPRING_ADVISOR_MAPPING_CUSTOM_0_FILEPATH=$(pwd)/.advisor/mappings/corporate-starter.json
 ```
 
 Let's check the upgrade plan again with the mapping configured.

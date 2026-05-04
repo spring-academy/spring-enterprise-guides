@@ -11,29 +11,19 @@ This is useful when you want to:
 
 #### How it works
 
-The commercial Spring recipes are published in the **Spring Commercial repository**. The OpenRewrite Maven plugin can resolve and run these recipes directly from that repository.
+The Spring Application Advisor CLI includes the commercial Spring recipes since version 1.6.0. Additionally, the recipes are published in the **Spring Commercial repository**. The OpenRewrite Maven plugin can resolve and run these recipes directly from that repository.
 
-Let's explore the available recipes for upgrading Spring. You can run any of the recipes listed in the Spring commercial recipes catalog using the following Maven command format.
+You can run any of the recipes listed in the Spring commercial recipes catalog using the following Maven command format.
 
 For example, to upgrade to a specific Spring Boot version, you would run:
-```execute
-./mvnw -B org.openrewrite.maven:rewrite-maven-plugin:run -Drewrite.recipeArtifactCoordinates=com.vmware.tanzu.spring.recipes:spring-boot-3-upgrade-recipes:1.5.5 -Drewrite.activeRecipes=com.vmware.tanzu.spring.recipes.boot35.UpgradeSpringBoot_3_5
+```
+./mvnw -B org.openrewrite.maven:rewrite-maven-plugin:run -Drewrite.recipeArtifactCoordinates=com.vmware.tanzu.spring.recipes:spring-boot-3-upgrade-recipes:1.6.1 -Drewrite.activeRecipes=com.vmware.tanzu.spring.recipes.boot35.UpgradeSpringBoot_3_5
 ```
 
 This command:
 1. Uses the OpenRewrite Maven plugin directly (no Application Advisor CLI needed)
 2. Resolves the recipe artifact from your configured Maven repositories
 3. Runs the specific `UpgradeSpringBoot_3_5` recipe for the main upgrade to Spring Boot 3.5.x 
-
-Let's check if any changes were applied.
-```execute
-git --no-pager diff
-```
-
-If changes were made, you can review and revert them since this was just a demonstration.
-```execute
-git checkout .
-```
 
 #### Design principles of Spring commercial recipes
 
