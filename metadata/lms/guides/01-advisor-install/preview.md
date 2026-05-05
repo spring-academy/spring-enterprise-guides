@@ -1,1 +1,0 @@
-Learn how to install the Spring Application Advisor CLI and configure Maven to access commercial upgrade recipes.
