@@ -18,7 +18,7 @@ export sdkman_auto_answer=true
 # 4. Install Java versions
 # Note: Using '|| true' helps if the version is already installed
 sdk install java 17.0.18-librca || true
-sdk install java 11.0.30-librca || tru
+sdk install java 11.0.30-librca || true
 
 # 5. Make sample code repository available on local git server
 mkdir -p /opt/git/repositories
