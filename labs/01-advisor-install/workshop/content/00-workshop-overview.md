@@ -15,7 +15,7 @@ In this workshop, we have already set up the environment to contain all the pre-
 
 - A Broadcom Artifactory token (stored in `ARTIFACTORY_TOKEN` environment variable), follow steps to retrieve the [Artifactory Token](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/tanzu-spring/commercial/spring-tanzu/guide-artifact-repository-administrators.html#access-enterprise-subscription)
 - Java version 23 or lower installed
-- Maven configured on your system
+- Maven or Gradle configured on your system
 
 ## What is Spring Application Advisor?
 
@@ -25,14 +25,13 @@ Spring Application Advisor is a native CLI tool that helps you upgrade Spring ap
 - Creating step-by-step upgrade plans
 - Applying upgrades automatically while preserving your code style
 
-The CLI uses commercial OpenRewrite recipes to perform the actual code transformations. These recipes are built and maintained by the Spring team at Broadcom.
 
 ## Workshop Structure
 
 This workshop is organized into the following sections:
 
 1. **Installing the CLI** - Download and install the Spring Application Advisor CLI
-2. **Configure Maven for Enterprise Recipes** - Set up access to the commercial recipe repository and verify the installation
+2. **Verify the CLI** - Verify the installation
 3. **Next Steps** - Resources for continued learning
 4. **Troubleshooting** - Common installation issues and their solutions
 
