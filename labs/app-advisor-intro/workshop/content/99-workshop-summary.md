@@ -17,4 +17,4 @@ Here is what we covered:
 - **CI/CD integration**: Setting up continuous upgrades with `--push` and `--from-yml`
 
 Now it's time to start upgrading your applications!
-More information is available in the [official documentation](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/spring-application-advisor/1-5/spring-app-advisor/what-is-app-advisor.html).
+More information is available in the [official documentation](https://techdocs.broadcom.com/tnz-spring-app-advisor).
