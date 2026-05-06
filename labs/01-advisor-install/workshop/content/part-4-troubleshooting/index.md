@@ -73,34 +73,6 @@ Common issues and their solutions when installing Spring Application Advisor.
 
 ## Maven Repository Configuration
 
-### Problem: Commercial Recipes Not Accessible
-
-**Symptoms:**
-- "Could not resolve recipe" errors
-- "Recipe not found" messages
-- Upgrade plan apply fails with dependency errors
-
-**Solutions:**
-
-1. **Verify Maven settings.xml exists and is configured:**
-   ```execute
-   cat ~/.m2/settings.xml
-   ```
-
-2. **Check the repository URL is correct:**
-   - Workshop: `http://<workshop-namespace>-files/artifactory/tanzu-maven`
-   - Production: `https://packages.broadcom.com/artifactory/spring-enterprise`
-
-3. **Verify credentials (for production):**
-   - Username should be your Broadcom Support Portal email
-   - Password should be your `ARTIFACTORY_TOKEN`
-
-4. **Test repository connectivity (production):**
-   ```copy
-   curl -u "your-email@company.com:$ARTIFACTORY_TOKEN" \
-     https://packages.broadcom.com/artifactory/spring-enterprise/
-   ```
-
 ### Problem: Cannot Resolve Dependencies During Verification
 
 **Symptoms:**
@@ -121,8 +93,8 @@ Common issues and their solutions when installing Spring Application Advisor.
    curl -I https://repo1.maven.org/maven2/
    ```
 
-3. **Verify the active profile is set in settings.xml:**
-   Look for `<activeProfiles>` section in your `~/.m2/settings.xml`
+3. **Verify the settings.xml is correct for your environment:**
+   You may need mirrors, or access credentials set for your `~/.m2/settings.xml`.  Refer to [https://maven.apache.org/settings.html] for more information.
 
 ## Getting More Help
 
@@ -143,5 +115,4 @@ If you're still experiencing issues:
 | "401 Unauthorized" | Invalid or expired token | Verify ARTIFACTORY_TOKEN is set and valid |
 | "403 Forbidden" | Token lacks download permissions | Regenerate token with correct permissions |
 | "Connection timed out" | Network issues or firewall | Check proxy settings and firewall rules |
-| "Could not resolve recipe" | Maven repository not configured | Check ~/.m2/settings.xml configuration |
 | "tar: command not found" | tar utility not installed | Install tar using package manager |
