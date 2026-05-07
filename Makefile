@@ -51,8 +51,7 @@ deploy-lab:
 deploy-lab-local:
 	kubectl apply -f build/educates-resources/apply
 	source build/educates-resources/env."${environment}"
-    envsubst '$${ENVIRONMENT}' < build/educates-resources/apply/trainingportal.yaml | kubectl apply -f -
-	
+	envsubst '$${ENVIRONMENT}' < build/educates-resources/apply/trainingportal.yaml | kubectl apply -f -
 
 deploy-lms:
 	metadata/lms/deploy.sh deploy-all

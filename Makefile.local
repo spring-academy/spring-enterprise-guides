@@ -6,4 +6,3 @@ CONTAINER_REPOSITORY  = spring-enterprise-guides
 version               = latest
 
 env                   = local
-ARTIFACT_NAME         = spring-enterprise-guides-${version}
