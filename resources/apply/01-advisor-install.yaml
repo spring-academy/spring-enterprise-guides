@@ -12,7 +12,7 @@ spec:
     image: jdk17-environment:*
     files:
     - http:
-        url: http://$(workshop_namespace)-files/spring-enterprise-guides-advisor-install.tar.gz
+        url: http://$(workshop_namespace)-files/$(workshop_name).tar.gz
   request:
     parameters:
     - name: USER_DOMAIN

@@ -12,8 +12,7 @@ spec:
     image: jdk17-environment:*
     files:
       - http:
-          # the name of the tar.gz here should make the workshop name
-          url: "$(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain)/spring-enterprise-guides-app-advisor-intro.tar.gz"
+          url: http://$(workshop_namespace)-files/$(workshop_name).tar.gz
   request:
     parameters:
     - name: USER_DOMAIN
