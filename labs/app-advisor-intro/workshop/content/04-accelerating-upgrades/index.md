@@ -52,7 +52,7 @@ git --no-pager diff
 
 ```terminal:execute
 description: Commit and push the squashed upgrade
-command: git --no-pager diff && git commit -m "Upgrading Spring Boot 3.1 to 3.4 (squashed)" && git push
+command: git add . && git commit -m "Upgrading Spring Boot 3.1 to 3.4 (squashed)" && git push
 session: 1
 ```
 
