@@ -1,1 +1,12 @@
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# Override curl to rewrite repository URLs for installation of App Advisor section
+curl() {
+  local from="https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.6.1/application-advisor-cli-linux-${APPLICATION_ADVISOR_CLI_VERSION}.tar"
+  local to="http://localhost:9000/advisor.tar"
+  local args=()
+  for a in "$@"; do
+    args+=("${a//"$from"/"$to"}")
+  done
+  command curl "${args[@]}"
+}

@@ -34,6 +34,7 @@ It is assumed that the **CLI is integrated into the CI/CD pipeline**, so that th
 #### What you will learn in this workshop
 
 In this workshop, you will:
+- Install the Spring Application Advisor CLI
 - Upgrade a Spring Boot 2.7 application all the way to **Spring Boot 4** step by step
 - Use **advanced flags** like `--squash` and `--force` to accelerate upgrades
 - Run **commercial OpenRewrite recipes directly** using the Maven plugin

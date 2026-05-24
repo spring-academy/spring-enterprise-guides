@@ -34,6 +34,8 @@ spec:
       value: "$(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain)"
     - name: BOOTSTRAP_COMMAND
       value: ":"
+    - name: APPLICATION_ADVISOR_CLI_VERSION
+      value: ${APPLICATION_ADVISOR_CLI_VERSION}
     resources:
       memory: 4Gi
     ingresses:
@@ -49,8 +51,11 @@ spec:
         enabled: true
     volumeMounts:
     - name: binaries
-      mountPath: /usr/local/bin/advisor
+      mountPath: /home/eduk8s/bin/advisor
       subPath: advisor
+    - name: binaries
+      mountPath: "/opt/application-advisor/advisor.tar"
+      subPath: "advisor.tar"
     initContainers:
     - name: download-app-advisor-cli
       image: google/cloud-sdk:latest
@@ -65,12 +70,12 @@ spec:
           tar -xvf ${DESTINATION_FILE_NAME}.tar
           mv cli-binary/advisor ${DESTINATION_FILE_NAME}
           chmod 111 ${DESTINATION_FILE_NAME}
-          rm -rf ${DESTINATION_FILE_NAME}.tar cli-binary 
+          rm -rf cli-binary 
       env:
         - name: GCP_BUCKET_NAME
           value: "academy-artifacts"
         - name: SOURCE_FILE_NAME
-          value: "spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.6.1.tar"
+          value: "spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-${APPLICATION_ADVISOR_CLI_VERSION}.tar"
         - name: DESTINATION_FILE_NAME
           value: "advisor"
       volumeMounts:

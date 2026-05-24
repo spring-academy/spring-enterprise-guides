@@ -5,7 +5,7 @@ title: Workshop Summary
 In this workshop, we explored the capabilities of **Spring Application Advisor** by upgrading a Spring Boot 2.7 / Java 8 application all the way to **Spring Boot 4**.
 
 Here is what we covered:
-
+- **Installation of the Spring Application Advisor CLI**
 - **Incremental upgrades**: Using `advisor build-config get`, `advisor upgrade-plan get`, and `advisor upgrade-plan apply` to upgrade step by step
 - **Code style preservation**: Using `--after-upgrade-cmd` to automatically run formatters after upgrades
 - **Debugging upgrades**: Using `--debug` to see which OpenRewrite recipes are being applied
