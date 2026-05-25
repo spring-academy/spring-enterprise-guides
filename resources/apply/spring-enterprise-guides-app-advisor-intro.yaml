@@ -35,7 +35,7 @@ spec:
     - name: BOOTSTRAP_COMMAND
       value: ":"
     - name: APPLICATION_ADVISOR_CLI_VERSION
-      value: ${APPLICATION_ADVISOR_CLI_VERSION}
+      value: "1.6.1"
     resources:
       memory: 4Gi
     ingresses:
@@ -75,7 +75,7 @@ spec:
         - name: GCP_BUCKET_NAME
           value: "academy-artifacts"
         - name: SOURCE_FILE_NAME
-          value: "spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-${APPLICATION_ADVISOR_CLI_VERSION}.tar"
+          value: "spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.6.1.tar" # Change also the env variable value under spec.session.env
         - name: DESTINATION_FILE_NAME
           value: "advisor"
       volumeMounts:
