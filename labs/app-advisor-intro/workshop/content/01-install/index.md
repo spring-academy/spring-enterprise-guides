@@ -2,7 +2,9 @@
 title: Installing the CLI (optional)
 ---
 
-> **Note:** This section is optional. To skip the CLI installation, scroll to the bottom and continue to the next section.
+{{< note >}}
+This section is optional. To skip the CLI installation, scroll to the bottom and continue to the next section.
+{{< /note >}}
 
 In this section, you'll install the Spring Application Advisor CLI. We're simulating downloading it from the Spring Enterprise Repository.
 
@@ -50,9 +52,8 @@ echo $PATH | grep /home/eduk8s/bin
 
 Extract the archive there:
 
-```terminal:execute
-command: tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C /home/eduk8s/bin --overwrite
-description: tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C /home/eduk8s/bin
+```execute
+tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C /home/eduk8s/bin
 ```
 
 ```section:begin

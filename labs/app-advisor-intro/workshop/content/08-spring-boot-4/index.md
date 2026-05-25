@@ -11,6 +11,12 @@ Let's check the current upgrade plan.
 advisor build-config get && advisor upgrade-plan get
 ```
 
+{{< note >}}
+**Jackson 2.x → 3.x migration not included**
+We've intentionally left the Jackson 3 upgrade out of this plan. Spring Boot 4 still supports Jackson 2.x, so your applications will work as expected without it.
+Moving to Jackson 3 can surface incompatibilities with for example the Spring Cloud Netflix stack, so we recommend handling it as a separate step after the Spring Boot 4 migration is validated.
+{{< /note >}}
+
 The upgrade plan should show the step to upgrade to **Spring Boot 4.0**. Let's apply it!
 ```execute
 advisor upgrade-plan apply --after-upgrade-cmd=spring-javaformat:apply
