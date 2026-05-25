@@ -21,7 +21,7 @@ export ARTIFACTORY_TOKEN=eyJ2ZXIiOiIyIiw_EXAMPLE_TOKEN_nzQOKQc6A
 For instructions on generating a real token from the Broadcom Support Portal, see [KB article 421110](https://knowledge.broadcom.com/external/article/421110).
 
 ```section:begin
-title: Other Platform Examples
+title: Windows and macOS examples
 ```
 Windows (PowerShell):
 ```bash
