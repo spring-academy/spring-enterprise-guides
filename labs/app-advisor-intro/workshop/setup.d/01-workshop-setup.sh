@@ -32,3 +32,7 @@ git checkout 2.0.0 && ./mvnw install
 git checkout 3.0.0 &&./mvnw install
 cd ..
 rm -rf saa-corporate-starter-sample
+
+# 7. Put SAA CLI in the path
+mkdir -p /home/eduk8s/bin
+cp /opt/application-advisor/advisor /home/eduk8s/bin/

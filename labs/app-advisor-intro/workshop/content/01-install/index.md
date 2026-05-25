@@ -50,12 +50,13 @@ echo $PATH | grep /home/eduk8s/bin
 
 Extract the archive there:
 
-```execute
-tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C bin
+```terminal:execute
+command: tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C /home/eduk8s/bin --overwrite
+description: tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C /home/eduk8s/bin
 ```
 
 ```section:begin
-title: Other Platform Examples
+title: Windows and macOS examples
 ```
 
 Windows (PowerShell):

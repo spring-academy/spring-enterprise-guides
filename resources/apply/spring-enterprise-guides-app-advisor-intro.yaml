@@ -51,11 +51,7 @@ spec:
         enabled: true
     volumeMounts:
     - name: binaries
-      mountPath: /home/eduk8s/bin/advisor
-      subPath: advisor
-    - name: binaries
-      mountPath: "/opt/application-advisor/advisor.tar"
-      subPath: "advisor.tar"
+      mountPath: /opt/application-advisor
     initContainers:
     - name: download-app-advisor-cli
       image: google/cloud-sdk:latest
