@@ -9,11 +9,12 @@ pathways:
       - 00-workshop-overview
       - 01-install
       - 02-first-steps
-      - 03-first-upgrade-steps
-      - 04-spring-boot-upgrades
-      - 05-accelerating-upgrades
-      - 06-openrewrite-recipes
-      - 07-custom-mappings
-      - 08-spring-boot-4
-      - 09-continuous-upgrades
+      - 03-patching
+      - 04-first-upgrade-steps
+      - 05-spring-boot-upgrades
+      - 06-accelerating-upgrades
+      - 07-openrewrite-recipes
+      - 08-custom-mappings
+      - 09-spring-boot-4
+      - 10-continuous-upgrades
       - 99-workshop-summary
