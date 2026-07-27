@@ -30,7 +30,7 @@ The native CLI is responsible for:
 - Running the refactors that apply the corresponding dependency version changes and Java API upgrades, if needed, using the *OpenRewrite* recipes
 - (Optional) Creating pull requests with the refactors
 
-It is assumed that the **CLI is integrated into the CI/CD pipeline**, so that the Git repositories are continuously analyzed and upgraded to the next version, if necessary.
+It is recommended that the **CLI is integrated into the CI/CD pipeline**, so that the Git repositories are continuously analyzed for available upgrades. It makes developers aware that a new version is available and, through the generated pull request, shows exactly what the upgrade would change and how big its scope is, so that developers can decide whether and when such a change is reviewed and merged.
 
 #### What you will learn in this workshop
 

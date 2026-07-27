@@ -22,3 +22,5 @@
 build
 spring-repo-mirror
 spring-recipes-offline.tar
+application-advisor-cli-linux*.tar
+labs/**/local-resources

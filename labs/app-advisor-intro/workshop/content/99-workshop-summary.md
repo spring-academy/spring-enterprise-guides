@@ -6,7 +6,7 @@ In this workshop, we explored the capabilities of **Spring Application Advisor**
 
 Here is what we covered:
 - **Installation of the Spring Application Advisor CLI**
-- **Patching**: Using `advisor patch apply` to move all dependencies to the latest available patch versions, including commercial patches for versions that are out of open-source support
+- **Patching**: Using `advisor patch apply` to move all dependencies to the latest available patch versions, and excluding individual dependencies with the `ignore` block in `.advisor.yml`. With the Spring Enterprise Repository configured, this also includes commercial patches for versions that are out of open-source support
 - **Incremental upgrades**: Using `advisor build-config get`, `advisor upgrade-plan get`, and `advisor upgrade-plan apply` to upgrade step by step
 - **Code style preservation**: Using `--after-upgrade-cmd` to automatically run formatters after upgrades
 - **Debugging upgrades**: Using `--debug` to see which OpenRewrite recipes are being applied
