@@ -6,6 +6,7 @@ In this workshop, we explored the capabilities of **Spring Application Advisor**
 
 Here is what we covered:
 - **Installation of the Spring Application Advisor CLI**
+- **Patching**: Using `advisor patch apply` to move all dependencies to the latest available patch versions, including commercial patches for versions that are out of open-source support
 - **Incremental upgrades**: Using `advisor build-config get`, `advisor upgrade-plan get`, and `advisor upgrade-plan apply` to upgrade step by step
 - **Code style preservation**: Using `--after-upgrade-cmd` to automatically run formatters after upgrades
 - **Debugging upgrades**: Using `--debug` to see which OpenRewrite recipes are being applied
@@ -14,7 +15,7 @@ Here is what we covered:
 - **Dependency conflicts**: Understanding `--accept-no-alignment` for handling version misalignments
 - **OpenRewrite recipes**: Running commercial Spring recipes directly using the OpenRewrite Maven plugin
 - **Custom mappings**: Configuring upgrade mappings for shared internal libraries
-- **CI/CD integration**: Setting up continuous upgrades with `--push` and `--from-yml`
+- **CI/CD integration**: Setting up continuous upgrades and continuous patches with `--push` and `--from-yml`
 
 Now it's time to start upgrading your applications!
 More information is available in the [official documentation](https://techdocs.broadcom.com/tnz-spring-app-advisor).

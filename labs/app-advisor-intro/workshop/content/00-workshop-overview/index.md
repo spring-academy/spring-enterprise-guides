@@ -24,6 +24,7 @@ In addition to the recipes available as open-source, *Spring Application Advisor
 *Spring Application Advisor* is available as a **native CLI**.
 
 The native CLI is responsible for:
+- Updating the dependencies of a Git repository to their latest available patch versions, including the commercial patches and hotfixes of the *Spring Enterprise* subscription
 - Generating the dependency tree and the build tool versions of a Git repository
 - Computing the upgrade plan, which is the list of Spring dependencies or tools that must be upgraded together (using *OpenRewrite* recipes) to the next release
 - Running the refactors that apply the corresponding dependency version changes and Java API upgrades, if needed, using the *OpenRewrite* recipes
@@ -35,7 +36,8 @@ It is assumed that the **CLI is integrated into the CI/CD pipeline**, so that th
 
 In this workshop, you will:
 - Install the Spring Application Advisor CLI
-- Upgrade a Spring Boot 2.7 application all the way to **Spring Boot 4** step by step
+- **Patch** a Spring Boot 2.7 application to the latest available patch versions of all its dependencies
+- **Upgrade** that application all the way **to Spring Boot 4** step by step
 - Use **advanced flags** like `--squash` and `--force` to accelerate upgrades
 - Run **commercial OpenRewrite recipes directly** using the Maven plugin
 - Set up **custom upgrade mappings** for shared internal libraries

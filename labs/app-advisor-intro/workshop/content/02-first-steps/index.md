@@ -46,7 +46,7 @@ Kill the application.
 session: 2
 ```
 
-#### Running our first upgrade step
+#### Exploring the advisor CLI
 
 *Spring Application Advisor*'s native CLI is called **advisor** and is available for all common operating systems.
 
@@ -55,58 +55,46 @@ Let's start by exploring the available commands.
 advisor --help
 ```
 
-As you can see, it supports the `build-config`, `upgrade-plan`, `mapping`, and `advice` commands. In this workshop, we will focus primarily on the upgrade workflow.
+As you can see, it supports the `build-config`, `upgrade-plan`, `patch`, `mapping`, and `advice` commands. In this workshop, we will focus primarily on the patch and upgrade workflows.
 
-##### Produce a build configuration
-The first step in the upgrade process is to produce a **build configuration** for *Spring Application Advisor* using the `build-config get` command. This generates a file containing the dependency tree (in CycloneDX format), the Java version required to compile the sources, and the build tool versions.
-```execute
-advisor build-config get --help
-```
-You may have already noticed that our sample application contains configurations and wrappers for both Maven and Gradle. With the `--build-tool` option, you can select your preferred one for the upgrade. In our case, the default `mvnw` (Maven wrapper) works fine since we are already in the root of our sample application.
-```execute
-advisor build-config get
-```
+#### Patching our application to the latest available versions
 
-Let's have a look at the generated build configuration.
-```editor:open-file
-file: ~/spring-petclinic/target/.advisor/build-config.json
-```
+Before we start the (much bigger) journey of upgrading to a new Spring Boot minor or major version, let's get the **quickest win** first: applying the latest **patch versions** of all the dependencies our application already uses.
 
-##### Analyze an upgrade plan
+The `advisor patch apply` command calculates the latest patch versions for all the dependencies in the Software Bill of Materials (SBOM) of our application and applies them to the `pom.xml` (or `build.gradle`) files. It stays **within the same minor version**, so it is a low-risk change that:
+- Updates explicit dependency versions
+- Refreshes the parent project version
+- Modifies managed dependencies and adds new managed dependencies when patch versions become available
+- Updates imported SBOM dependency versions while removing redundant libraries
 
-With the information in the generated build configuration, *Spring Application Advisor* can compute the **upgrade plan**. The upgrade plan shows which Spring dependencies need to be upgraded and in what order.
-```execute
-advisor upgrade-plan get
-```
+This is especially valuable for our sample application as *Spring Boot 2.7* reached its open-source end of support in 11/2023, so no new open-source patch releases are published for it. With a *VMware Spring Enterprise* subscription, our Maven repositories are configured to access the **Spring Enterprise Maven repository**, which provides commercial patch and hotfix versions with security fixes for those versions. That means we can close known vulnerabilities **today**, without waiting for the full Spring Boot 3.x upgrade to be finished.
 
-##### Apply an upgrade plan from your local machine
-Now it's time to run our first upgrade step with the `advisor upgrade-plan apply` command.
+{{< note >}}
+In this workshop environment, the access to the Spring Enterprise Maven repository is already configured for you. In your own environment, you have to configure it in your Maven `settings.xml` or your Gradle build. For Gradle setups with internal-only repositories, the environment variables `ADVISOR_DEFAULT_OSS_PLUGINS_REPOSITORY`, `ADVISOR_DEFAULT_OSS_PLUGINS_USERNAME`, and `ADVISOR_DEFAULT_OSS_PLUGINS_PASSWORD` have to be set as well.
+{{< /note >}}
+
 Let's look at the available options first.
 ```execute
-advisor upgrade-plan apply --help
+advisor patch apply --help
 ```
 
 Some important options to be aware of:
-- `--after-upgrade-cmd`: Automatically runs a Maven goal or Gradle task after the upgrade (we will use this later)
-- `--build-tool-jvm-args` and `--build-tool-options`: Allow tweaking the JVM and build tools for larger code bases (e.g., increasing memory limits)
 - `--push`: Automatically creates a remote branch, pushes the changes, and opens a pull request
-- `--squash`: Combines multiple upgrade steps into one (we will explore this later)
-- `--force`: Executes the full upgrade plan in one go
-- `--from-yml`: References a `.spring-app-advisor.yml` file for enabling continuous upgrades in CI/CD
+- `--from-yml`: Reads the configuration from an `.advisor.yml` file in the repository root
+- `--scm-host`: The hostname of a self-hosted Git server like GitLab or GitHub Enterprise
 
-For now, we will run the steps locally without the `--push` option, as pull requests require a Git provider like GitHub, GitLab, or Bitbucket.
+We will get back to `--push` and `--from-yml` in the section about continuous upgrades at the end of this workshop. For now, we run the patch locally.
 
-The first step of our upgrade plan is to **upgrade Java from 8 to 11**.
-Since some of the latest recipes require Java 17 to be executed, let's set it for the terminal where we run the advisor CLI.
-```terminal:execute
-command: sdk use java $(sdk list java | grep -E 'installed|local only' | grep '17.*[0-9]-librca' | awk '{print $NF}' | head -n 1)
-session: 1
-```
-
-Let's run the upgrade!
+Let's patch our application!
 ```execute
-advisor upgrade-plan apply
+advisor patch apply
 ```
+
+{{< note >}}
+This command queries the Maven repositories for every single dependency of our application, which is why it usually takes a few minutes. This is another reason why it is a perfect fit for a scheduled CI/CD pipeline.
+{{< /note >}}
+
+Once it has finished, the CLI lists all the upgraded dependencies grouped by scope (compile, provided, runtime, test) with their version transitions and prints a summary like `🚀 Patch apply complete: 67 dependency(-ies) upgraded in 1 file(s).`
 
 We can discover the changes made to our code base with the Git CLI.
 ```execute
@@ -121,8 +109,12 @@ description: Open the "Source Control" view in editor
 ```
 
 In the *Source Control* view, click on the files listed under *Changes* (in our case only `pom.xml`) to see the details.
-![Source Control View](source-control-view.png)
 
-Let's commit and push the changes before we move on with our upgrade plan.
-To do this, enter a commit message like `Upgrade Java from 8 to 11` in the *Message* field, click on the down arrow on the right of the commit button and select *Commit & Push*.
-![Source Control View Commit & Push](source-control-view-commit.png)
+Because patching stays within the same minor version, no source code changes are required. Let's still validate that our application works as expected by running the tests.
+```terminal:execute
+command: ./mvnw test
+session: 2
+```
+
+Let's commit and push the changes before we move on to our upgrade plan.
+To do this, enter a commit message like `Patch dependencies to the latest available versions` in the *Message* field, click on the down arrow on the right of the commit button and select *Commit & Push*.
