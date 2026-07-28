@@ -61,18 +61,18 @@ git status
 git --no-pager diff pom.xml
 ```
 
-As an alternative, we can use the *Source Control* view of the Visual Studio Code editor in the workshop environment.
+Or use the *Source Control* view of the Visual Studio Code editor as an alternative.
 ```editor:execute-command
 command: workbench.view.scm
 description: Open the "Source Control" view in editor
 ```
 
-In the *Source Control* view, click on the files listed under *Changes* (in our case only `pom.xml`) to see the details.
-![Source Control View](source-control-view.png)
-
 Let's commit and push the changes before we move on with our upgrade plan.
-To do this, enter a commit message like `Upgrade Java from 8 to 11` in the *Message* field, click on the down arrow on the right of the commit button and select *Commit & Push*.
-![Source Control View Commit & Push](source-control-view-commit.png)
+```terminal:execute
+description: Commit and push changes in terminal
+command: git add . && git commit -m "Upgrading Java 8 to 11" && git push
+session: 1
+```
 
 #### Checking the next upgrade step
 

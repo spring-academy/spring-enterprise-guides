@@ -47,7 +47,8 @@ We can discover the changes made to our code base with the Git CLI.
 ```execute
 git status
 git --no-pager diff pom.xml
-```
+``` 
+
 
 As an alternative, we can use the *Source Control* view of the Visual Studio Code editor in the workshop environment.
 ```editor:execute-command
@@ -56,6 +57,7 @@ description: Open the "Source Control" view in editor
 ```
 
 In the *Source Control* view, click on the files listed under *Changes* (in our case only `pom.xml`) to see the details.
+![Source Control View](source-control-view.png)
 
 #### Ignoring dependency patch version upgrades
 
@@ -96,3 +98,4 @@ command: workbench.view.scm
 description: Open the "Source Control" view in editor
 ```
 To do this, enter a commit message like `Patch dependencies to the latest available versions` in the *Message* field, click on the down arrow on the right of the commit button and select *Commit & Push*.
+![Source Control View Commit & Push](source-control-view-commit.png)
