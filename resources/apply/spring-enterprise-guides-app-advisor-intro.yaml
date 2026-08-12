@@ -70,7 +70,7 @@ spec:
         - name: GCP_BUCKET_NAME
           value: "academy-artifacts"
         - name: SOURCE_FILE_NAME
-          value: "spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.6.5.tar" # Change also the version in the workshop content
+          value: "spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.6.7.tar" # Change also the version in the workshop content
         - name: DESTINATION_FILE_NAME
           value: "advisor"
       volumeMounts:

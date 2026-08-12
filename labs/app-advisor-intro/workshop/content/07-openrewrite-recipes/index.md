@@ -17,7 +17,7 @@ You can run any of the recipes listed in the Spring commercial recipes catalog u
 
 For example, to upgrade to a specific Spring Boot version, you would run:
 ```
-./mvnw -B org.openrewrite.maven:rewrite-maven-plugin:run -Drewrite.recipeArtifactCoordinates=com.vmware.tanzu.spring.recipes:spring-boot-3-upgrade-recipes:1.6.5 -Drewrite.activeRecipes=com.vmware.tanzu.spring.recipes.boot35.UpgradeSpringBoot_3_5
+./mvnw -B org.openrewrite.maven:rewrite-maven-plugin:run -Drewrite.recipeArtifactCoordinates=com.vmware.tanzu.spring.recipes:spring-boot-3-upgrade-recipes:1.6.7 -Drewrite.activeRecipes=com.vmware.tanzu.spring.recipes.boot35.UpgradeSpringBoot_3_5
 ```
 
 This command:

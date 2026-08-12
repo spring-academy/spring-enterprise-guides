@@ -41,7 +41,7 @@ set REPOSITORY_TOKEN=your-token-here
 Download the Spring Application Advisor CLI for Linux:
 
 ```execute
-curl -L -H "Authorization: Bearer $REPOSITORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.6.5/application-advisor-cli-linux-1.6.5.tar
+curl -L -H "Authorization: Bearer $REPOSITORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.6.7/application-advisor-cli-linux-1.6.7.tar
 ```
 
 To run `advisor` from anywhere, extract the archive into a directory on your `$PATH`. In this environment, the user's home `bin` folder is already on the path:
@@ -63,28 +63,28 @@ title: Windows and macOS examples
 Windows (PowerShell):
 ```bash
 echo $env:PATH
-curl -L -H "Authorization: Bearer $env:REPOSITORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-windows/1.6.5/application-advisor-cli-windows-1.6.5.tar
+curl -L -H "Authorization: Bearer $env:REPOSITORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-windows/1.6.7/application-advisor-cli-windows-1.6.7.tar
 tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C <directory>
 ```
 
 Windows (Command Prompt):
 ```bash
 echo %PATH%
-curl -L -H "Authorization: Bearer %REPOSITORY_TOKEN%" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-windows/1.6.5/application-advisor-cli-windows-1.6.5.tar
+curl -L -H "Authorization: Bearer %REPOSITORY_TOKEN%" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-windows/1.6.7/application-advisor-cli-windows-1.6.7.tar
 tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C <directory>
 ```
 
 MacOS (Intel):
 ```bash
 echo $PATH
-curl -L -H "Authorization: Bearer $REPOSITORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos/1.6.5/application-advisor-cli-macos-1.6.5.tar
+curl -L -H "Authorization: Bearer $REPOSITORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos/1.6.7/application-advisor-cli-macos-1.6.7.tar
 tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C <directory>
 ```
 
 MacOS (ARM64/Apple Silicon):
 ```bash
 echo $PATH
-curl -L -H "Authorization: Bearer $REPOSITORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos-arm64/1.6.5/application-advisor-cli-macos-arm64-1.6.5.tar
+curl -L -H "Authorization: Bearer $REPOSITORY_TOKEN" -o advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-macos-arm64/1.6.7/application-advisor-cli-macos-arm64-1.6.7.tar
 tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF -C <directory>
 ```
 
