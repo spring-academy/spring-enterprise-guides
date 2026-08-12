@@ -2,13 +2,13 @@
 title: Upgrading to Spring Boot 4
 ---
 
-We have arrived at the final milestone of our upgrade journey -- **Spring Boot 4**!
+We have arrived at the final milestone of our upgrade journey, **Spring Boot 4**!
 
-Our application has come a long way: from Spring Boot 2.7 with Java 8, through the Jakarta EE migration, through multiple minor version upgrades, and now we are ready for the latest major version.
+Our application has come a long way. From Spring Boot 2.7 with Java 8, through the Jakarta EE migration, through multiple minor version upgrades, and now we are ready for the latest major version.
 
 Let's check the current upgrade plan.
 ```execute
-advisor build-config get && advisor upgrade-plan get
+advisor upgrade-plan get
 ```
 
 {{< note >}}
@@ -54,6 +54,8 @@ description: Commit and push the Spring Boot 4 upgrade
 command: git add . && git commit -m "Upgrading to Spring Boot 4" && git push
 session: 1
 ```
+#### Optional: Upgrade to Spring Boot 4.1
+Do you want to test what you've learned? Try taking the application one step further by upgrading it to Spring Boot 4.1.
 
 #### Recap of the upgrade journey
 

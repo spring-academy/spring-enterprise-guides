@@ -2,7 +2,7 @@
 title: Custom Upgrade Mappings for Shared Libraries
 ---
 
-Most organizations have **shared Java libraries and components** used across multiple Spring applications. When these shared libraries depend on Spring, upgrading the applications that use them requires coordination -- you need to ensure the shared library version is compatible with the target Spring Boot version.
+Most organizations have **shared Java libraries and components** used across multiple Spring applications. When these shared libraries depend on Spring, upgrading the applications that use them requires coordination. You need to ensure the shared library version is compatible with the target Spring Boot version.
 
 By default, *Application Advisor* prevents upgrading applications when it encounters libraries that depend on Spring but have no known upgrade mappings. Let's see this in action with a real example.
 
@@ -32,7 +32,7 @@ text: |2
 
 Now let's see what happens when we try to get the upgrade plan.
 ```execute
-advisor build-config get && advisor upgrade-plan get
+advisor upgrade-plan get
 ```
 
 *Application Advisor* reports that it **cannot create an upgrade plan** because `corporate-starter` uses Spring dependencies (spring-framework, spring-boot, micrometer) but has no upgrade mappings configured. This blocks upgrades for spring-boot, spring-data, hibernate-orm, and other projects.
@@ -47,7 +47,7 @@ git add pom.xml && git commit -m "Add corporate-starter dependency to POM"
 advisor upgrade-plan apply --force --after-upgrade-cmd=spring-javaformat:apply
 ```
 
-The upgrade succeeds for the core Spring projects, but notice the warning: *Application Advisor* might produce a **partial upgrade**. If we check the `pom.xml`, we'll see that `corporate-starter` is still at version **1.0.0** -- it was not upgraded because there are no mappings telling *Application Advisor* which version is compatible with the new Spring Boot version.
+The upgrade succeeds for the core Spring projects, but notice the warning: *Application Advisor* might produce a **partial upgrade**. If we check the `pom.xml`, we'll see that `corporate-starter` is still at version **1.0.0**. It was not upgraded because there are no mappings telling *Application Advisor* which version is compatible with the new Spring Boot version.
 
 ```execute
 grep -A 3 "corporate-starter" pom.xml
@@ -58,9 +58,9 @@ This is not ideal. We want *Application Advisor* to also update the `corporate-s
 git checkout .
 ```
 
-#### Generating mappings with `advisor mapping build`
+#### Generating mappings with `advisor mapping create`
 
-Instead of writing mapping files manually, *Application Advisor* provides the `advisor mapping build` command to **auto-generate** mapping files from a Git repository. It checks out each tagged version of the project, generates the build configuration for each, and produces a complete mapping file.
+Instead of writing mapping files manually, *Application Advisor* provides the `advisor mapping create` command to **auto-generate** mapping files from a Git repository. It checks out each tagged version of the project, generates the build configuration for each, and produces a complete mapping file.
 
 Let's generate the mapping for `corporate-starter` directly from its GitHub repository.
 ```execute
@@ -73,7 +73,9 @@ ls .advisor/mappings/
 cat .advisor/mappings/corporate-starter.json
 ```
 
-The mapping file describes each version of `corporate-starter` and its Spring compatibility -- which Java version it requires, which Spring Boot generation it supports, and what the next version to upgrade to is.
+The mapping file describes each version of `corporate-starter` and its Spring compatibility, which Java version it requires, which Spring Boot generation it supports, and what the next version to upgrade to is.
+
+
 
 #### Configuring the custom mapping
 
@@ -84,22 +86,22 @@ export SPRING_ADVISOR_MAPPING_CUSTOM_0_FILEPATH=$(pwd)/.advisor/mappings/corpora
 
 Let's check the upgrade plan again with the mapping configured.
 ```execute
-advisor build-config get && advisor upgrade-plan get
+advisor upgrade-plan get
 ```
 
 Now *Application Advisor* knows about the `corporate-starter` versions and their Spring Boot compatibility. The upgrade plan should now include upgrading `corporate-starter` alongside the other Spring dependencies.
 
-Let's run the upgrade.
+Run the upgrade.
 ```execute
 advisor upgrade-plan apply --after-upgrade-cmd=spring-javaformat:apply
 ```
 
-Let's verify that `corporate-starter` was properly upgraded this time.
+Verify that `corporate-starter` was properly upgraded this time.
 ```execute
 grep -A 3 "corporate-starter" pom.xml
 ```
 
-The `corporate-starter` version has been updated to a version that is compatible with the upgraded Spring Boot version. This is the power of custom mappings -- *Application Advisor* can now orchestrate upgrades for your internal or third-party libraries alongside the core Spring dependencies.
+The `corporate-starter` version has been updated to a version that is compatible with the upgraded Spring Boot version. This is the power of custom mappings, *Application Advisor* can now orchestrate upgrades for your internal or third-party libraries alongside the core Spring dependencies.
 
 After reviewing the changes, **commit and push them**.
 ```terminal:execute
@@ -107,6 +109,44 @@ description: Commit and push changes
 command: git add . && git commit -m "Add corporate-starter with custom mapping and upgrade" && git push
 session: 1
 ```
+
+#### Customization of provided mappings and recipes
+
+*Application Advisor* 1.6.6 introduced new commands to help you extract and customize upgrade mappings and recipes.
+
+The `advisor mapping search` command enables users to iteratively search and directly extract specific upgrade mappings.
+
+You can search through available project slugs by prefix. 
+```execute
+advisor mapping search --prefix spring-b
+```
+
+Select your result by entering its number, then confirm the download location:
+```terminal:input
+text: 3
+```
+```terminal:input
+text: y
+```
+
+If you already now the slug, you can download the mapping directly.
+```execute
+advisor mapping search --slug spring-boot
+```
+
+Open the downloaded mapping file:
+```editor:open-file
+file: ~/spring-petclinic/.advisor/mappings/spring-boot.json
+```
+
+To configure your customized mapping file to override the default provided mapping, set the  `SPRING_ADVISOR_MAPPING_CUSTOM_0_FILEPATH` and `SPRING_ADVISOR_MAPPING_CUSTOM_0_MERGE_STRATEGY=override` environment variables.
+
+If you also need to customize a recipe referenced within an upgrade mapping, the OpenRewrite recipe definition can be fetched using `advisor recipe show`.
+```execute
+advisor recipe show com.vmware.tanzu.spring.recipes.boot41.UpgradeSpringBoot_4_1
+```
+
+After modifying the recipe, publish it with a new ID to your local or corporate Maven repository, then reference it inside your customized upgrade mapping.
 
 #### Providing custom mappings in production
 

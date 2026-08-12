@@ -9,7 +9,7 @@ Our sample application shows exactly where the problem starts. *Spring Boot 2.7*
 The `advisor patch apply` command calculates the latest patch versions for all the dependencies in the Software Bill of Materials (SBOM) of our application and applies them to the `pom.xml` (or `build.gradle`) files. It stays **within the same minor version**, so it is a low-risk change that:
 - Updates explicit dependency versions
 - Refreshes the parent project version
-- Modifies managed dependencies and adds new managed dependencies when patch versions become available
+- Modifies transitive dependencies and adds new transitive dependencies when patch versions become available
 - Updates imported SBOM dependency versions while removing redundant libraries
 
 Combined with the commercial releases of a *VMware Tanzu Spring* subscription, the command becomes really valuable. It also moves the *Spring Boot 2.7* parent and its managed dependencies to commercial patch and hotfix versions, which means we can close known vulnerabilities today, without waiting for the upgrade to Spring Boot 3.x.

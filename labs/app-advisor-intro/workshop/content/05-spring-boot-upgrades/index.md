@@ -2,18 +2,13 @@
 title: Spring Boot 2.7 to 3.0 Upgrade
 ---
 
-Now it's time for the most impactful upgrade of our journey -- the migration from **Spring Boot 2.7 to 3.0**. This is where *Spring Application Advisor* really shines.
+Now it's time for the most impactful upgrade of our journey, the migration from **Spring Boot 2.7 to 3.0**. This is where *Spring Application Advisor* really shines.
 
 The Spring Boot 3.0 upgrade involves significant changes:
 - **Jakarta EE 9+ migration**: All `javax.*` package imports are replaced with `jakarta.*` (e.g., `javax.persistence` becomes `jakarta.persistence`)
 - **Spring Framework 6**: New baseline with updated APIs and deprecation removals
 
-Let's get the latest upgrade plan.
-```execute
-advisor build-config get && advisor upgrade-plan get
-```
-
-Now let's run the Spring Boot 2.7 to 3.0 upgrade.
+Let's run the Spring Boot 2.7 to 3.0 upgrade.
 ```execute
 advisor upgrade-plan apply --after-upgrade-cmd=spring-javaformat:apply
 ```
@@ -24,7 +19,7 @@ command: workbench.view.scm
 description: Open the Source Control view in editor
 ```
 
-Pay special attention to the Java source files -- you will, for example, see the `javax` to `jakarta` namespace migration that *Application Advisor* handled automatically.
+Pay special attention to the Java source files. You will, for example, see the `javax` to `jakarta` namespace migration that *Application Advisor* handled automatically.
 
 Without *Spring Application Advisor*, this migration would require manually updating dozens of files.
 

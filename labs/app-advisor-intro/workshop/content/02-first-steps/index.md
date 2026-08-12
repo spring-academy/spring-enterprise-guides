@@ -54,4 +54,4 @@ Let's start by exploring the available commands.
 advisor --help
 ```
 
-As you can see, it supports the `build-config`, `upgrade-plan`, `patch`, `mapping`, and `advice` commands. In this workshop, we will focus primarily on the patch and upgrade workflows.
+As you can see, it supports the `build-config`, `upgrade-plan`, `patch`, `mapping`, `advice`, and `recipes` commands. In this workshop, we will focus primarily on the patch and upgrade workflows.

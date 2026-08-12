@@ -19,9 +19,13 @@ Let's have a look at the generated build configuration.
 file: ~/spring-petclinic/target/.advisor/build-config.json
 ```
 
+The `build-config get` command is optional. The `upgrade-plan` commands automatically run it behind the scenes if the build configuration is missing or outdated.
+
 #### Analyze an upgrade plan
 
-With the information in the generated build configuration, *Spring Application Advisor* can compute the **upgrade plan**. The upgrade plan shows which Spring dependencies need to be upgraded and in what order.
+With the information in the generated build configuration, *Spring Application Advisor* can compute the **upgrade plan**. 
+
+Optionally, you can review the upgrade plan to see which dependencies require upgrading and the exact sequence to follow.
 ```execute
 advisor upgrade-plan get
 ```
@@ -76,9 +80,9 @@ session: 1
 
 #### Checking the next upgrade step
 
-After each upgrade step, we need to regenerate the build configuration and check the next step in the upgrade plan.
+Let's check the next step in the upgrade plan.
 ```execute
-advisor build-config get && advisor upgrade-plan get
+advisor upgrade-plan get
 ```
 
 If the first upgrade step was successfully applied, you should now see that the next step is the **Java 11 to 17 upgrade**. Java 17 is required because Spring Boot 3.x and Spring Framework 6 have a baseline requirement of Java 17.

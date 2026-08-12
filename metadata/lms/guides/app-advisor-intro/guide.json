@@ -6,7 +6,7 @@
   "type": "lab",
   "duration": 1800,
   "entitlements": ["auth"],
-  "instructors": [],
+  "instructors": ["spring-timo-salm"],
   "level": "beginner",
   "topics": ["workshop", "spring-enterprise", "spring-product-app-advisor"],
   "settings": {
