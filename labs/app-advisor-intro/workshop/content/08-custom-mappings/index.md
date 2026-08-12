@@ -121,13 +121,18 @@ You can search through available project slugs by prefix.
 advisor mapping search --prefix spring-b
 ```
 
-Select your result by entering its number, then confirm the download location:
+Select your result by entering its number.
 ```terminal:input
+endl: false
 text: 3
 ```
+Then **confirm by pressing enter** and also confirm the download location.
 ```terminal:input
 text: y
+endl: false
 ```
+**Press enter again.** 
+
 
 If you already now the slug, you can download the mapping directly.
 ```execute
