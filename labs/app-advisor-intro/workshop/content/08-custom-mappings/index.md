@@ -125,6 +125,7 @@ Select your result by entering its number.
 ```terminal:input
 endl: false
 text: 3
+description: 3
 ```
 Then **confirm by pressing enter** and also confirm the download location.
 ```terminal:input
