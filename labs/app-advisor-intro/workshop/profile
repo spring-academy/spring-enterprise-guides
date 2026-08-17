@@ -25,3 +25,8 @@ tar() {
   done
   command tar "$@"
 }
+
+# Fix SAA emoji bug in the terminal
+advisor() {
+    TERM=dumb command advisor "$@"
+}
