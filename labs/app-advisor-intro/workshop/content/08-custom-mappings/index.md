@@ -12,7 +12,7 @@ Let's add a [corporate-starter](https://github.com/timosalm/saa-corporate-starte
 
 ```editor:select-matching-text
 file: ~/spring-petclinic/pom.xml
-text: "</dependencies>"
+text: "<!-- end of webjars -->"
 description: Add corporate-starter dependency to POM
 before: 0
 after: 0
@@ -22,12 +22,13 @@ cascade: true
 file: ~/spring-petclinic/pom.xml
 hidden: true
 text: |2
+          <!-- end of webjars -->
+          
           <dependency>
             <groupId>com.example</groupId>
             <artifactId>corporate-starter</artifactId>
             <version>1.0.0</version>
           </dependency>
-      </dependencies>
 ```
 
 Now let's see what happens when we try to get the upgrade plan.
