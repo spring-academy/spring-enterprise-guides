@@ -22,13 +22,13 @@ cascade: true
 file: ~/spring-petclinic/pom.xml
 hidden: true
 text: |2
-          <!-- end of webjars -->
-          
-          <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>corporate-starter</artifactId>
-            <version>1.0.0</version>
-          </dependency>
+      <!-- end of webjars -->
+
+      <dependency>
+        <groupId>com.example</groupId>
+        <artifactId>corporate-starter</artifactId>
+        <version>1.0.0</version>
+      </dependency>
 ```
 
 Now let's see what happens when we try to get the upgrade plan.
@@ -122,19 +122,9 @@ You can search through available project slugs by prefix.
 advisor mapping search --prefix spring-b
 ```
 
-Select your result by entering its number.
-```terminal:input
-endl: false
-text: 3
-description: 3
-```
-Then **confirm by pressing enter** and also confirm the download location.
-```terminal:input
-text: y
-endl: false
-```
-**Press enter again.** 
+Select the `spring-boot` result by **entering number 3 and confirm by pressing enter**.
 
+Also confirm the download location, by **entering `y`, and press enter again.** 
 
 If you already now the slug, you can download the mapping directly.
 ```execute
