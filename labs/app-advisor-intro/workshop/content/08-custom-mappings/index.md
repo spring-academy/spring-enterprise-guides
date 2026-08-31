@@ -36,11 +36,28 @@ Now let's see what happens when we try to get the upgrade plan.
 advisor upgrade-plan get
 ```
 
-*Application Advisor* reports that it **cannot create an upgrade plan** because `corporate-starter` uses Spring dependencies (spring-framework, spring-boot, micrometer) but has no upgrade mappings configured. This blocks upgrades for spring-boot, spring-data, hibernate-orm, and other projects.
+*Application Advisor* reports that it **cannot create an upgrade plan** because `corporate-starter` uses Spring dependencies, but has no upgrade mappings for them configured. Without those mappings it has no idea which newer versions of the library exist or what they depend on, so it stops instead of quietly leaving the library and its Java API usages behind in an unstable state.
+
+The same thing happens with transitive dependencies, where the report also names the artifact that pulls the unmapped project in and lists the upgrades it holds back. 
+```
+The projects ["spring-framework", "reactive-streams", "cxf", "opensaml"] could not be included in the Upgrade Plan because they are used as transitive dependencies for other projects, and no upgrades are configured for them.
+Ask your administrator to configure the projects of the following dependencies:
+
+	- org.apache.wss4j:wss4j-ws-security-dom
+		uses:
+			- opensaml
+		blocking upgrades for:
+			- cxf
+			- spring-framework
+			- reactive-streams
+	...
+```
+
+Either way the fix is a mapping, which you write yourself for your own libraries. If the reported artifacts turn out to be dependencies used by Spring projects, it is the mappings shipped with *Application Advisor* that need fixing, so open a [support ticket](https://support.broadcom.com) for those. Until the mapping exists, you can still upgrade everything else with the `--force` flag.
 
 #### Forcing an upgrade with `--force`
 
-The `--force` flag forces execution of the upgrade plan including intermediate dependencies, even when some libraries block the upgrade. Let's commit our changes and try it.
+The `--force` flag executes the upgrade plan including intermediate dependencies, even when some libraries block the upgrade. Let's commit our changes and try it.
 ```execute
 git add pom.xml && git commit -m "Add corporate-starter dependency to POM"
 ```
@@ -144,6 +161,39 @@ advisor recipe show com.vmware.tanzu.spring.recipes.boot41.UpgradeSpringBoot_4_1
 ```
 
 After modifying the recipe, publish it with a new ID to your local or corporate Maven repository, then reference it inside your customized upgrade mapping.
+
+#### Other blockers and warnings
+
+`corporate-starter` was the *missing mappings* case. A few more situations are reported at the bottom of the upgrade plan, and most of them are solved with the same mapping commands:
+
+- **An artifact reached end of life** One artifact of a project is gone from newer releases and is reported as an **excluded artifact**. 
+```
+Some upgrades were not included in the upgrade plan.
+
+The following dependencies are defined as excluded artifacts in your upgrade mappings because there are no new available versions.
+Please, remove them from your project or overwrite/update your upgrade mappings with a recipe that replaces them:
+
+   * org.apache.geode:geode-json:1.9.x
+```
+Remove it if you don't use it at runtime, or override the project's mappings with a recipe that replaces it.
+- **A project blocks everything else** It is reported as needing "an upgrade or migration defined in the upgrade mappings". Either the mappings are stale (run `advisor mapping update`), the project is simply behind (upgrade it), or it is dead like and needs a migration to a successor project defined in its mappings.
+```
+Some upgrades were not included in the upgrade plan.
+Here's a summary of blocker projects and potential actions to take:
+
+	* my-outdated-project:4.2.x needs an upgrade or migration defined in the upgrade mappings to upgrade spring-framework > 6.0.x
+	...
+```
+- **Warnings about versions** Several versions of one project used simultaneously usually points at a misconfiguration in your application, and a version that "does not exist" in the mappings means those mappings need an update.
+```
+⚠️  Warnings:
+	- There is an error in reactor-netty, several versions are used simultaneously:
+		- io.projectreactor.netty:reactor-netty:1.1.15
+		- io.projectreactor.netty:reactor-netty-core:1.0.39
+		- io.projectreactor.netty:reactor-netty-http:1.1.15
+```
+
+Details on all of them, including the mapping snippets, are in the documentation [here](https://techdocs.broadcom.com/us/en/vmware-tanzu/spring/application-advisor/1-6/app-advisor/upgrade-plan.html).
 
 #### Providing custom mappings in production
 

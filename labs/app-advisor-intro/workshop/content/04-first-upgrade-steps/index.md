@@ -30,6 +30,22 @@ Optionally, you can review the upgrade plan to see which dependencies require up
 advisor upgrade-plan get
 ```
 
+The output has three parts:
+- **Projects discovered** lists every project *Application Advisor* recognized in our dependency tree, with its current version and the latest one it knows about (e.g., `apache-commons-lang: 3.18.x -> 3.20.x`).
+- The **steps** are the plan itself. Each step lists the projects that have to be upgraded *together*. `advisor upgrade-plan apply` always executes the first one, which is why upgrading is an iterative process.
+- **Blockers and warnings** at the bottom report dependencies that could not be aligned, and version inconsistencies that look like configuration mistakes. We will come back to them in the section about custom upgrade mappings.
+
+#### Why a step contains what it contains
+
+Four rules decide which projects share a step:
+
+- **Dependencies alignment** Every version of a project is built for specific versions of the projects it depends on, and those versions have to move together. Because Spring Boot 4.0.x expects Spring Framework 7.0.x, upgrading to it pulls Spring Framework into the same step.
+- **Available recipes** They define which target versions are reachable at all. If the only recipe jumps from v1 straight to v3, the plan never offers you v2. You mostly see this with your own custom recipes.
+- **The Spring Boot SBOM** The more projects an application uses, the more likely it is that two of them cannot be aligned. For everything managed by `spring-boot-dependencies`, conflicts are resolved from the `spring-boot` mappings, because the Spring team already tested which versions work together at runtime.
+- **Semantic versioning** For Spring projects only, a new *minor* version is considered safe enough to upgrade to even if your other projects lag behind, a new *major* version is not. An internal starter that is still a few versions behind therefore never blocks a Spring Boot minor upgrade, and as soon as it is released and mapped, its own upgrade is picked up automatically.
+
+All of this knowledge comes from the **upgrade mappings**, which we will customize later in this workshop.
+
 #### Apply an upgrade plan from your local machine
 Now it's time to run our first upgrade step with the `advisor upgrade-plan apply` command.
 Let's look at the available options first.
