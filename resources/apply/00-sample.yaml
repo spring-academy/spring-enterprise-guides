@@ -12,7 +12,7 @@ spec:
     image: jdk17-environment:*
     files:
       - http:
-          url: http://$(workshop_namespace)-files/$(workshop_name).tar.gz
+          url: "$(ingress_protocol)://$(assets_repository)/$(workshop_name).tar.gz"
         includePaths:
         - /workshop/**
         - /exercises/**
@@ -35,7 +35,7 @@ spec:
     - name: LAB_NUMBER
       value: "1"
     - name: WEBSERVER
-      value: "$(ingress_protocol)://$(workshop_namespace)-files.$(ingress_domain)"
+      value: "$(ingress_protocol)://$(assets_repository)"
     - name: BOOTSTRAP_COMMAND
       value: ":"
     applications:
@@ -63,6 +63,14 @@ spec:
         - name: workshop-init-container-scripts
           mountPath: /opt/init-setup-scripts
   environment:
+    assets:
+      memory: 0Mi
+      ingress:
+        enabled: true
+      files:
+        - image:
+            url: ghcr.io/spring-academy/spring-enterprise-guides:${VERSION}
+          newRootPath: usr/share/nginx/html
     objects:
     - apiVersion: v1
       kind: Secret
@@ -74,58 +82,3 @@ spec:
           set -x
           set -eo pipefail
           echo "Put commands here that need to be done in init container prior to workshop session"
-    - apiVersion: v1
-      kind: Service
-      metadata:
-        name: $(workshop_namespace)-files
-        namespace: $(workshop_namespace)
-      spec:
-        type: ClusterIP
-        ports:
-        - port: 80
-          protocol: TCP
-          targetPort: 8080
-        selector:
-          deployment: files
-    - apiVersion: networking.k8s.io/v1
-      kind: Ingress
-      metadata:
-        name: $(workshop_namespace)-files
-        namespace: $(workshop_namespace)
-      spec:
-        tls:
-        - hosts:
-            - $(workshop_namespace)-files.$(ingress_domain)
-          secretName: $(ingress_secret)
-        rules:
-        - host: $(workshop_namespace)-files.$(ingress_domain)
-          http:
-            paths:
-            - backend:
-                service:
-                  name: $(workshop_namespace)-files
-                  port:
-                    number: 80
-              pathType: Prefix
-              path: /
-    - apiVersion: apps/v1
-      kind: Deployment
-      metadata:
-        name: $(workshop_namespace)-files
-        namespace: $(workshop_namespace)
-      spec:
-        serviceAccountName: $(service_account)
-        replicas: 1
-        selector:
-          matchLabels:
-            deployment: files
-        strategy:
-          type: Recreate
-        template:
-          metadata:
-            labels:
-              deployment: files
-          spec:
-            containers:
-            - name: files
-              image: ghcr.io/spring-academy/spring-enterprise-guides:${VERSION}
