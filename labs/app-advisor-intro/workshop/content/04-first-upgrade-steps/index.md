@@ -66,7 +66,7 @@ For now, we will run the steps locally without the `--push` option, as pull requ
 The first step of our upgrade plan is to **upgrade Java from 8 to 11**.
 Since some of the latest recipes require Java 17 to be executed, let's set it for the terminal where we run the advisor CLI.
 ```terminal:execute
-command: sdk use java $(sdk list java | grep -E 'installed|local only' | grep '17.*[0-9]-librca' | awk '{print $NF}' | head -n 1)
+command: sdk use java 17.0.18-librca
 session: 1
 ```
 
@@ -122,7 +122,7 @@ advisor upgrade-plan apply --after-upgrade-cmd=spring-javaformat:apply
 Let's validate that everything works as expected by compiling and running our application.
 Since we upgraded our source code to Java 17, we need to switch the Java runtime in our environment as well.
 ```terminal:execute
-command: sdk use java $(sdk list java | grep -E 'installed|local only' | grep '17.*[0-9]-librca' | awk '{print $NF}' | head -n 1)
+command: sdk use java 17.0.18-librca
 session: 2
 ```
 ```terminal:execute
