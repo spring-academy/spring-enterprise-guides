@@ -32,6 +32,8 @@ spec:
           # See note below though about volume mount for token.
           enabled: false
     env:
+    - name: LAB_VERSION
+      value: "${VERSION}"
     - name: LAB_NUMBER
       value: "1"
     - name: WEBSERVER
