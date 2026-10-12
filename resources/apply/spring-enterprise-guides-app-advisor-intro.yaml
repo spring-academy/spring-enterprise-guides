@@ -220,7 +220,7 @@ spec:
         podSelector:
           matchLabels:
             training.educates.dev/component: session
-            training.educates.dev/workshop.name: spring-enterprise-guides-advisor-install
+            training.educates.dev/workshop.name: spring-enterprise-guides-app-advisor-intro
         policyTypes:
         - Egress
         egress:
@@ -241,8 +241,7 @@ spec:
             - key: deployment
               operator: In
               values:
-              - files
-              - reposilite
+              - assets-server
         policyTypes:
         - Egress
         egress:
