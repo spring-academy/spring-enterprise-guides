@@ -36,6 +36,11 @@ spec:
       value: "$(ingress_protocol)://$(assets_repository)"
     - name: BOOTSTRAP_COMMAND
       value: ":"
+    # In-cluster services (see lab-services below). Session pods can't reach the internet.
+    - name: LAB_FILES_URL
+      value: "http://lab-services:8080/files"
+    - name: MAVEN_MIRROR_URL
+      value: "http://lab-services:8080/maven2"
     resources:
       memory: 4Gi
     ingresses:
@@ -54,39 +59,39 @@ spec:
       mountPath: /home/eduk8s/bin/advisor
       subPath: advisor
     initContainers:
+    # Fetches the advisor tarball from lab-services, which holds it behind a token that is only
+    # mounted into this init container (never into the workshop container).
     - name: download-app-advisor-cli
-      image: google/cloud-sdk:latest
+      image: ghcr.io/vmware-tanzu-labs/educates-base-environment:2.5.2
       imagePullPolicy: $(workshop_image_pull_policy)
       command: ["/bin/bash"]
       args:
         - "-c"
         - |
+          set -eo pipefail
           cd /opt/tanzu/bin
-          gcloud auth activate-service-account --key-file=/creds/bucket-reader
-          gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" "${DESTINATION_FILE_NAME}.tar"
+          until curl -sf -H "X-Lab-Token: ${LAB_VAULT_TOKEN}" -o ${DESTINATION_FILE_NAME}.tar http://lab-services:8080/advisor/advisor.tar; do
+            echo "Waiting for lab-services to publish the advisor CLI"
+            sleep 5
+          done
           tar -xvf ${DESTINATION_FILE_NAME}.tar
           mv cli-binary/advisor ${DESTINATION_FILE_NAME}
           chmod 111 ${DESTINATION_FILE_NAME}
-          rm -rf ${DESTINATION_FILE_NAME}.tar cli-binary 
+          rm -rf ${DESTINATION_FILE_NAME}.tar cli-binary
       env:
-        - name: GCP_BUCKET_NAME
-          value: "academy-artifacts"
-        - name: SOURCE_FILE_NAME
-          value: "spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.6.7.tar" # Change also the version in the workshop content
         - name: DESTINATION_FILE_NAME
           value: "advisor"
+        - name: LAB_VAULT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: advisor-vault
+              key: token
       volumeMounts:
         - name: binaries
           mountPath: /opt/tanzu/bin/
-        - name: gcp-key
-          readOnly: true
-          mountPath: /creds
     volumes:
     - name: binaries
       emptyDir: {}
-    - name: gcp-key
-      secret:
-        secretName: gcp
     - name: workshop-init-container-scripts
       secret:
         secretName: workshop-init-container-scripts
@@ -124,6 +129,21 @@ spec:
             namespace: spring-academy
           targetSecret:
             name: gcp
+          targetNamespaces:
+            nameSelector:
+              matchNames:
+              - spring-enterprise-guides-*
+    - apiVersion: secrets.educates.dev/v1beta1
+      kind: SecretCopier
+      metadata:
+        name: $(workshop_namespace)-spring-enterprise-guides-advisor-vault
+      spec:
+        rules:
+        - sourceSecret:
+            name: advisor-vault
+            namespace: spring-academy
+          targetSecret:
+            name: advisor-vault
           targetNamespaces:
             nameSelector:
               matchNames:
@@ -242,9 +262,148 @@ spec:
               operator: In
               values:
               - assets-server
+              - lab-services
         policyTypes:
         - Egress
         egress:
         - to:
           - ipBlock:
               cidr: 0.0.0.0/0
+    - apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: lab-services-nginx
+      data:
+        default.conf.template: |
+          proxy_cache_path /tmp/maven-cache levels=1:2 keys_zone=maven:10m max_size=5g inactive=30d use_temp_path=off;
+          server {
+            listen 8080;
+
+            # Read-only caching proxy of Maven Central for session pods
+            location /maven2/ {
+              limit_except GET HEAD { deny all; }
+              proxy_pass https://repo.maven.apache.org/maven2/;
+              proxy_ssl_server_name on;
+              proxy_cache maven;
+              proxy_cache_valid 200 301 302 12h;
+              proxy_cache_valid 404 1m;
+              proxy_cache_use_stale error timeout updating;
+            }
+
+            # Non-sensitive files (SDKMAN/JDK bundle)
+            location /files/ {
+              alias /srv/files/;
+            }
+
+            # Commercial software: only served to callers presenting the vault token
+            location /advisor/ {
+              if ($http_x_lab_token != "${LAB_VAULT_TOKEN}") {
+                return 403;
+              }
+              alias /srv/private/;
+            }
+          }
+    - apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: lab-services
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            deployment: lab-services
+        template:
+          metadata:
+            labels:
+              deployment: lab-services
+          spec:
+            securityContext:
+              fsGroup: 1001
+            initContainers:
+            # Open-egress downloads happen here, once per workshop environment
+            - name: download-app-advisor-cli
+              image: google/cloud-sdk:latest
+              command: ["/bin/bash"]
+              args:
+                - "-c"
+                - |
+                  set -eo pipefail
+                  gcloud auth activate-service-account --key-file=/creds/bucket-reader
+                  gcloud storage cp "gs://${GCP_BUCKET_NAME}/${SOURCE_FILE_NAME}" /srv/private/advisor.tar
+                  chmod 644 /srv/private/advisor.tar
+              env:
+                - name: GCP_BUCKET_NAME
+                  value: "academy-artifacts"
+                - name: SOURCE_FILE_NAME
+                  value: "spring/binaries/application-advisor-cli-linux/application-advisor-cli-linux-1.6.7.tar" # Change also the version in the workshop content
+              volumeMounts:
+                - name: private
+                  mountPath: /srv/private
+                - name: gcp-key
+                  readOnly: true
+                  mountPath: /creds
+            - name: build-sdkman-bundle
+              image: ghcr.io/vmware-tanzu-labs/educates-base-environment:2.5.2
+              command: ["/bin/bash"]
+              args:
+                - "-c"
+                - |
+                  set -eo pipefail
+                  export HOME=/tmp/sdkman-home SDKMAN_DIR=/tmp/sdkman-home/.sdkman
+                  mkdir -p $HOME
+                  curl -s "https://get.sdkman.io?rcupdate=false" | bash
+                  source $SDKMAN_DIR/bin/sdkman-init.sh
+                  export sdkman_auto_answer=true
+                  # Same order as the original setup script, which leaves 11 as the default
+                  sdk install java 17.0.18-librca
+                  sdk install java 11.0.30-librca
+                  rm -rf $SDKMAN_DIR/archives/* $SDKMAN_DIR/tmp/*
+                  tar -czf /srv/files/sdkman.tar.gz -C $HOME .sdkman
+              volumeMounts:
+                - name: files
+                  mountPath: /srv/files
+            containers:
+            - name: nginx
+              image: nginxinc/nginx-unprivileged:1.27-alpine
+              ports:
+              - containerPort: 8080
+              env:
+                - name: LAB_VAULT_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: advisor-vault
+                      key: token
+              volumeMounts:
+                - name: nginx-template
+                  mountPath: /etc/nginx/templates
+                - name: files
+                  mountPath: /srv/files
+                  readOnly: true
+                - name: private
+                  mountPath: /srv/private
+                  readOnly: true
+                - name: cache
+                  mountPath: /tmp
+            volumes:
+            - name: nginx-template
+              configMap:
+                name: lab-services-nginx
+            - name: files
+              emptyDir: {}
+            - name: private
+              emptyDir: {}
+            - name: cache
+              emptyDir: {}
+            - name: gcp-key
+              secret:
+                secretName: gcp
+    - apiVersion: v1
+      kind: Service
+      metadata:
+        name: lab-services
+      spec:
+        selector:
+          deployment: lab-services
+        ports:
+        - port: 8080
+          targetPort: 8080
