@@ -22,6 +22,12 @@ done
 if [ ! -d "$HOME/.sdkman" ]; then
     curl -sf "$LAB_FILES_URL/sdkman.tar.gz" | tar -xz -C "$HOME"
 fi
+# SDKMAN's "current" symlinks are absolute and the bundle was built under another HOME
+for candidate in "$HOME"/.sdkman/candidates/*; do
+    if current=$(readlink "$candidate/current"); then
+        ln -sfn "$candidate/$(basename "$current")" "$candidate/current"
+    fi
+done
 # Never call out to api.sdkman.io
 sed -i -e 's/^sdkman_auto_answer=.*/sdkman_auto_answer=true/' \
        -e 's/^sdkman_auto_update=.*/sdkman_auto_update=false/' \
