@@ -352,11 +352,13 @@ spec:
                   export HOME=/tmp/sdkman-home SDKMAN_DIR=/tmp/sdkman-home/.sdkman
                   mkdir -p $HOME
                   curl -s "https://get.sdkman.io?rcupdate=false" | bash
+                  # sdkman-init.sh reads this from etc/config, so an exported variable isn't enough
+                  sed -i 's/^sdkman_auto_answer=.*/sdkman_auto_answer=true/' $SDKMAN_DIR/etc/config
                   source $SDKMAN_DIR/bin/sdkman-init.sh
-                  export sdkman_auto_answer=true
                   # Same order as the original setup script, which leaves 11 as the default
-                  sdk install java 17.0.18-librca
-                  sdk install java 11.0.30-librca
+                  sdk install java 17.0.18-librca < /dev/null
+                  sdk install java 11.0.30-librca < /dev/null
+                  sdk default java 11.0.30-librca
                   rm -rf $SDKMAN_DIR/archives/* $SDKMAN_DIR/tmp/*
                   tar -czf /srv/files/sdkman.tar.gz -C $HOME .sdkman
               volumeMounts:
