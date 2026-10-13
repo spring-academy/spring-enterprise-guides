@@ -50,11 +50,11 @@ SOURCES_DIR=/opt/workshop/sources
 
 # 4. Make sample code repository available on local git server
 mkdir -p /opt/git/repositories
-cp -r "$SOURCES_DIR/spring-petclinic.git" /opt/git/repositories/spring-petclinic
+git clone --bare "$SOURCES_DIR/spring-petclinic.bundle" /opt/git/repositories/spring-petclinic
 (cd /opt/git/repositories && printf "\n.advisor" >> .gitignore)
 
 # 5. Add sample corporate starters to local maven cache
-git clone "$SOURCES_DIR/saa-corporate-starter-sample.git" saa-corporate-starter-sample
+git clone "$SOURCES_DIR/saa-corporate-starter-sample.bundle" saa-corporate-starter-sample
 cd saa-corporate-starter-sample
 git checkout 1.0.0 && ./mvnw install
 git checkout 2.0.0 && ./mvnw install

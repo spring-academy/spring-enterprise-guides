@@ -21,13 +21,19 @@ add-files-to-archive:
 	  mv $$f.resolved $$f; \
 	done
 
-# Bare repos are copied by the lab's setup.d script, so students never need to reach GitHub
+# Shipped as git bundles (single files) because bare repos are mostly empty directories,
+# which don't survive being unpacked as workshop files. setup.d clones from these, so
+# students never need to reach GitHub.
 fetch-app-advisor-intro-sources:
-	mkdir -p build/app-advisor-intro/workshop/sources
-	git clone --bare ${PETCLINIC_REPO} build/app-advisor-intro/workshop/sources/spring-petclinic.git
-	git --git-dir=build/app-advisor-intro/workshop/sources/spring-petclinic.git rev-parse --verify ${PETCLINIC_REF}^{commit}
-	git --git-dir=build/app-advisor-intro/workshop/sources/spring-petclinic.git update-ref `git --git-dir=build/app-advisor-intro/workshop/sources/spring-petclinic.git symbolic-ref HEAD` ${PETCLINIC_REF}
-	git clone --bare ${CORPORATE_STARTER_REPO} build/app-advisor-intro/workshop/sources/saa-corporate-starter-sample.git
+	rm -rf build/tmp-sources
+	mkdir -p build/app-advisor-intro/workshop/sources build/tmp-sources
+	git clone --bare ${PETCLINIC_REPO} build/tmp-sources/spring-petclinic.git
+	git --git-dir=build/tmp-sources/spring-petclinic.git rev-parse --verify ${PETCLINIC_REF}^{commit}
+	git --git-dir=build/tmp-sources/spring-petclinic.git update-ref `git --git-dir=build/tmp-sources/spring-petclinic.git symbolic-ref HEAD` ${PETCLINIC_REF}
+	git --git-dir=build/tmp-sources/spring-petclinic.git bundle create $(CURDIR)/build/app-advisor-intro/workshop/sources/spring-petclinic.bundle --all
+	git clone --bare ${CORPORATE_STARTER_REPO} build/tmp-sources/saa-corporate-starter-sample.git
+	git --git-dir=build/tmp-sources/saa-corporate-starter-sample.git bundle create $(CURDIR)/build/app-advisor-intro/workshop/sources/saa-corporate-starter-sample.bundle --all
+	rm -rf build/tmp-sources
 
 build-date:
 	rm -rf build
