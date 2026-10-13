@@ -6,3 +6,8 @@ CONTAINER_REPOSITORY  = spring-enterprise-guides
 version               = latest
 
 env                   = github
+
+# Sources packaged into the app-advisor-intro lab at build time so sessions don't need internet access
+PETCLINIC_REPO        = https://github.com/timosalm/spring-petclinic-2.7
+PETCLINIC_REF         = a8b52b7757504e427f2c8f5b7ce44c0358a5e16f
+CORPORATE_STARTER_REPO = https://github.com/timosalm/saa-corporate-starter-sample

@@ -5,10 +5,11 @@ include Makefile.$(BUILDER)
 
 build: build-date add-files-to-archive docker-lab-html
 
-.PHONY: help build release add-files-to-archive docker-lab-html Makefile releaseclean get-reporeg get-name deploy
+.PHONY: fetch-app-advisor-intro-sources help build release add-files-to-archive docker-lab-html Makefile releaseclean get-reporeg get-name deploy
 
 add-files-to-archive:
 	cp -r labs/* build
+	$(MAKE) fetch-app-advisor-intro-sources
 	for d in build/*; do \
 	  tar -czvf build/`cat $$d/WORKSHOP_ID`.tar.gz -C $$d .; \
 	done
@@ -19,6 +20,20 @@ add-files-to-archive:
 	  VERSION=${version} CONTAINER_REGISTRY=${CONTAINER_REGISTRY} CONTAINER_REPOSITORY=${CONTAINER_REPOSITORY} envsubst '$${VERSION} $${CONTAINER_REGISTRY} $${CONTAINER_REPOSITORY}' < $$f > $$f.resolved; \
 	  mv $$f.resolved $$f; \
 	done
+
+# Shipped as git bundles (single files) because bare repos are mostly empty directories,
+# which don't survive being unpacked as workshop files. setup.d clones from these, so
+# students never need to reach GitHub.
+fetch-app-advisor-intro-sources:
+	rm -rf build/tmp-sources
+	mkdir -p build/app-advisor-intro/workshop/sources build/tmp-sources
+	git clone --bare ${PETCLINIC_REPO} build/tmp-sources/spring-petclinic.git
+	git --git-dir=build/tmp-sources/spring-petclinic.git rev-parse --verify ${PETCLINIC_REF}^{commit}
+	git --git-dir=build/tmp-sources/spring-petclinic.git update-ref `git --git-dir=build/tmp-sources/spring-petclinic.git symbolic-ref HEAD` ${PETCLINIC_REF}
+	git --git-dir=build/tmp-sources/spring-petclinic.git bundle create $(CURDIR)/build/app-advisor-intro/workshop/sources/spring-petclinic.bundle --all
+	git clone --bare ${CORPORATE_STARTER_REPO} build/tmp-sources/saa-corporate-starter-sample.git
+	git --git-dir=build/tmp-sources/saa-corporate-starter-sample.git bundle create $(CURDIR)/build/app-advisor-intro/workshop/sources/saa-corporate-starter-sample.bundle --all
+	rm -rf build/tmp-sources
 
 build-date:
 	rm -rf build

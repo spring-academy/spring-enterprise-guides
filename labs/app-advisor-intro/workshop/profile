@@ -1,5 +1,8 @@
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
+# Maven wrapper downloads go through the in-cluster mirror (no internet access in session)
+export MVNW_REPOURL="$MAVEN_MIRROR_URL"
+
 # Override curl to rewrite repository URLs for installation of App Advisor section
 curl() {
   local prefix="https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/"
