@@ -46,7 +46,7 @@ cat > "$HOME/.m2/settings.xml" <<EOF
 EOF
 export MVNW_REPOURL="$MAVEN_MIRROR_URL"
 
-SOURCES_DIR=/opt/workshop/workshop/sources
+SOURCES_DIR=/opt/workshop/sources
 
 # 4. Make sample code repository available on local git server
 mkdir -p /opt/git/repositories
