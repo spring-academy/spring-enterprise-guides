@@ -9,7 +9,6 @@ Now that we have completed the major Spring Boot 2.7 to 3.0 upgrade, the remaini
 By adding the `--debug` option to `advisor build-config get` and `advisor upgrade-plan apply`, we can get a better understanding of what's happening underneath, for example, which OpenRewrite recipes are being applied.
 ```terminal:execute
 command: advisor build-config get --debug 
-cascade: true
 ```
 ```terminal:execute
 command: advisor upgrade-plan apply --after-upgrade-cmd=spring-javaformat:apply --debug
